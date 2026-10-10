@@ -1,0 +1,67 @@
+:root {
+  /* Color Palette */
+  --bg-app: #F8F5F0;
+  --bg-sidebar: #FAF7F2;
+  --bg-card: #FFFFFF;
+  --bg-card-alt: #FBF9F6;
+  --bg-hover: #F2EDE4;
+  --bg-active-nav: #221C18;
+  
+  /* Text Colors */
+  --text-primary: #1E1713;
+  --text-secondary: #746B63;
+  --text-muted: #9E958D;
+  --text-inverted: #FFFFFF;
+  
+  /* Coffee / Brand Accents */
+  --brand-primary: #8C5E3C;
+  --brand-dark: #221C18;
+  --brand-light: #F6EEE6;
+  --brand-border: #E8E0D5;
+  
+  /* Status & Accents */
+  --accent-green: #15803D;
+  --accent-green-bg: #DCFCE7;
+  --accent-green-border: #BBF7D0;
+  
+  --accent-orange: #C2672B;
+  --accent-orange-bg: #FDF2E9;
+  --accent-orange-icon-bg: #FCEEE3;
+  
+  --accent-red: #DC2626;
+  --accent-red-bg: #FEE2E2;
+  
+  /* Tags & Payment Badges */
+  --badge-qris-bg: #FEF3C7;
+  --badge-qris-text: #92400E;
+  --badge-cash-bg: #F5EBE1;
+  --badge-cash-text: #7D5537;
+  --badge-bank-bg: #EFF6FF;
+  --badge-bank-text: #1E40AF;
+  
+  /* Borders & Dividers */
+  --border-subtle: #EFEBE4;
+  --border-medium: #E2DBD0;
+  --border-strong: #CFC5B8;
+  
+  /* Typography */
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(34, 28, 24, 0.04);
+  --shadow-card: 0 1px 3px 0 rgba(34, 28, 24, 0.05), 0 1px 2px -1px rgba(34, 28, 24, 0.05);
+  --shadow-hover: 0 4px 6px -1px rgba(34, 28, 24, 0.07), 0 2px 4px -2px rgba(34, 28, 24, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(34, 28, 24, 0.08), 0 4px 6px -4px rgba(34, 28, 24, 0.04);
+  --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+}

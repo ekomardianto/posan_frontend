@@ -1,0 +1,13 @@
+@import './styles/variables.css';
+@import './styles/global.css';
+@import './styles/dashboard.css';
+@import './styles/products.css';
+@import './styles/categories.css';
+@import './styles/transactions.css';
+@import './styles/cashiers.css';
+@import './styles/reports.css';
+@import './styles/profile.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

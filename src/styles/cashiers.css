@@ -1,0 +1,1079 @@
+/* ==========================================================================
+   POSAN ADMIN CAFÉ - KELOLA KASIR STYLES (UC-ADM-06)
+   Pixel-perfect match with POSAN Design System
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Page Container & Layout
+   -------------------------------------------------------------------------- */
+.cashiers-page-container {
+  padding: 24px 32px 40px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1560px;
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   2. Page Header Banner & Actions
+   -------------------------------------------------------------------------- */
+.cashier-page-header-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+
+.cashier-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cashier-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cashier-page-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.cashier-scope-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #F6EEE4;
+  border: 1px solid #EADBCC;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #7D5537;
+}
+
+.cashier-scope-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #C2672B;
+  border-radius: 50%;
+}
+
+.cashier-page-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.btn-add-cashier {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background-color: #1E1713;
+  color: #FFFFFF;
+  border: 1px solid #1E1713;
+  border-radius: var(--radius-md);
+  font-size: 0.84rem;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 6px rgba(30, 23, 19, 0.15);
+}
+
+.btn-add-cashier:hover {
+  background-color: #382A22;
+  border-color: #382A22;
+  transform: translateY(-1px);
+}
+
+.btn-add-cashier:active {
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   3. Metric Summary Cards (4 Columns)
+   -------------------------------------------------------------------------- */
+.cashier-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.cashier-stat-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.cashier-stat-card:hover {
+  border-color: var(--brand-border);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.cashier-stat-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cashier-stat-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.cashier-stat-val-group {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 2px 0;
+}
+
+.cashier-stat-number {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.cashier-stat-subtext {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.cashier-stat-subtext.text-active-ready {
+  color: var(--text-secondary);
+}
+
+.cashier-stat-subtext.text-active-ready strong {
+  color: #15803D;
+  font-weight: 700;
+}
+
+.cashier-stat-subtext.text-locked {
+  color: #DC2626;
+  font-weight: 600;
+}
+
+.cashier-stat-icon-wrapper {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.icon-terminal {
+  background-color: #EFECE6;
+  color: #5C5349;
+}
+
+.icon-kasir-stat {
+  background-color: #E0F2FE;
+  color: #0369A1;
+}
+
+.icon-admin-stat {
+  background-color: #F3E8FF;
+  color: #7E22CE;
+}
+
+.text-role-count {
+  color: #6B21A8 !important;
+  font-weight: 600 !important;
+}
+
+.icon-active {
+  background-color: #EBF7EE;
+  color: #16A34A;
+}
+
+.icon-locked {
+  background-color: #FDEEEC;
+  color: #DC2626;
+}
+
+.icon-sessions {
+  background-color: #FDF2E8;
+  color: #C2672B;
+}
+
+/* --------------------------------------------------------------------------
+   4. Search & Segmented Filter Bar
+   -------------------------------------------------------------------------- */
+.cashier-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cashier-search-box {
+  position: relative;
+  flex: 1;
+  min-width: 280px;
+  max-width: 460px;
+}
+
+.cashier-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.cashier-search-input {
+  width: 100%;
+  padding: 10px 48px 10px 38px;
+  background-color: #F4EFE9;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
+}
+
+.cashier-search-input:focus {
+  background-color: #FFFFFF;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(140, 94, 60, 0.1);
+}
+
+.cashier-search-input::placeholder {
+  color: #8C8278;
+}
+
+.cashier-search-shortcut {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background-color: #E9E2D8;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.cashier-filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cashier-tabs-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #EFEBE4;
+  padding: 4px;
+  border-radius: var(--radius-md);
+}
+
+.cashier-tab-btn {
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.cashier-tab-btn:hover:not(.active) {
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.cashier-tab-btn.active {
+  background-color: #1E1713;
+  color: #FFFFFF;
+  box-shadow: var(--shadow-sm);
+}
+
+.cashier-status-select-wrap {
+  position: relative;
+}
+
+.cashier-status-select {
+  padding: 8px 12px;
+  background-color: #EFEBE4;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.cashier-status-select:focus {
+  background-color: #FFFFFF;
+  border-color: var(--brand-primary);
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   5. Cashier Table Card
+   -------------------------------------------------------------------------- */
+.cashier-table-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.cashier-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  min-height: 200px;
+}
+
+.cashier-main-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.cashier-main-table thead {
+  background-color: #FAF7F2;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.cashier-main-table th {
+  padding: 12px 18px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.col-cashier-profile { width: 26%; }
+.col-cashier-email { width: 20%; }
+.col-cashier-role { width: 10%; }
+.col-cashier-status { width: 12%; }
+.col-cashier-created { width: 12%; }
+.col-cashier-login { width: 14%; }
+.col-cashier-actions { width: 6%; text-align: center; }
+
+.cashier-table-row {
+  border-bottom: 1px solid var(--border-subtle);
+  transition: all var(--transition-fast);
+}
+
+.cashier-table-row:last-child {
+  border-bottom: none;
+}
+
+.cashier-table-row:hover {
+  background-color: #FAF6F1;
+}
+
+.cashier-main-table td {
+  padding: 16px 18px;
+  font-size: 0.82rem;
+  vertical-align: middle;
+}
+
+/* Cashier Avatar & Name */
+.cashier-profile-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cashier-avatar-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.cashier-name-id-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cashier-full-name {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+}
+
+.cashier-id-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.cashier-email-text {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+/* Role Badge */
+.cashier-role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.role-badge-super-admin {
+  background-color: #F3E8FF;
+  color: #7E22CE;
+  border: 1px solid #E9D5FF;
+}
+
+.role-badge-admin {
+  background-color: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.role-badge-kasir {
+  background-color: #E0F2FE;
+  color: #0369A1;
+  border: 1px solid #BAE6FD;
+}
+
+.role-badge-icon {
+  flex-shrink: 0;
+}
+
+/* Status Badges */
+.cashier-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+}
+
+.status-active {
+  background-color: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+}
+
+.status-inactive {
+  background-color: #FEE2E2;
+  color: #DC2626;
+  border: 1px solid #FECACA;
+}
+
+.cashier-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.cashier-created-date {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* Login info */
+.cashier-login-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cashier-login-time {
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.cashier-terminal-highlight {
+  font-size: 0.72rem;
+  color: #9A5A20;
+  font-weight: 600;
+}
+
+/* Action Icons */
+.cashier-actions-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.btn-action-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.btn-action-icon:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.cashier-more-menu-wrapper {
+  position: relative;
+  z-index: 50;
+}
+
+.cashier-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.18), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  padding: 4px;
+  min-width: 170px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.cashier-dropdown-menu.open-up {
+  top: auto;
+  bottom: calc(100% + 4px);
+  transform-origin: bottom right;
+}
+
+.cashier-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-align: left;
+  transition: all var(--transition-fast);
+  width: 100%;
+}
+
+.cashier-dropdown-item:hover {
+  background-color: var(--bg-hover);
+  color: var(--brand-primary);
+}
+
+.cashier-dropdown-item.text-danger {
+  color: #DC2626;
+}
+
+.cashier-dropdown-item.text-danger:hover {
+  background-color: #FEE2E2;
+}
+
+.cashier-dropdown-divider {
+  height: 1px;
+  background-color: var(--border-subtle);
+  margin: 4px 0;
+}
+
+/* Empty Table */
+.cashier-empty-row {
+  text-align: center;
+  padding: 48px 24px !important;
+}
+
+.cashier-empty-icon {
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.cashier-empty-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.cashier-empty-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* Table Footer */
+.cashier-table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border-subtle);
+  background-color: #FAF7F2;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cashier-pagination-info {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.cashier-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cashier-pagination-btn {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-medium);
+  transition: all var(--transition-fast);
+}
+
+.cashier-pagination-btn:hover:not(:disabled) {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.cashier-pagination-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background-color: transparent;
+}
+
+.cashier-pagination-btn.page-number.active {
+  background-color: #1E1713;
+  color: #FFFFFF;
+  border-color: #1E1713;
+}
+
+/* --------------------------------------------------------------------------
+   6. Bottom Security & Audit Cards (2 Columns)
+   -------------------------------------------------------------------------- */
+.cashier-footer-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.cashier-security-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 18px 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.security-card-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-protocol {
+  background-color: #FDF2E8;
+  color: #C2672B;
+}
+
+.icon-audit {
+  background-color: #EFECE6;
+  color: #5C5349;
+}
+
+.security-card-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.security-card-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.security-card-desc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* --------------------------------------------------------------------------
+   7. Modal & Form Styling
+   -------------------------------------------------------------------------- */
+.cashier-modal-card {
+  width: 520px;
+  max-width: 95vw;
+  background-color: #FFFFFF;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  overflow: hidden;
+}
+
+.modal-title-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.modal-icon-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #F5ECE2;
+  color: #8C5E3C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modal-sub {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.modal-body-form {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-row-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.form-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.text-required {
+  color: #DC2626;
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-field-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 10px 14px 10px 36px;
+  background-color: #FAF7F2;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
+}
+
+.form-input:focus,
+.form-select:focus {
+  background-color: #FFFFFF;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(140, 94, 60, 0.1);
+}
+
+.form-input.input-error {
+  border-color: #DC2626;
+  background-color: #FFF5F5;
+}
+
+.error-text {
+  font-size: 0.72rem;
+  color: #DC2626;
+  font-weight: 600;
+}
+
+/* Role Selection Grid */
+.role-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.role-card-option {
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  background-color: #FAF7F2;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+.role-card-option input {
+  display: none;
+}
+
+.role-card-option:hover {
+  border-color: var(--brand-border);
+  background-color: #F8F3EC;
+}
+
+.role-card-option.selected {
+  border-color: var(--brand-primary);
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 2px rgba(140, 94, 60, 0.15);
+}
+
+.role-option-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.role-option-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-kasir {
+  background-color: #E0F2FE;
+  color: #0369A1;
+}
+
+.icon-admin {
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+
+.icon-super-admin {
+  background-color: #F3E8FF;
+  color: #7E22CE;
+}
+
+.role-option-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.role-option-desc {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+  margin: 0;
+}
+
+.status-radio-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.status-radio-card {
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  background-color: #FAF7F2;
+  transition: all var(--transition-fast);
+}
+
+.status-radio-card input {
+  display: none;
+}
+
+.status-radio-card.selected {
+  border-color: var(--brand-primary);
+  background-color: #F8F3EC;
+}
+
+.radio-dot-green,
+.radio-dot-red {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.radio-dot-green { background-color: #22C55E; }
+.radio-dot-red { background-color: #DC2626; }
+
+.radio-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.radio-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.radio-desc {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.btn-modal-cancel {
+  padding: 9px 18px;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background-color: #FFFFFF;
+  transition: all var(--transition-fast);
+}
+
+.btn-modal-cancel:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.btn-modal-submit {
+  padding: 9px 20px;
+  background-color: #1E1713;
+  color: #FFFFFF;
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition: all var(--transition-fast);
+}
+
+.btn-modal-submit:hover {
+  background-color: #382A22;
+}
+
+/* --------------------------------------------------------------------------
+   8. Responsive Breakpoints
+   -------------------------------------------------------------------------- */
+@media (max-width: 1100px) {
+  .cashier-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cashier-footer-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .cashiers-page-container {
+    padding: 16px;
+  }
+
+  .cashier-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cashier-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cashier-search-box {
+    max-width: 100%;
+  }
+
+  .cashier-tabs-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .form-row-two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .role-selection-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .status-radio-group {
+    grid-template-columns: 1fr;
+  }
+}

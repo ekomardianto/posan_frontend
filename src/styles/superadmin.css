@@ -1,0 +1,458 @@
+/* ==========================================================================
+   POSAN SUPER ADMIN - MULTI-TENANT BACKOFFICE STYLES
+   ========================================================================== */
+
+.superadmin-app-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #0F172A;
+  color: #F8FAFC;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* Super Admin Sidebar */
+.superadmin-sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, #0B1120 0%, #0F172A 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 50;
+  padding: 20px 16px;
+}
+
+.superadmin-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px 20px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 18px;
+}
+
+.superadmin-brand-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+  flex-shrink: 0;
+}
+
+.superadmin-brand-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.superadmin-badge-super {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: rgba(217, 119, 6, 0.2);
+  color: #FBBF24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-top: 3px;
+}
+
+.superadmin-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.superadmin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #94A3B8;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.superadmin-nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #F8FAFC;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.superadmin-nav-item.active {
+  background: linear-gradient(135deg, rgba(217, 119, 6, 0.22) 0%, rgba(180, 83, 9, 0.12) 100%);
+  color: #FBBF24;
+  border-color: rgba(245, 158, 11, 0.35);
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.superadmin-sidebar-footer {
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.superadmin-user-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+}
+
+.superadmin-user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #1E293B;
+  color: #F59E0B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.8rem;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.btn-superadmin-logout {
+  background: none;
+  border: none;
+  color: #94A3B8;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-superadmin-logout:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #EF4444;
+}
+
+/* Super Admin Main Content */
+.superadmin-main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: #0F172A;
+}
+
+.superadmin-header {
+  height: 68px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.superadmin-header-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #F8FAFC;
+  letter-spacing: -0.01em;
+}
+
+.superadmin-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.superadmin-page-container {
+  padding: 28px 32px 48px 32px;
+  max-width: 1400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Hero Banner Card */
+.superadmin-hero-card {
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  flex-wrap: wrap;
+}
+
+.superadmin-hero-left h1 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.02em;
+}
+
+.superadmin-hero-left p {
+  font-size: 0.82rem;
+  color: #94A3B8;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Stats Cards Grid */
+.superadmin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.superadmin-stat-card {
+  background: #1E293B;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.superadmin-stat-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.superadmin-stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.superadmin-stat-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94A3B8;
+}
+
+.superadmin-stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #F8FAFC;
+  line-height: 1.1;
+}
+
+.superadmin-stat-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.superadmin-stat-icon-circle.amber {
+  background: rgba(245, 158, 11, 0.15);
+  color: #F59E0B;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.superadmin-stat-icon-circle.blue {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3B82F6;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.superadmin-stat-icon-circle.emerald {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.superadmin-stat-icon-circle.purple {
+  background: rgba(168, 85, 247, 0.15);
+  color: #A855F7;
+  border: 1px solid rgba(168, 85, 247, 0.25);
+}
+
+/* Card Section */
+.superadmin-card {
+  background: #1E293B;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.superadmin-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.superadmin-card-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #F8FAFC;
+}
+
+.superadmin-card-subtitle {
+  font-size: 0.78rem;
+  color: #94A3B8;
+  margin-top: 2px;
+}
+
+/* Primary Super Admin Button */
+.btn-superadmin-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  color: #FFFFFF;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(217, 119, 6, 0.35);
+}
+
+.btn-superadmin-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.45);
+}
+
+.btn-superadmin-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Super Admin Table */
+.superadmin-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+}
+
+.superadmin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.8rem;
+}
+
+.superadmin-table th {
+  background: #0F172A;
+  color: #94A3B8;
+  padding: 12px 16px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.superadmin-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: #E2E8F0;
+  vertical-align: middle;
+}
+
+.superadmin-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Status Badges */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.badge-status.active {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge-status.inactive {
+  background: rgba(239, 68, 68, 0.15);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .superadmin-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .superadmin-app-container {
+    flex-direction: column;
+  }
+  .superadmin-sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+  }
+  .superadmin-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .superadmin-page-container {
+    padding: 16px;
+  }
+}
