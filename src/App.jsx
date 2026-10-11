@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
 import LoginPage from './screens/auth/LoginPage.jsx';
 
@@ -30,21 +30,29 @@ import SuperAdminProducts from './screens/superadmin/Products.jsx';
 import SuperAdminOrders from './screens/superadmin/Orders.jsx';
 import SuperAdminTransactions from './screens/superadmin/Transactions.jsx';
 
-import LoadingPage from './components/ui/LoadingPage.jsx';
 import { LoadingProvider } from './context/LoadingContext.jsx';
 import { AlertProvider } from './context/AlertContext.jsx';
+import { NavigationProgressProvider, useProgressRouter, useNavigationProgress } from './context/NavigationProgressContext.jsx';
 
 // Loading Spinner Screen
 function LoadingScreen() {
-  return (
-    <LoadingPage
-      title="Memuat Sesi POSAN Cloud..."
-    />
-  );
+  return null;
+}
+
+function AuthProgressBridge() {
+  const { isLoading } = useAuth();
+  const { startNavigation, finishNavigation } = useNavigationProgress();
+
+  useEffect(() => {
+    if (isLoading) startNavigation();
+    else finishNavigation();
+  }, [isLoading, startNavigation, finishNavigation]);
+
+  return null;
 }
 
 function ClientRedirect({ to }) {
-  const router = useRouter();
+  const router = useProgressRouter();
 
   useEffect(() => {
     router.replace(to);
@@ -89,12 +97,22 @@ function ProtectedRoute({ children, allowedRoles }) {
 // Admin Café Layout Container (Khusus Admin Outlet)
 function AdminPortalLayout() {
   const [adminNav, setAdminNav] = useState('dashboard');
+  const { startNavigation, finishNavigation } = useNavigationProgress();
+
+  useEffect(() => {
+    finishNavigation();
+  }, [adminNav, finishNavigation]);
+
+  const handleSelectNav = (nextNav) => {
+    if (nextNav !== adminNav) startNavigation();
+    setAdminNav(nextNav);
+  };
 
   const renderAdminContent = () => {
     switch (adminNav) {
       case 'dashboard':
       case 'beranda':
-        return <AdminDashboard onNavigate={setAdminNav} />;
+        return <AdminDashboard onNavigate={handleSelectNav} />;
       case 'produk':
       case 'products':
         return <ProductsPage />;
@@ -135,9 +153,9 @@ function AdminPortalLayout() {
 
   return (
     <div className="app-container">
-      <Sidebar activeNav={adminNav} onSelectNav={setAdminNav} />
+      <Sidebar activeNav={adminNav} onSelectNav={handleSelectNav} />
       <div className="main-wrapper">
-        <Header onSelectNav={setAdminNav} />
+        <Header onSelectNav={handleSelectNav} />
         {renderAdminContent()}
       </div>
     </div>
@@ -227,12 +245,15 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <LoadingProvider>
-        <AlertProvider>
-          <AppRoutes />
-        </AlertProvider>
-      </LoadingProvider>
-    </AuthProvider>
+    <NavigationProgressProvider>
+      <AuthProvider>
+        <AuthProgressBridge />
+        <LoadingProvider>
+          <AlertProvider>
+            <AppRoutes />
+          </AlertProvider>
+        </LoadingProvider>
+      </AuthProvider>
+    </NavigationProgressProvider>
   );
 }

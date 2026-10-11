@@ -690,10 +690,19 @@ export default function PaymentMethod() {
 
       {/* 3. Content: Card Grid View or Table View */}
       {loading && methods.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200/70 p-12 text-center flex flex-col items-center justify-center gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-          <p className="text-sm font-semibold text-slate-700">Mengambil data metode pembayaran dari database...</p>
-        </div>
+        viewMode === 'grid' ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" aria-label="Memuat metode pembayaran">
+            {Array.from({ length: 3 }, (_, index) => (
+              <div key={index} className="bg-white rounded-2xl border border-slate-200/70 p-5 space-y-4 animate-pulse" aria-hidden="true">
+                <div className="flex justify-between"><div className="w-11 h-11 rounded-2xl bg-slate-100" /><div className="w-16 h-6 rounded-full bg-slate-100" /></div>
+                <div className="space-y-2"><div className="h-4 w-2/3 rounded bg-slate-100" /><div className="h-3 w-1/3 rounded bg-slate-100" /><div className="h-3 w-full rounded bg-slate-100" /></div>
+                <div className="border-t border-slate-100 pt-4"><div className="h-3 w-1/4 rounded bg-slate-100" /></div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <Table columns={columns} data={[]} isLoading />
+        )
       ) : filteredMethods.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-200/70 p-12 text-center flex flex-col items-center justify-center gap-2">
           <AlertTriangle className="w-8 h-8 text-amber-500" />

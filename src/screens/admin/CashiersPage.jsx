@@ -234,6 +234,7 @@ export default function CashiersPage() {
       {/* 4. Cashier Table */}
       <CashierTable
         cashiers={filteredCashiers}
+        isLoading={isLoading}
         onEditCashier={handleOpenEditModal}
         onToggleStatus={handleToggleStatus}
         onDeleteCashier={(cashier) => setDeletingCashier(cashier)}

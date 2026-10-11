@@ -507,16 +507,11 @@ export default function Transactions() {
       </div>
 
       {/* 3. Table of Transactions */}
-      {loading && transactions.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200/70 p-12 text-center flex flex-col items-center justify-center gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-          <p className="text-sm font-semibold text-slate-700">Mengambil data transaksi dari database...</p>
-        </div>
-      ) : (
-        <Table
+      <Table
           columns={columns}
           data={paginatedData}
           keyField="id"
+          isLoading={loading}
           onRowClick={handleOpenDetail}
           emptyMessage="Belum ada transaksi ditemukan di database."
           emptySubtext="Transaksi yang diproses oleh kasir akan otomatis muncul di sini."
@@ -528,7 +523,6 @@ export default function Transactions() {
             onPageChange: setCurrentPage,
           }}
         />
-      )}
 
       {/* Modal: Detail Transaksi & Item Pengerjaan */}
       <Modal
@@ -545,9 +539,17 @@ export default function Transactions() {
         }
       >
         {detailLoading ? (
-          <div className="p-8 text-center flex flex-col items-center justify-center gap-2 text-slate-400">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-            <span className="text-xs">Memuat detail item pesanan...</span>
+          <div className="space-y-4 animate-pulse" aria-label="Memuat detail transaksi">
+            <div className="rounded-xl border border-slate-200/70 bg-slate-50 p-4 space-y-3">
+              <div className="h-3 w-24 rounded bg-slate-200" />
+              <div className="h-5 w-40 rounded bg-slate-200" />
+            </div>
+            {Array.from({ length: 3 }, (_, index) => (
+              <div key={index} className="flex items-center justify-between border-b border-slate-100 py-3" aria-hidden="true">
+                <div className="space-y-2"><div className="h-3 w-36 rounded bg-slate-100" /><div className="h-3 w-24 rounded bg-slate-100" /></div>
+                <div className="h-4 w-16 rounded bg-slate-100" />
+              </div>
+            ))}
           </div>
         ) : selectedTransaction ? (
           <div className="space-y-4">

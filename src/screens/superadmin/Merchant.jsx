@@ -6,7 +6,6 @@ import {
   UserRound,
   Utensils,
   Receipt,
-  Loader2,
   RefreshCw,
   AlertTriangle,
   Building2,
@@ -220,20 +219,14 @@ export default function Merchant() {
       </div>
 
       {/* 3. Table */}
-      {loading && merchants.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200/70 p-12 text-center flex flex-col items-center justify-center gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-          <p className="text-sm font-semibold text-slate-700">Mengambil data dari database...</p>
-        </div>
-      ) : (
-        <Table
+      <Table
           columns={columns}
           data={filteredMerchants}
           keyField="id"
+          isLoading={loading}
           onRowClick={handleOpenDetail}
           emptyMessage="Tidak ada data gerai ditemukan."
         />
-      )}
 
       {/* Modal: Detail Kafe */}
       <Modal

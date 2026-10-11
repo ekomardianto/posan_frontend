@@ -649,16 +649,12 @@ export default function Products() {
       </div>
 
       {/* Table Content */}
-      {loading ? (
-        <div className="bg-white rounded-2xl border border-slate-200/70 p-12 text-center flex flex-col items-center justify-center gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-          <p className="text-sm font-semibold text-slate-700">Mengambil data dari database...</p>
-        </div>
-      ) : activeTab === 'products' ? (
+      {activeTab === 'products' ? (
         <Table
           columns={productColumns}
           data={paginatedProducts}
           keyField="id"
+          isLoading={loading}
           emptyMessage="Tidak ada produk ditemukan di database."
           emptySubtext="Klik tombol Tambah Produk untuk menambahkan menu baru."
           pagination={{
@@ -674,6 +670,7 @@ export default function Products() {
           columns={categoryColumns}
           data={filteredCategories}
           keyField="id"
+          isLoading={loading}
           emptyMessage="Tidak ada kategori ditemukan di database."
           emptySubtext="Klik tombol Tambah Kategori untuk menambahkan kategori menu baru."
         />

@@ -1,11 +1,11 @@
 import React from 'react';
-import { useRouter } from 'next/navigation';
-import { ArrowRight, Users, UserRound, Utensils, Loader2 } from 'lucide-react';
+import { useProgressRouter } from '../../context/NavigationProgressContext';
+import { ArrowRight, Users, UserRound, Utensils } from 'lucide-react';
 import Badge from '../ui/Badge';
 import Button from '../ui/Button';
 
 export default function MerchantOverview({ merchants = [], loading = false }) {
-  const router = useRouter();
+  const router = useProgressRouter();
 
   return (
     <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200/70 shadow-sm flex flex-col">
@@ -37,9 +37,15 @@ export default function MerchantOverview({ merchants = [], loading = false }) {
       {/* Table Container with Horizontal Scroll */}
       <div className="overflow-x-auto">
         {loading && merchants.length === 0 ? (
-          <div className="p-8 text-center flex flex-col items-center justify-center gap-2 text-slate-400">
-            <Loader2 className="w-6 h-6 animate-spin text-brand-600" />
-            <span className="text-xs">Memuat data dari database...</span>
+          <div className="p-5 sm:p-6 space-y-4" aria-label="Memuat data gerai">
+            {Array.from({ length: 3 }, (_, index) => (
+              <div key={index} className="flex items-center gap-4 animate-pulse" aria-hidden="true">
+                <div className="w-9 h-9 rounded-xl bg-slate-100 shrink-0" />
+                <div className="flex-1 space-y-2"><div className="h-3 w-1/3 rounded bg-slate-100" /><div className="h-3 w-1/2 rounded bg-slate-100" /></div>
+                <div className="hidden sm:block h-6 w-16 rounded-lg bg-slate-100" />
+                <div className="hidden md:block h-6 w-20 rounded-lg bg-slate-100" />
+              </div>
+            ))}
           </div>
         ) : merchants.length === 0 ? (
           <div className="p-8 text-center text-slate-400 text-xs">

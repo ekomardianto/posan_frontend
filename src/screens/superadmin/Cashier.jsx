@@ -501,16 +501,11 @@ export default function Cashier() {
       </div>
 
       {/* 3. Table of Cashiers */}
-      {loading && cashiers.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200/70 p-12 text-center flex flex-col items-center justify-center gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-          <p className="text-sm font-semibold text-slate-700">Mengambil data staf dari database...</p>
-        </div>
-      ) : (
-        <Table
+      <Table
           columns={columns}
           data={paginatedData}
           keyField="id"
+          isLoading={loading}
           onRowClick={handleOpenDetail}
           emptyMessage="Tidak ada staf ditemukan di database."
           emptySubtext="Silakan periksa filter atau kata kunci pencarian Anda."
@@ -522,7 +517,6 @@ export default function Cashier() {
             onPageChange: setCurrentPage,
           }}
         />
-      )}
 
       {/* Modal: Tambah Staf Baru */}
       <Modal

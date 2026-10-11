@@ -14,10 +14,11 @@ import {
 } from 'lucide-react';
 import posanLogo from '../../assets/posan-logo.jpg';
 import { useAuth } from '../../context/AuthContext.jsx';
-import LoadingPage from '../../components/ui/LoadingPage.jsx';
+import { useNavigationProgress } from '../../context/NavigationProgressContext.jsx';
 
 export default function LoginPage() {
   const { login } = useAuth();
+  const { startNavigation, finishNavigation } = useNavigationProgress();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,7 +26,6 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(true);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingText, setLoadingText] = useState('Memverifikasi Sesi Admin...');
   const [errorMsg, setErrorMsg] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
 
@@ -40,14 +40,14 @@ export default function LoginPage() {
     }
 
     setIsLoading(true);
-    setLoadingText('Memverifikasi Kredensial Database...');
+    startNavigation();
     try {
       const res = await login(email, password, rememberMe);
       if (res && res.success) {
-        setLoadingText(`Selamat datang, ${res.user.name}! Mengalihkan ke Dashboard...`);
         setSuccessMsg(`Selamat datang, ${res.user.name} (${res.user.role})! Masuk ke sistem...`);
       } else {
         setIsLoading(false);
+        finishNavigation();
         setErrorMsg(
           res?.error ||
           res?.message ||
@@ -56,18 +56,13 @@ export default function LoginPage() {
       }
     } catch (err) {
       setIsLoading(false);
+      finishNavigation();
       setErrorMsg(err.message || 'Gagal masuk. Silakan periksa kembali email dan password Anda.');
     }
   };
 
   return (
     <>
-      {isLoading && (
-        <LoadingPage
-          title={loadingText}
-          fullScreen={true}
-        />
-      )}
       <div className="auth-page-wrapper">
       <div className="auth-container">
         {/* LEFT COLUMN: Brand Showcase */}

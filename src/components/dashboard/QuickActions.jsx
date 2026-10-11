@@ -1,10 +1,10 @@
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { useProgressRouter } from '../../context/NavigationProgressContext';
 import { CreditCard, Users, Sparkles, ReceiptText, Store, PlusCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export default function QuickActions({ onAddUser }) {
-  const router = useRouter();
+  const router = useProgressRouter();
   const { role } = useAuth();
   const isSuperAdmin = role === 'super_admin';
 

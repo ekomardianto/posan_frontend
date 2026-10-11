@@ -16,7 +16,8 @@ export default function TransactionTable({
   currentPage = 1,
   pageSize = 6,
   totalCount = 124,
-  onPageChange
+  onPageChange,
+  isLoading = false,
 }) {
   const renderPaymentBadge = (method) => {
     switch (method.toLowerCase()) {
@@ -118,7 +119,15 @@ export default function TransactionTable({
             </tr>
           </thead>
           <tbody>
-            {transactions.map((trx) => {
+            {isLoading ? Array.from({ length: pageSize }, (_, rowIndex) => (
+              <tr key={`transaction-skeleton-${rowIndex}`} aria-hidden="true">
+                {Array.from({ length: 6 }, (_, cellIndex) => (
+                  <td key={cellIndex}>
+                    <div className="h-3 my-3 rounded bg-slate-100 animate-pulse" style={{ width: `${45 + ((rowIndex + cellIndex) % 4) * 12}%` }} />
+                  </td>
+                ))}
+              </tr>
+            )) : transactions.map((trx) => {
               const isSelected = selectedTransactionId === trx.id;
 
               return (
@@ -185,7 +194,7 @@ export default function TransactionTable({
               );
             })}
 
-            {transactions.length === 0 && (
+            {!isLoading && transactions.length === 0 && (
               <tr>
                 <td colSpan="6" className="trx-empty-state">
                   <Receipt size={32} className="trx-empty-icon" />

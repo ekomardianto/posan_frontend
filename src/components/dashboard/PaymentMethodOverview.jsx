@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useProgressRouter } from '../../context/NavigationProgressContext';
 import {
   CreditCard,
   Banknote,
@@ -7,8 +7,7 @@ import {
   Smartphone,
   Building2,
   Clock,
-  ArrowRight,
-  Loader2
+  ArrowRight
 } from 'lucide-react';
 import Badge from '../ui/Badge';
 import Button from '../ui/Button';
@@ -25,7 +24,7 @@ const iconLookup = {
 };
 
 export default function PaymentMethodOverview({ onDataChange }) {
-  const router = useRouter();
+  const router = useProgressRouter();
   const alert = useAlert();
   const [methods, setMethods] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -95,9 +94,14 @@ export default function PaymentMethodOverview({ onDataChange }) {
         {/* List of Payment Methods */}
         <div className="mt-4 space-y-3">
           {loading && methods.length === 0 ? (
-            <div className="p-6 text-center flex flex-col items-center justify-center gap-2 text-slate-400">
-              <Loader2 className="w-5 h-5 animate-spin text-brand-600" />
-              <span className="text-xs">Memuat data metode pembayaran...</span>
+            <div className="space-y-3" aria-label="Memuat metode pembayaran">
+              {Array.from({ length: 4 }, (_, index) => (
+                <div key={index} className="flex items-center gap-3 p-3 rounded-xl border border-slate-100 animate-pulse" aria-hidden="true">
+                  <div className="w-9 h-9 rounded-xl bg-slate-100 shrink-0" />
+                  <div className="flex-1 space-y-2"><div className="h-3 w-1/2 rounded bg-slate-100" /><div className="h-3 w-1/3 rounded bg-slate-100" /></div>
+                  <div className="w-12 h-5 rounded-full bg-slate-100" />
+                </div>
+              ))}
             </div>
           ) : (
             methods.slice(0, 5).map((method) => {

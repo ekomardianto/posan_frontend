@@ -1,5 +1,6 @@
 import '../src/index.css'
 import '../src/styles/auth.css'
+import PosanApplication from './PosanApplication'
 
 export const metadata = {
   title: 'POSAN Admin',
@@ -9,7 +10,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="id">
-      <body>{children}</body>
+      <body>
+        <PosanApplication />
+        {children}
+      </body>
     </html>
   )
 }

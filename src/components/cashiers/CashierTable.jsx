@@ -8,7 +8,8 @@ export default function CashierTable({
   onDeleteCashier,
   currentPage = 1,
   totalCashiers = 1,
-  onPageChange
+  onPageChange,
+  isLoading = false,
 }) {
   const [activeMenuId, setActiveMenuId] = useState(null);
 
@@ -40,7 +41,15 @@ export default function CashierTable({
             </tr>
           </thead>
           <tbody>
-            {cashiers.map((cashier, index) => {
+            {isLoading ? Array.from({ length: 5 }, (_, rowIndex) => (
+              <tr key={`cashier-skeleton-${rowIndex}`} aria-hidden="true">
+                {Array.from({ length: 7 }, (_, cellIndex) => (
+                  <td key={cellIndex}>
+                    <div className="h-3 my-3 rounded bg-stone-200 animate-pulse" style={{ width: `${45 + ((rowIndex + cellIndex) % 4) * 12}%` }} />
+                  </td>
+                ))}
+              </tr>
+            )) : cashiers.map((cashier, index) => {
               const isMenuOpen = activeMenuId === cashier.id;
               const isNearBottom = index > 0 && index >= cashiers.length - 2;
 

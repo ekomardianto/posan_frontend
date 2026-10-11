@@ -589,20 +589,14 @@ export default function StationOrderBoard({
 
       {/* 5. Orders Grid List */}
       {loading && orders.length === 0 ? (
-        <div style={{
-          background: '#FFFFFF',
-          borderRadius: '18px',
-          padding: '60px 20px',
-          textAlign: 'center',
-          border: '1px solid rgba(212, 163, 115, 0.2)'
-        }}>
-          <Loader2 size={36} className="spin-icon" color="#8C5E3C" style={{ margin: '0 auto 12px' }} />
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-            Memuat Daftar Pesanan Stasiun...
-          </h3>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.86rem' }}>
-            Mengambil data transaksi pesanan langsung dari server backend.
-          </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" aria-label="Memuat daftar pesanan">
+          {Array.from({ length: 6 }, (_, index) => (
+            <div key={index} className="bg-white rounded-2xl border border-stone-200 p-5 space-y-4 animate-pulse" aria-hidden="true">
+              <div className="flex justify-between"><div className="h-4 w-1/3 rounded bg-stone-100" /><div className="h-6 w-20 rounded-full bg-stone-100" /></div>
+              <div className="space-y-2"><div className="h-3 w-full rounded bg-stone-100" /><div className="h-3 w-2/3 rounded bg-stone-100" /></div>
+              <div className="h-10 w-full rounded-xl bg-stone-100" />
+            </div>
+          ))}
         </div>
       ) : filteredOrders.length === 0 ? (
         <div style={{

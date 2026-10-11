@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { useProgressRouter } from '../../context/NavigationProgressContext';
 import {
   Users as UsersIcon,
   Shield,
@@ -84,7 +85,7 @@ export default function Users() {
   const canManageUsers = role === 'admin';
 
   const pathname = usePathname();
-  const router = useRouter();
+  const router = useProgressRouter();
   const roleTab = pathname.split('/').filter(Boolean).at(-1);
 
   // Determine active tab from URL: /superadmin/users/:roleTab
@@ -725,10 +726,7 @@ export default function Users() {
 
         {/* User Table */}
         {loading ? (
-          <div className="py-16 flex flex-col items-center justify-center text-slate-400 space-y-3">
-            <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-            <p className="text-xs font-semibold">Memuat data pengguna dari database...</p>
-          </div>
+          <Table columns={columns} data={[]} isLoading />
         ) : filteredUsers.length === 0 ? (
           <div className="py-16 text-center text-slate-400 space-y-3">
             <currentTab.icon className="w-10 h-10 mx-auto text-slate-300" />

@@ -312,6 +312,7 @@ export default function TransactionsPage() {
         <div className={`trx-table-column ${!isDetailOpen ? 'full-width' : ''}`}>
           <TransactionTable
             transactions={paginatedTransactions}
+            isLoading={isLoading}
             selectedTransactionId={isDetailOpen ? activeTransaction?.id : null}
             onSelectTransaction={handleSelectTransaction}
             currentPage={currentPage}

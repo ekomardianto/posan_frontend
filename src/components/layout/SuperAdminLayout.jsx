@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { useProgressRouter } from '../../context/NavigationProgressContext';
 import { useAuth } from '../../context/AuthContext';
 import Sidebar from './SuperAdminSidebar';
 import Topbar from './SuperAdminTopbar';
@@ -28,7 +29,7 @@ export default function SuperAdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
+  const router = useProgressRouter();
   const { logout } = useAuth();
 
   // Compute title with prefix matching for dynamic user/order sub-routes

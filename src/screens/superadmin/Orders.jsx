@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { useProgressRouter } from '../../context/NavigationProgressContext';
 import {
   Coffee,
   ChefHat,
@@ -28,7 +29,7 @@ import Select from '../../components/ui/Select';
 export default function Orders() {
   const { role } = useAuth();
   const pathname = usePathname();
-  const router = useRouter();
+  const router = useProgressRouter();
   const stationType = pathname.split('/').filter(Boolean).at(-1);
 
   // Determine active station: 'barista' | 'kitchen'
@@ -324,11 +325,14 @@ export default function Orders() {
 
       {/* 4. Orders Grid Cards */}
       {loading && orders.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200/70 p-16 text-center flex flex-col items-center justify-center gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-          <p className="text-sm font-semibold text-slate-700">
-            Mengambil antrean tiket pesanan {stationTitle}...
-          </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" aria-label={`Memuat antrean ${stationTitle}`}>
+          {Array.from({ length: 6 }, (_, index) => (
+            <div key={index} className="bg-white rounded-2xl border border-slate-200/70 p-5 space-y-4 animate-pulse" aria-hidden="true">
+              <div className="flex justify-between"><div className="h-4 w-1/3 rounded bg-slate-100" /><div className="h-6 w-20 rounded-full bg-slate-100" /></div>
+              <div className="space-y-2"><div className="h-3 w-full rounded bg-slate-100" /><div className="h-3 w-2/3 rounded bg-slate-100" /></div>
+              <div className="h-10 w-full rounded-xl bg-slate-100" />
+            </div>
+          ))}
         </div>
       ) : filteredOrders.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-200/70 p-16 text-center flex flex-col items-center justify-center gap-3">

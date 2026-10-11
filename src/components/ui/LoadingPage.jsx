@@ -9,26 +9,23 @@ import { RefreshCw } from 'lucide-react';
 export default function LoadingPage({
   title = 'Memuat aplikasi...',
   fullScreen = true,
+  progress = 90,
 }) {
   return (
-    <>
+    <div
+      className={`${fullScreen ? 'fixed top-0 left-0 z-[9999]' : 'relative'} h-1 w-full overflow-hidden pointer-events-none`}
+      role="progressbar"
+      aria-label={title}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.min(100, Math.max(0, progress))}
+      aria-live="polite"
+    >
       <div
-        className={`${fullScreen ? 'fixed top-0 left-0 z-[9999]' : 'relative'} h-1 w-full overflow-hidden pointer-events-none`}
-        role="progressbar"
-        aria-label={title}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-live="polite"
-      >
-        <div className="h-full w-[35%] rounded-full bg-[#D4A373]" style={{ animation: 'posanProgress 1.4s ease-in-out infinite' }} />
-      </div>
-      <style>{`
-        @keyframes posanProgress {
-          0% { transform: translateX(-110%); }
-          100% { transform: translateX(300%); }
-        }
-      `}</style>
-    </>
+        className="h-full rounded-r-full bg-[#D4A373] transition-[width] duration-300 ease-out"
+        style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+      />
+    </div>
   );
 }
 

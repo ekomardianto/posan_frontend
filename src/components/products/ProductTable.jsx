@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MoreVertical, Edit2, Power, Trash2, ChevronLeft, ChevronRight, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { MoreVertical, Edit2, Power, Trash2, ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
 
 export default function ProductTable({
   products = [],
@@ -55,14 +55,15 @@ export default function ProductTable({
           </thead>
           <tbody>
             {isLoading ? (
-              <tr>
-                <td colSpan="6" style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem' }}>
-                    <Loader2 size={20} className="animate-spin" />
-                    <span>Memuat data produk dari database...</span>
-                  </div>
-                </td>
-              </tr>
+              Array.from({ length: 5 }, (_, rowIndex) => (
+                <tr key={`product-skeleton-${rowIndex}`} aria-hidden="true">
+                  {Array.from({ length: 6 }, (_, cellIndex) => (
+                    <td key={cellIndex}>
+                      <div className="h-3 my-3 rounded bg-stone-200 animate-pulse" style={{ width: `${45 + ((rowIndex + cellIndex) % 4) * 12}%` }} />
+                    </td>
+                  ))}
+                </tr>
+              ))
             ) : products.length === 0 ? (
               <tr>
                 <td colSpan="6" style={{ textAlign: 'center', padding: '36px', color: 'var(--text-muted)' }}>

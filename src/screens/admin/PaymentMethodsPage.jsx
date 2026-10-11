@@ -374,7 +374,15 @@ export default function PaymentMethodsPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredMethods.map((method) => {
+              {isLoading ? Array.from({ length: 5 }, (_, rowIndex) => (
+                <tr key={`payment-method-skeleton-${rowIndex}`} aria-hidden="true">
+                  {Array.from({ length: 5 }, (_, cellIndex) => (
+                    <td key={cellIndex}>
+                      <div className="h-3 my-4 rounded bg-stone-200 animate-pulse" style={{ width: `${45 + ((rowIndex + cellIndex) % 4) * 12}%` }} />
+                    </td>
+                  ))}
+                </tr>
+              )) : filteredMethods.map((method) => {
                 const isMethodActive = Boolean(method.is_active);
                 return (
                   <tr key={method.id} className="cashier-table-row">

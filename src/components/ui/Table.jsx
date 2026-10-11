@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronLeft, ChevronRight, Inbox, Loader2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Inbox } from 'lucide-react';
 import Button from './Button';
 
 export default function Table({
@@ -36,14 +36,17 @@ export default function Table({
           {/* Body */}
           <tbody className="divide-y divide-slate-100">
             {isLoading ? (
-              <tr>
-                <td colSpan={columns.length} className="py-12 text-center">
-                  <div className="flex flex-col items-center justify-center gap-2 text-slate-400">
-                    <Loader2 className="w-6 h-6 animate-spin text-brand-600" />
-                    <p className="text-xs font-medium text-slate-600">Memuat data...</p>
-                  </div>
-                </td>
-              </tr>
+              Array.from({ length: 5 }, (_, rowIndex) => (
+                <tr key={`skeleton-${rowIndex}`} aria-hidden="true">
+                  {columns.map((column, columnIndex) => (
+                    <td key={column.key || columnIndex} className="py-4 px-4 sm:px-5">
+                      <div
+                        className={`h-3 rounded bg-slate-100 animate-pulse ${columnIndex === 0 ? 'w-3/4' : 'w-1/2'}`}
+                      />
+                    </td>
+                  ))}
+                </tr>
+              ))
             ) : data.length === 0 ? (
               <tr>
                 <td colSpan={columns.length} className="py-12 text-center">

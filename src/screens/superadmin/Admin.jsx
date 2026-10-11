@@ -455,16 +455,11 @@ export default function Admin() {
       </div>
 
       {/* 3. Table of Admins */}
-      {loading && admins.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200/70 p-12 text-center flex flex-col items-center justify-center gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-          <p className="text-sm font-semibold text-slate-700">Mengambil akun admin dari database...</p>
-        </div>
-      ) : (
-        <Table
+      <Table
           columns={columns}
           data={paginatedData}
           keyField="id"
+          isLoading={loading}
           emptyMessage="Tidak ada akun Admin ditemukan di database."
           emptySubtext="Coba ubah kata kunci pencarian atau filter status Anda."
           pagination={{
@@ -475,7 +470,6 @@ export default function Admin() {
             onPageChange: setCurrentPage,
           }}
         />
-      )}
 
       {/* Modal: Tambah Admin */}
       <Modal

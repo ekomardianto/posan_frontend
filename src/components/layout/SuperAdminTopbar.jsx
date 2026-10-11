@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useProgressRouter } from '../../context/NavigationProgressContext';
 import { useAuth } from '../../context/AuthContext';
 import {
   Menu,
@@ -16,7 +16,7 @@ import {
 import { dashboardService } from '../../services/dashboardService';
 
 export default function Topbar({ onToggleSidebar, title = 'Dashboard', onLogoutClick }) {
-  const router = useRouter();
+  const router = useProgressRouter();
   const { user } = useAuth();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);

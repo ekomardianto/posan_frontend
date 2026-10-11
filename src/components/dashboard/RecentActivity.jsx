@@ -5,8 +5,7 @@ import {
   UserPlus,
   CreditCard,
   UserRound,
-  ShieldCheck,
-  Loader2
+  ShieldCheck
 } from 'lucide-react';
 
 const typeIcons = {
@@ -47,9 +46,16 @@ export default function RecentActivity({ activities = [], loading = false }) {
       {/* Timeline List */}
       <div className="mt-4 relative">
         {loading && activities.length === 0 ? (
-          <div className="p-6 text-center flex flex-col items-center justify-center gap-2 text-slate-400">
-            <Loader2 className="w-5 h-5 animate-spin text-brand-600" />
-            <span className="text-xs">Memuat aktivitas dari database...</span>
+          <div className="space-y-4 py-2" aria-label="Memuat aktivitas">
+            {Array.from({ length: 4 }, (_, index) => (
+              <div key={index} className="flex items-start gap-3 animate-pulse" aria-hidden="true">
+                <div className="w-8 h-8 rounded-xl bg-slate-100 shrink-0" />
+                <div className="flex-1 space-y-2 pt-1">
+                  <div className="h-3 w-2/3 rounded bg-slate-100" />
+                  <div className="h-3 w-full rounded bg-slate-100" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : activities.length === 0 ? (
           <div className="p-6 text-center text-slate-400 text-xs">
