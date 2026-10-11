@@ -11,27 +11,28 @@ permissions:
 
 concurrency:
   group: deploy-posan-frontend-staging
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
     name: Build and deploy to staging
     runs-on: ubuntu-latest
     environment: staging
-    env:
-      APP_ENV_CONTENT: ${{ secrets.APP_ENV_CONTENT }}
-      SSH_HOST: ${{ secrets.SSH_HOST }}
-      SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
-      SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
-      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
-      TS_OAUTH_CLIENT_ID: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-      TS_OAUTH_SECRET: ${{ secrets.TS_OAUTH_SECRET }}
+    timeout-minutes: 40
 
     steps:
       - name: Check out source
         uses: actions/checkout@v4
 
       - name: Validate deployment settings
+        env:
+          APP_ENV_CONTENT: ${{ secrets.APP_ENV_CONTENT }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          TS_OAUTH_CLIENT_ID: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          TS_OAUTH_SECRET: ${{ secrets.TS_OAUTH_SECRET }}
         run: |
           set -euo pipefail
           test -n "$APP_ENV_CONTENT"
@@ -43,6 +44,8 @@ jobs:
           test -n "$TS_OAUTH_SECRET"
 
       - name: Build frontend image
+        env:
+          APP_ENV_CONTENT: ${{ secrets.APP_ENV_CONTENT }}
         run: |
           set -euo pipefail
           VITE_ENV_FILE=$(mktemp)
@@ -77,6 +80,7 @@ jobs:
           PY
           VITE_ENV_CACHEBUST=$(sha256sum "$VITE_ENV_FILE" | cut -d ' ' -f 1)
           docker build \
+            --pull \
             --secret "id=vite_env,src=$VITE_ENV_FILE" \
             --build-arg "VITE_ENV_CACHEBUST=$VITE_ENV_CACHEBUST" \
             --tag posan-frontend:staging \
@@ -89,12 +93,26 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
+          ping: ${{ secrets.SSH_HOST }}
+
+      - name: Install SSH tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
 
       - name: Transfer image and deploy over SSH
         env:
           SSHPASS: ${{ secrets.SSH_PASSWORD }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        shell: bash
         run: |
           set -euo pipefail
+          test -n "$SSHPASS"
+          test -n "$SSH_HOST"
+          test -n "$SSH_USERNAME"
+          test -n "$SSH_KNOWN_HOSTS"
           install -d -m 700 ~/.ssh
           printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
@@ -108,6 +126,10 @@ jobs:
             /tmp/posan-frontend-image.tar.gz \
             "${SSH_USERNAME}@${SSH_HOST}:/opt/posan-frontend/frontend-image.tar.gz"
 
+          sshpass -e scp -o StrictHostKeyChecking=yes \
+            docker-compose.yml \
+            "${SSH_USERNAME}@${SSH_HOST}:/opt/posan-frontend/docker-compose.yml"
+
           sshpass -e ssh -o StrictHostKeyChecking=yes \
             -o ServerAliveInterval=30 \
             "${SSH_USERNAME}@${SSH_HOST}" 'bash -se' <<'REMOTE'
@@ -115,12 +137,13 @@ jobs:
           cd /opt/posan-frontend
           trap 'rm -f frontend-image.tar.gz' EXIT
 
+          if ! docker info >/dev/null 2>&1; then
+            echo "Docker tidak dapat diakses oleh user SSH ${USER}. Beri user ini akses Docker lalu jalankan ulang deploy." >&2
+            exit 1
+          fi
+
           gzip -dc frontend-image.tar.gz | docker load
           docker stop posan-frontend-staging || true
           docker rm posan-frontend-staging || true
-          docker run -d \
-            --name posan-frontend-staging \
-            --network host \
-            --restart unless-stopped \
-            posan-frontend:staging
+          docker compose up -d --force-recreate
           REMOTE

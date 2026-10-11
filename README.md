@@ -2,7 +2,7 @@
 
 ## Deploy staging
 
-Workflow `.github/workflows/deploy.yml` builds a static frontend image and deploys it to the server when `staging` is updated, or when started manually from GitHub Actions. The container uses host networking and listens on port `3000`.
+Workflow `.github/workflows/deploy.yml` builds the frontend image and deploys it with Docker Compose when `staging` is updated, or when started manually from GitHub Actions. The frontend listens on port `3011` on the server by default. Set `FRONTEND_PORT` in the server environment to change the host port.
 
 Create a GitHub Actions environment named `staging`, then configure:
 

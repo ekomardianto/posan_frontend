@@ -1,0 +1,7 @@
+services:
+  app:
+    image: posan-frontend:staging
+    container_name: posan-frontend-staging
+    ports:
+      - "${FRONTEND_PORT:-3011}:3011"
+    restart: unless-stopped
