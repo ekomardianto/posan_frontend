@@ -6,7 +6,7 @@ export default function PaymentMethodDonut({ paymentData = {} }) {
     subtitle = 'Proporsi pembayaran transaksi',
     dominantMethod = { name: '-', percentage: 0 },
     methods = [],
-    cloudStatus = 'Database PostgreSQL POSAN',
+    cloudStatus = 'database POSAN',
     lastUpdate = 'Update: Realtime Live Sync'
   } = paymentData || {};
 

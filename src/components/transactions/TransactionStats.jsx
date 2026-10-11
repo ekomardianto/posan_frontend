@@ -16,7 +16,7 @@ export default function TransactionStats({ stats }) {
             <span className="trx-stat-unit">{dailyVolume?.unit || 'Tiket'}</span>
           </div>
           <span className="trx-stat-subtext text-positive">
-            {dailyVolume?.comparisonText || 'Realtime PostgreSQL Sync'}
+            {dailyVolume?.comparisonText || 'Sinkronisasi database realtime'}
           </span>
         </div>
         <div className="trx-stat-icon-wrapper">

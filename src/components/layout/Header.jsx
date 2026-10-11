@@ -44,7 +44,7 @@ export default function Header({ onSelectNav }) {
           <span>Panel Operasional</span>
         </nav>
 
-        <div className="branch-chip" title="Merchant terhubung ke PostgreSQL posan_db">
+        <div className="branch-chip" title="Merchant terhubung ke database">
           <Building2 size={13} strokeWidth={2} />
           <span>{branchName}</span>
         </div>
@@ -55,7 +55,7 @@ export default function Header({ onSelectNav }) {
         <div className="system-time-box">
           <div className="system-time-header">
             <span className="time-live-dot pulse-indicator" />
-            <span className="time-label">PostgreSQL Live Sync</span>
+            <span className="time-label">Sinkronisasi database aktif</span>
           </div>
           <span className="time-val">{currentTime}</span>
         </div>

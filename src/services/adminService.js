@@ -1,7 +1,7 @@
 import { userService } from './userService';
 
 export const adminService = {
-  // Fetch all admin users from PostgreSQL
+  // Fetch all admin users from database
   async getAdmins() {
     try {
       const users = await userService.getUsers();

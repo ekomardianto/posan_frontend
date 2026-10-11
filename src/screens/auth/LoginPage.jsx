@@ -65,8 +65,6 @@ export default function LoginPage() {
       {isLoading && (
         <LoadingPage
           title={loadingText}
-          message="Menghubungkan ke PostgreSQL Cloud posan_db & memverifikasi akun..."
-          tip="Aplikasi POS Mobile & Web Admin terintegrasi realtime."
           fullScreen={true}
         />
       )}
@@ -89,7 +87,7 @@ export default function LoginPage() {
           <div className="auth-pitch-content">
             <div className="auth-live-badge">
               <span className="time-live-dot pulse-indicator" style={{ backgroundColor: '#4ADE80' }} />
-              <span>PostgreSQL Cloud POS Connected</span>
+              <span>Database terhubung</span>
             </div>
 
             <h2 className="auth-pitch-title">
@@ -97,7 +95,7 @@ export default function LoginPage() {
             </h2>
 
             <p className="auth-pitch-desc">
-              Kelola katalog menu artisan, monitor riwayat pesanan real-time dari mesin kasir, dan pantau performa omzet harian dengan aman di database PostgreSQL posan_db.
+              Kelola katalog menu artisan, monitor riwayat pesanan real-time dari mesin kasir, dan pantau performa omzet harian dengan aman di database.
             </p>
 
             {/* Feature Highlights */}
@@ -118,7 +116,7 @@ export default function LoginPage() {
                 </div>
                 <div className="auth-feature-text">
                   <h4>Katalog Menu &amp; Kategori Langsung</h4>
-                  <p>Tambah, ubah harga, dan hapus menu langsung tersimpan ke PostgreSQL.</p>
+                  <p>Tambah, ubah harga, dan hapus menu langsung tersimpan ke database.</p>
                 </div>
               </div>
 
@@ -147,7 +145,7 @@ export default function LoginPage() {
             <div className="auth-card-header">
               <h2 className="auth-card-title">Masuk ke Backoffice</h2>
               <p className="auth-card-desc">
-                Masukkan email dan kata sandi akun yang terdaftar di database PostgreSQL.
+                Masukkan email dan kata sandi akun yang terdaftar di database.
               </p>
             </div>
 

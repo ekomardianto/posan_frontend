@@ -277,7 +277,7 @@ export default function ProfilePage() {
     setIsSaving(true);
 
     try {
-      // 1. Update user profile in PostgreSQL via Backend API
+      // 1. Update user profile in database via Backend API
       await updateUserProfile({
         name: profile.name.trim(),
         phone: profile.phone ? profile.phone.trim() : null,
@@ -311,7 +311,7 @@ export default function ProfilePage() {
 
       showToast(
         'Profil Berhasil Diperbarui',
-        'Data profil pengelola outlet, jadwal shift, dan jam operasional telah tersimpan di PostgreSQL posan_db.'
+        'Data profil pengelola outlet, jadwal shift, dan jam operasional telah tersimpan di database.'
       );
     } catch (err) {
       console.error('Save profile error:', err);
@@ -339,7 +339,7 @@ export default function ProfilePage() {
         await changeUserPassword(currentPassword, newPassword);
       }
 
-      // Update auth_pin in PostgreSQL database
+      // Update auth_pin in database
       if (profile.authPin) {
         await updateUserProfile({
           name: profile.name.trim(),
@@ -355,7 +355,7 @@ export default function ProfilePage() {
       setConfirmPassword('');
       showToast(
         'Keamanan Diperbarui',
-        'Password dan PIN otorisasi supervisor berhasil diperbarui di database PostgreSQL posan_db.'
+        'Password dan PIN otorisasi supervisor berhasil diperbarui di database.'
       );
     } catch (err) {
       showToast('Gagal Memperbarui Keamanan', err.message || 'Gagal mengubah keamanan di database.', 'error');
@@ -366,7 +366,7 @@ export default function ProfilePage() {
 
   const handleReset = () => {
     loadDataFromDatabase();
-    showToast('Data Direset', 'Formulir profil telah disinkronkan kembali dari database PostgreSQL posan_db.');
+    showToast('Data Direset', 'Formulir profil telah disinkronkan kembali dari database.');
   };
 
 
@@ -401,7 +401,7 @@ export default function ProfilePage() {
             <span>&bull;</span>
             <span className="profile-active-tag">
               <span className="profile-active-dot pulse-indicator" />
-              <span>PostgreSQL posan_db Live</span>
+              <span>Database aktif</span>
             </span>
           </div>
           <h1 className="profile-page-title">Profil Admin Café</h1>
@@ -481,7 +481,7 @@ export default function ProfilePage() {
                   <span className="quick-stat-label">STATUS SESI</span>
                   <span className="quick-stat-val text-status-online">
                     <span className="stat-dot-green" />
-                    <span>PostgreSQL Live</span>
+                    <span>Database aktif</span>
                   </span>
                 </div>
                 <div className="quick-stat-item">

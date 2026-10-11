@@ -57,7 +57,7 @@ export default function Cashier() {
     status: 'Active',
   });
 
-  // Load live data from PostgreSQL
+  // Load live data from database
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
@@ -66,7 +66,7 @@ export default function Cashier() {
       setCashiers(cashiersData);
     } catch (err) {
       console.error('Error loading cashiers page data:', err);
-      setErrorMessage(err.message || 'Gagal memuat data staf dari database PostgreSQL.');
+      setErrorMessage(err.message || 'Gagal memuat data staf dari database.');
     } finally {
       setLoading(false);
     }
@@ -150,7 +150,7 @@ export default function Cashier() {
     setIsDeleteModalOpen(true);
   };
 
-  // Save New Staff to PostgreSQL
+  // Save New Staff to database
   const handleAddSubmit = async (e) => {
     if (e) e.preventDefault();
     if (!formData.name.trim() || !formData.email.trim() || submitting) return;
@@ -168,7 +168,7 @@ export default function Cashier() {
     }
   };
 
-  // Save Edit to PostgreSQL
+  // Save Edit to database
   const handleEditSubmit = async (e) => {
     if (e) e.preventDefault();
     if (!selectedCashier || submitting) return;
@@ -186,7 +186,7 @@ export default function Cashier() {
     }
   };
 
-  // Confirm Toggle Status in PostgreSQL
+  // Confirm Toggle Status in database
   const handleToggleStatus = async () => {
     if (!selectedCashier || submitting) return;
 
@@ -203,7 +203,7 @@ export default function Cashier() {
     }
   };
 
-  // Confirm Delete Staff in PostgreSQL
+  // Confirm Delete Staff in database
   const handleDeleteSubmit = async () => {
     if (!selectedCashier || submitting) return;
 
@@ -400,7 +400,7 @@ export default function Cashier() {
             Kasir & Staf Operasional
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Daftar petugas Kasir POS, Barista, dan Kitchen Chef di database PostgreSQL <code className="font-mono text-slate-700 bg-slate-100 px-1 py-0.5 rounded">posan_db</code>.
+            Daftar petugas Kasir POS, Barista, dan Kitchen Chef yang terdaftar di sistem.
           </p>
         </div>
 
@@ -504,7 +504,7 @@ export default function Cashier() {
       {loading && cashiers.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-200/70 p-12 text-center flex flex-col items-center justify-center gap-3">
           <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-          <p className="text-sm font-semibold text-slate-700">Mengambil data staf dari database PostgreSQL...</p>
+          <p className="text-sm font-semibold text-slate-700">Mengambil data staf dari database...</p>
         </div>
       ) : (
         <Table
@@ -512,7 +512,7 @@ export default function Cashier() {
           data={paginatedData}
           keyField="id"
           onRowClick={handleOpenDetail}
-          emptyMessage="Tidak ada staf ditemukan di database PostgreSQL."
+          emptyMessage="Tidak ada staf ditemukan di database."
           emptySubtext="Silakan periksa filter atau kata kunci pencarian Anda."
           pagination={{
             currentPage,
@@ -529,7 +529,7 @@ export default function Cashier() {
         isOpen={isAddModalOpen}
         onClose={() => !submitting && setIsAddModalOpen(false)}
         title="Tambah Akun Staf Baru"
-        description="Daftarkan akun staf baru ke database PostgreSQL posan_db."
+        description="Daftarkan akun staf baru ke database."
         icon={Plus}
         size="md"
         footer={
@@ -618,7 +618,7 @@ export default function Cashier() {
         isOpen={isEditModalOpen}
         onClose={() => !submitting && setIsEditModalOpen(false)}
         title={`Edit Data Staf - ${selectedCashier?.name}`}
-        description="Perbarui informasi akun, role, atau ubah kata sandi di database PostgreSQL."
+        description="Perbarui informasi akun, role, atau ubah kata sandi di database."
         icon={Edit2}
         size="md"
         footer={
@@ -745,7 +745,7 @@ export default function Cashier() {
                   Alamat Email
                 </span>
                 <p className="font-semibold text-slate-800 font-mono">{selectedCashier.email}</p>
-                <p className="text-slate-400 text-[11px]">Database: posan_db</p>
+                <p className="text-slate-400 text-[11px]">Database terhubung</p>
               </div>
 
               <div className="p-3 bg-white border border-slate-200 rounded-xl space-y-1">
@@ -766,7 +766,7 @@ export default function Cashier() {
                   </p>
                   <p className="text-emerald-600 font-semibold flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>PostgreSQL Sync: Terhubung</span>
+                    <span>Sinkronisasi database aktif</span>
                   </p>
                 </div>
               </div>
@@ -821,7 +821,7 @@ export default function Cashier() {
         isOpen={isDeleteModalOpen}
         onClose={() => !submitting && setIsDeleteModalOpen(false)}
         title="Hapus Akun Staf?"
-        description={`Akun staf "${selectedCashier?.name}" (${selectedCashier?.email}) akan dihapus dari tabel users PostgreSQL.`}
+        description={`Akun staf "${selectedCashier?.name}" (${selectedCashier?.email}) akan dihapus dari tabel users database.`}
         icon={Trash2}
         size="sm"
         footer={

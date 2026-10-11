@@ -61,7 +61,7 @@ export default function PaymentMethodsPage() {
       const data = await fetchPaymentMethods();
       setMethods(data || []);
       if (showSyncToast) {
-        showToast('Sinkronisasi Sukses', 'Daftar metode pembayaran telah diperbarui dari database PostgreSQL.');
+        showToast('Sinkronisasi Sukses', 'Daftar metode pembayaran telah diperbarui dari database.');
       }
     } catch (err) {
       console.error('Error loading payment methods:', err);
@@ -251,7 +251,7 @@ export default function PaymentMethodsPage() {
           </div>
           <h1 className="categories-page-title">Metode Pembayaran</h1>
           <p className="categories-page-subtitle">
-            Kelola pilihan pembayaran kasir (QRIS Dinamis, Tunai/Cash, Transfer Bank) yang tersinkronisasi di database PostgreSQL.
+            Kelola pilihan pembayaran kasir (QRIS Dinamis, Tunai/Cash, Transfer Bank) yang tersinkronisasi di database.
           </p>
         </div>
 

@@ -83,7 +83,7 @@ export const defaultAdminProfile = {
   branch: 'Cabang Sudirman',
   city: 'Pekanbaru',
   fullLocation: 'Cabang Sudirman, Pekanbaru',
-  syncStatus: 'Database PostgreSQL posan_db Terkoneksi',
+  syncStatus: 'database Terkoneksi',
   isSynced: true,
   lastUpdated: '1 menit yang lalu',
   systemTime: 'Hari ini',
@@ -93,19 +93,19 @@ export const defaultAdminProfile = {
 
 export const securityProtocolInfo = {
   title: 'Protokol Keamanan Staf',
-  description: 'Setiap akun staf (Kasir, Barista, Kitchen) memiliki kredensial resmi pada database PostgreSQL posan_db. Penggantian PIN & password disarankan berkala minimal 30 hari.'
+  description: 'Setiap akun staf (Kasir, Barista, Kitchen) memiliki kredensial resmi pada database. Penggantian PIN & password disarankan berkala minimal 30 hari.'
 };
 
 export const lastAuditInfo = {
   title: 'Audit Keamanan & Sesi',
-  description: 'Otentikasi terhubung langsung dengan Database PostgreSQL posan_db via Express Backend.'
+  description: 'Otentikasi terhubung langsung dengan database via Express Backend.'
 };
 
 export const initialNotifications = [
   {
     id: 'notif-1',
     title: 'Sistem Terhubung',
-    message: 'Database PostgreSQL posan_db aktif & tersinkronisasi.',
+    message: 'database aktif & tersinkronisasi.',
     time: 'Baru saja',
     isRead: false,
     type: 'system'

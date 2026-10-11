@@ -39,8 +39,6 @@ function LoadingScreen() {
   return (
     <LoadingPage
       title="Memuat Sesi POSAN Cloud..."
-      message="Menghubungkan ke PostgreSQL Cloud posan_db & menyinkronkan data..."
-      tip="Aplikasi POS Mobile & Web Admin terintegrasi realtime."
     />
   );
 }

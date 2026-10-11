@@ -52,7 +52,7 @@ export default function Profile() {
     }
   }, [profile, user]);
 
-  // Load live activity logs from PostgreSQL
+  // Load live activity logs from database
   const loadLogs = useCallback(async () => {
     try {
       const logs = await dashboardService.getRecentActivities();
@@ -95,7 +95,7 @@ export default function Profile() {
       });
 
       if (refreshProfile) await refreshProfile();
-      triggerToast('Informasi profil Super Admin berhasil disimpan ke database PostgreSQL!');
+      triggerToast('Informasi profil Super Admin berhasil disimpan ke database!');
     } catch (err) {
       setErrorMessage(err.message || 'Gagal memperbarui profil.');
     } finally {
@@ -129,7 +129,7 @@ export default function Profile() {
       });
 
       setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
-      triggerToast('Kata sandi Super Admin berhasil diperbarui di PostgreSQL!');
+      triggerToast('Kata sandi Super Admin berhasil diperbarui di database!');
     } catch (err) {
       setErrorMessage(err.message || 'Gagal mengubah kata sandi.');
     } finally {
@@ -179,7 +179,7 @@ export default function Profile() {
               </span>
               <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
                 <ShieldCheck className="w-3 h-3" />
-                PostgreSQL Connected
+                Database terhubung
               </span>
             </div>
 
@@ -191,7 +191,7 @@ export default function Profile() {
               <span>•</span>
               <span className="font-mono text-slate-400">ID: #{profile?.id || user?.id || '3'}</span>
               <span>•</span>
-              <span className="text-emerald-600 font-medium font-mono">posan_db</span>
+              <span className="text-emerald-600 font-medium">Database terhubung</span>
             </p>
           </div>
         </div>
@@ -263,7 +263,7 @@ export default function Profile() {
           }`}
         >
           <History className="w-4 h-4" />
-          <span>Log Aktivitas PostgreSQL</span>
+          <span>Log Aktivitas database</span>
         </button>
 
         <button
@@ -290,7 +290,7 @@ export default function Profile() {
               <div>
                 <h3 className="text-base font-bold text-slate-900">Profil Super Admin</h3>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  Informasi akun master administrator di database PostgreSQL <code className="font-mono">posan_db</code>
+                  Informasi akun master administrator.
                 </p>
               </div>
               <span className="text-xs font-semibold px-2.5 py-1 bg-amber-50 text-amber-800 border border-amber-200 rounded-lg">
@@ -361,10 +361,10 @@ export default function Profile() {
               <div className="space-y-3 text-xs">
                 <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/60 space-y-1">
                   <span className="text-slate-400 font-semibold uppercase text-[10px]">
-                    Host & Port Database
+                    Status Layanan
                   </span>
-                  <p className="font-bold text-slate-900 font-mono">localhost:2517 (posan_db)</p>
-                  <p className="text-slate-500">Node.js Express Backend di Port 3000</p>
+                  <p className="font-bold text-emerald-700">Database terhubung</p>
+                  <p className="text-slate-500">Layanan aplikasi aktif.</p>
                 </div>
 
                 <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/60 space-y-1">
@@ -381,7 +381,7 @@ export default function Profile() {
                   </span>
                   <p className="font-bold text-slate-900 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>PostgreSQL Pool Active</span>
+                    <span>Koneksi database aktif</span>
                   </p>
                 </div>
               </div>
@@ -463,7 +463,7 @@ export default function Profile() {
                 disabled={loading}
                 className="w-full"
               >
-                {loading ? 'Menyimpan Kata Sandi...' : 'Perbarui Kata Sandi di PostgreSQL'}
+                {loading ? 'Menyimpan Kata Sandi...' : 'Perbarui kata sandi'}
               </Button>
             </div>
           </form>
@@ -477,7 +477,7 @@ export default function Profile() {
             <div>
               <h3 className="text-base font-bold text-slate-900">Log Aktivitas & Audit Database</h3>
               <p className="text-xs text-slate-400 mt-0.5">
-                Catatan aktivitas terkini dari transaksi penjualan dan pengelolaan akun di database PostgreSQL
+                Catatan aktivitas terkini dari transaksi penjualan dan pengelolaan akun di database
               </p>
             </div>
             <span className="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-700 rounded-lg">
@@ -541,11 +541,11 @@ export default function Profile() {
 
             <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200/60 flex items-center justify-between">
               <div>
-                <p className="font-bold text-slate-800">Database Name</p>
-                <p className="text-slate-500 font-mono text-[11px]">posan_db (Port 2517)</p>
+                <p className="font-bold text-slate-800">Layanan Database</p>
+                <p className="text-slate-500 font-mono text-[11px]">Database terhubung</p>
               </div>
               <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2 py-1 rounded-lg border border-blue-200">
-                POSTGRESQL
+                AKTIF
               </span>
             </div>
           </div>

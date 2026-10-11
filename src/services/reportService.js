@@ -93,7 +93,7 @@ export async function fetchReportData(periodId = 'thisMonth', cashier = 'all', m
         formattedValue: `${totalTransactions}`,
         changeText: '+100%',
         isPositive: true,
-        comparisonText: 'Data Live PostgreSQL',
+        comparisonText: 'Data Live database',
         iconType: 'receipt',
       },
       totalSales: {
@@ -102,7 +102,7 @@ export async function fetchReportData(periodId = 'thisMonth', cashier = 'all', m
         formattedValue: `Rp${totalSales.toLocaleString('id-ID')}`,
         changeText: '+100%',
         isPositive: true,
-        comparisonText: 'Data Live PostgreSQL',
+        comparisonText: 'Data Live database',
         iconType: 'wallet',
       },
       productsSold: {
@@ -112,7 +112,7 @@ export async function fetchReportData(periodId = 'thisMonth', cashier = 'all', m
         formattedValue: `${totalItems}`,
         changeText: '+100%',
         isPositive: true,
-        comparisonText: 'Data Live PostgreSQL',
+        comparisonText: 'Data Live database',
         iconType: 'coffee',
       },
       averageTransaction: {
@@ -121,7 +121,7 @@ export async function fetchReportData(periodId = 'thisMonth', cashier = 'all', m
         formattedValue: `Rp${avgTrx.toLocaleString('id-ID')}`,
         changeText: '+100%',
         isPositive: true,
-        comparisonText: 'Data Live PostgreSQL',
+        comparisonText: 'Data Live database',
         iconType: 'chart',
       },
     };

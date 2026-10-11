@@ -52,7 +52,7 @@ export default function Admin() {
     status: 'Active',
   });
 
-  // Load data from PostgreSQL
+  // Load data from database
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
@@ -143,7 +143,7 @@ export default function Admin() {
     setIsDeleteModalOpen(true);
   };
 
-  // Save New Admin to PostgreSQL
+  // Save New Admin to database
   const handleAddSubmit = async (e) => {
     if (e) e.preventDefault();
     if (!formData.name.trim() || !formData.email.trim() || submitting) return;
@@ -161,7 +161,7 @@ export default function Admin() {
     }
   };
 
-  // Save Edit Admin to PostgreSQL
+  // Save Edit Admin to database
   const handleEditSubmit = async (e) => {
     if (e) e.preventDefault();
     if (!selectedAdmin || submitting) return;
@@ -179,7 +179,7 @@ export default function Admin() {
     }
   };
 
-  // Confirm Toggle Status in PostgreSQL
+  // Confirm Toggle Status in database
   const handleToggleStatus = async () => {
     if (!selectedAdmin || submitting) return;
 
@@ -196,7 +196,7 @@ export default function Admin() {
     }
   };
 
-  // Confirm Delete Admin from PostgreSQL
+  // Confirm Delete Admin from database
   const handleDeleteSubmit = async () => {
     if (!selectedAdmin || submitting) return;
 
@@ -280,7 +280,7 @@ export default function Admin() {
             {val}
           </span>
           <p className="text-[10px] text-slate-400 mt-0.5">
-            {row.provisionMethod || 'PostgreSQL posan_db'}
+            {row.provisionMethod || 'database'}
           </p>
         </div>
       ),
@@ -360,7 +360,7 @@ export default function Admin() {
             Manajemen Admin Kafe
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Daftar akun Administrator dan Super Admin terdaftar di tabel PostgreSQL <code className="font-mono text-slate-700 bg-slate-100 px-1 py-0.5 rounded">users</code>.
+            Daftar akun Administrator dan Super Admin terdaftar di tabel database <code className="font-mono text-slate-700 bg-slate-100 px-1 py-0.5 rounded">users</code>.
           </p>
         </div>
 
@@ -458,14 +458,14 @@ export default function Admin() {
       {loading && admins.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-200/70 p-12 text-center flex flex-col items-center justify-center gap-3">
           <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-          <p className="text-sm font-semibold text-slate-700">Mengambil akun admin dari database PostgreSQL...</p>
+          <p className="text-sm font-semibold text-slate-700">Mengambil akun admin dari database...</p>
         </div>
       ) : (
         <Table
           columns={columns}
           data={paginatedData}
           keyField="id"
-          emptyMessage="Tidak ada akun Admin ditemukan di database PostgreSQL."
+          emptyMessage="Tidak ada akun Admin ditemukan di database."
           emptySubtext="Coba ubah kata kunci pencarian atau filter status Anda."
           pagination={{
             currentPage,
@@ -482,7 +482,7 @@ export default function Admin() {
         isOpen={isAddModalOpen}
         onClose={() => !submitting && setIsAddModalOpen(false)}
         title="Tambah Akun Admin Baru"
-        description="Buat akun administrator baru di database PostgreSQL posan_db."
+        description="Buat akun administrator baru di database."
         icon={Users}
         size="md"
         footer={
@@ -502,7 +502,7 @@ export default function Admin() {
               icon={submitting ? Loader2 : null}
               onClick={handleAddSubmit}
             >
-              {submitting ? 'Menyimpan...' : 'Simpan Admin ke PostgreSQL'}
+              {submitting ? 'Menyimpan...' : 'Simpan admin'}
             </Button>
           </>
         }
@@ -570,7 +570,7 @@ export default function Admin() {
         isOpen={isEditModalOpen}
         onClose={() => !submitting && setIsEditModalOpen(false)}
         title={`Edit Akun Admin - ${selectedAdmin?.name}`}
-        description="Perbarui informasi akun admin atau ubah kata sandi di database PostgreSQL."
+        description="Perbarui informasi akun admin atau ubah kata sandi di database."
         icon={Edit2}
         size="md"
         footer={
@@ -696,7 +696,7 @@ export default function Admin() {
         isOpen={isDeleteModalOpen}
         onClose={() => !submitting && setIsDeleteModalOpen(false)}
         title="Hapus Akun Admin?"
-        description={`Akun "${selectedAdmin?.name}" (${selectedAdmin?.email}) akan dihapus dari tabel users PostgreSQL.`}
+        description={`Akun "${selectedAdmin?.name}" (${selectedAdmin?.email}) akan dihapus dari tabel users database.`}
         icon={Trash2}
         size="sm"
         footer={

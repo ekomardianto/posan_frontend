@@ -109,7 +109,7 @@ export default function SuperAdminMerchants() {
       });
       showFeedback(
         'Kafe Berhasil Dibuat',
-        `Outlet baru "${formData.name}" dan akun adminnya telah aktif di database PostgreSQL.`
+        `Outlet baru "${formData.name}" dan akun adminnya telah aktif di database.`
       );
     } catch (err) {
       showFeedback('Gagal Membuat Kafe', err.message, 'error');

@@ -40,7 +40,7 @@ export default function SuperAdminHeader({ activeNav }) {
 
         <div className="superadmin-header-badge">
           <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#10B981', display: 'inline-block' }} />
-          <span>PostgreSQL Online</span>
+          <span>Database aktif</span>
         </div>
       </div>
     </header>

@@ -1,7 +1,7 @@
 import { apiRequest } from './apiClient';
 
 export const userService = {
-  // GET /api/users: Fetch all users from PostgreSQL, optionally filtered by role
+  // GET /api/users: Fetch all users from database, optionally filtered by role
   async getUsers(role = null) {
     const endpoint = role ? `/users?role=${encodeURIComponent(role)}` : '/users';
     const data = await apiRequest(endpoint, { method: 'GET' });

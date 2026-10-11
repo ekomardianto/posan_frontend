@@ -39,7 +39,7 @@ export default function ProductsPage() {
     }, 4000);
   };
 
-  // Load data from Express Backend (PostgreSQL) on mount
+  // Load data from Express Backend (database) on mount
   const loadData = async (showSyncToast = false) => {
     if (showSyncToast) setIsSyncing(true);
     else setIsLoading(true);
@@ -62,7 +62,7 @@ export default function ProductsPage() {
       }
 
       if (showSyncToast) {
-        showToast('Sinkronisasi Sukses', 'Katalog produk dan kategori telah disinkronkan dengan database PostgreSQL.');
+        showToast('Sinkronisasi Sukses', 'Katalog produk dan kategori telah disinkronkan dengan database.');
       }
     } catch (err) {
       console.error('Error loading products:', err);
@@ -120,7 +120,7 @@ export default function ProductsPage() {
         const res = await updateProduct(targetId, productData);
         if (res?.success) {
           await loadData();
-          showToast('Produk Diperbarui', `Menu "${productData.name}" berhasil diperbarui di database PostgreSQL.`);
+          showToast('Produk Diperbarui', `Menu "${productData.name}" berhasil diperbarui di database.`);
           setIsDrawerOpen(false);
           setEditingProduct(null);
         } else {
@@ -130,7 +130,7 @@ export default function ProductsPage() {
         const res = await createProduct(productData);
         if (res?.success) {
           await loadData();
-          showToast('Produk Ditambahkan', `Menu baru "${productData.name}" tersimpan di database PostgreSQL.`);
+          showToast('Produk Ditambahkan', `Menu baru "${productData.name}" tersimpan di database.`);
           setIsDrawerOpen(false);
           setEditingProduct(null);
         } else {
@@ -168,7 +168,7 @@ export default function ProductsPage() {
       const res = await deleteProduct(targetId);
       if (res?.success) {
         await loadData();
-        showToast('Produk Dihapus', `Menu "${target?.name || ''}" telah dihapus dari database PostgreSQL.`);
+        showToast('Produk Dihapus', `Menu "${target?.name || ''}" telah dihapus dari database.`);
       } else {
         showToast('Gagal Menghapus', res?.error || 'Gagal menghapus produk dari database.', 'error');
       }
@@ -221,7 +221,7 @@ export default function ProductsPage() {
           </div>
           <h1 className="products-page-title">Katalog Menu &amp; Produk</h1>
           <p className="products-page-subtitle">
-            Kelola daftar menu minuman dan makanan kafe Anda yang tersinkronisasi langsung dengan database PostgreSQL.
+            Kelola daftar menu minuman dan makanan kafe Anda yang tersinkronisasi langsung dengan database.
           </p>
         </div>
 
@@ -231,7 +231,7 @@ export default function ProductsPage() {
             className="btn-export-csv"
             onClick={() => loadData(true)}
             disabled={isSyncing}
-            title="Sinkronkan dengan Database PostgreSQL"
+            title="Sinkronkan dengan database"
           >
             <RefreshCw size={14} className={isSyncing ? 'spin-icon' : ''} />
             <span>{isSyncing ? 'Menyinkronkan...' : 'Sinkronisasi'}</span>
@@ -311,7 +311,7 @@ export default function ProductsPage() {
         onClose={() => setIsImportModalOpen(false)}
         onSuccess={(count) => {
           loadData(true);
-          showToast('Import Berhasil', `${count} produk baru berhasil diimpor dan disimpan ke database PostgreSQL.`);
+          showToast('Import Berhasil', `${count} produk baru berhasil diimpor dan disimpan ke database.`);
         }}
         categories={categories}
       />

@@ -10,13 +10,13 @@ import { subscribeToTransactions } from '../../services/transactionService';
 
 const initialDashboardState = {
   summary: {
-    todaySales: { label: 'PENJUALAN HARI INI', value: 0, formattedValue: 'Rp 0', trend: '0%', isPositive: true, comparisonText: 'Database Live PostgreSQL', icon: 'cash-register' },
-    totalTransactions: { label: 'TOTAL TRANSAKSI', value: 0, formattedValue: '0', trend: '0', isPositive: true, comparisonText: 'pesanan tercatat di PostgreSQL', icon: 'receipt' },
+    todaySales: { label: 'PENJUALAN HARI INI', value: 0, formattedValue: 'Rp 0', trend: '0%', isPositive: true, comparisonText: 'Database live', icon: 'cash-register' },
+    totalTransactions: { label: 'TOTAL TRANSAKSI', value: 0, formattedValue: '0', trend: '0', isPositive: true, comparisonText: 'pesanan tercatat di database', icon: 'receipt' },
     productsSold: { label: 'PRODUK TERJUAL', value: 0, unit: 'item', formattedValue: '0', categoryHighlight: 'Menu Aktif', highlightText: 'tercatat dari kasir', icon: 'coffee' },
-    averageOrder: { label: 'RATA-RATA PESANAN', value: 0, formattedValue: 'Rp 0', trend: '0%', isPositive: true, comparisonText: 'Database live posan_db', icon: 'trending-up' },
+    averageOrder: { label: 'RATA-RATA PESANAN', value: 0, formattedValue: 'Rp 0', trend: '0%', isPositive: true, comparisonText: 'Database live', icon: 'trending-up' },
   },
   chartData: [],
-  chartMeta: { title: 'Tren Penjualan Harian', tag: 'Live PostgreSQL', subtitle: 'Distribusi pergerakan omzet', legend: [], footerNote: 'Data bersumber langsung dari database PostgreSQL posan_db.', serviceHours: 'Operasional Aktif' },
+  chartMeta: { title: 'Tren Penjualan Harian', tag: 'Live database', subtitle: 'Distribusi pergerakan omzet', legend: [], footerNote: 'Data bersumber langsung dari database.', serviceHours: 'Operasional Aktif' },
   paymentData: { title: 'Metode Pembayaran', subtitle: 'Proporsi pembayaran transaksi', dominantMethod: { label: 'Terbanyak', name: '-', percentage: 0 }, methods: [] },
   recentTransactions: [],
 };
@@ -49,7 +49,7 @@ export default function AdminDashboard({ onNavigate }) {
       if (showSyncToast) {
         showToast(
           'Data Dashboard Disinkronkan',
-          'Metrik penjualan dan pesanan berhasil diperbarui secara realtime dari database PostgreSQL posan_db.'
+          'Metrik penjualan dan pesanan berhasil diperbarui secara realtime dari database.'
         );
       }
     } catch (err) {

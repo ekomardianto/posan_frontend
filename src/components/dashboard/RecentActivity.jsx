@@ -41,7 +41,7 @@ export default function RecentActivity({ activities = [], loading = false }) {
           <Clock className="w-4 h-4 text-slate-400" />
           <h2 className="text-base sm:text-lg font-bold text-slate-900">Aktivitas Terkini</h2>
         </div>
-        <span className="text-[11px] font-semibold text-slate-400">PostgreSQL Events</span>
+        <span className="text-[11px] font-semibold text-slate-400">Aktivitas database</span>
       </div>
 
       {/* Timeline List */}

@@ -115,7 +115,7 @@ export async function fetchDashboardData(period = 'today', range = null) {
           formattedValue: `Rp ${todaySales.toLocaleString('id-ID')}`,
           trend: todaySales > 0 ? '+100%' : '0%',
           isPositive: true,
-          comparisonText: 'Database Live PostgreSQL',
+          comparisonText: 'Database live',
           icon: 'Banknote',
         },
         totalTransactions: {
@@ -124,7 +124,7 @@ export async function fetchDashboardData(period = 'today', range = null) {
           formattedValue: String(todayTrx),
           trend: String(todayTrx),
           isPositive: true,
-          comparisonText: 'pesanan tercatat di PostgreSQL',
+          comparisonText: 'pesanan tercatat di database',
           icon: 'Receipt',
         },
         productsSold: {
@@ -142,17 +142,17 @@ export async function fetchDashboardData(period = 'today', range = null) {
           formattedValue: `Rp ${Math.round(avgOrder).toLocaleString('id-ID')}`,
           trend: '0%',
           isPositive: true,
-          comparisonText: 'Database live posan_db',
+          comparisonText: 'Database live',
           icon: 'TrendingUp',
         },
       },
       chartData,
       chartMeta: {
         title: 'Tren Penjualan Harian',
-        tag: 'Live PostgreSQL',
+        tag: 'Live database',
         subtitle: 'Distribusi pergerakan omzet 7 hari terakhir',
         legend: [],
-        footerNote: 'Data bersumber langsung dari database PostgreSQL posan_db.',
+        footerNote: 'Data bersumber langsung dari database.',
         serviceHours: 'Operasional Aktif',
       },
       paymentData: {
@@ -160,7 +160,7 @@ export async function fetchDashboardData(period = 'today', range = null) {
         subtitle: 'Proporsi pembayaran transaksi',
         dominantMethod,
         methods: formattedMethods,
-        cloudStatus: 'Database PostgreSQL POSAN',
+        cloudStatus: 'database POSAN',
         lastUpdate: 'Update: Realtime Live Sync',
       },
       recentTransactions,
@@ -174,7 +174,7 @@ export async function fetchDashboardData(period = 'today', range = null) {
 export const dashboardService = {
   fetchDashboardData,
 
-  // Fetch live summary stats directly from PostgreSQL endpoints
+  // Fetch live summary stats directly from database endpoints
   async getSummaryStats() {
     try {
       const [users, paymentMethods, transactions, merchants] =
@@ -232,7 +232,7 @@ export const dashboardService = {
           change: `${activeUsers || 3} Aktif (${admins || 2} Admin, ${cashiers || 0} Kasir, ${baristas || 0} Barista, ${kitchens || 0} Kitchen)`,
           isPositive: true,
           icon: 'Users',
-          description: 'Pengguna terdaftar di tabel users PostgreSQL',
+          description: 'Pengguna terdaftar di tabel users database',
           color: 'blue',
         },
         {

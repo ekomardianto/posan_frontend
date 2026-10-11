@@ -65,12 +65,12 @@ export default function TransactionsPage() {
       }
 
       if (showSyncToast) {
-        showToast('Sinkronisasi Berhasil', 'Data transaksi telah diperbarui secara realtime dari PostgreSQL posan_db.');
+        showToast('Sinkronisasi Berhasil', 'Data transaksi telah diperbarui secara realtime dari database.');
       }
     } catch (err) {
       console.error('Error loading transactions:', err);
       if (showSyncToast) {
-        showToast('Sinkronisasi Gagal', 'Gagal memuat data dari database PostgreSQL.');
+        showToast('Sinkronisasi Gagal', 'Gagal memuat data dari database.');
       }
     } finally {
       setIsLoading(false);
@@ -244,7 +244,7 @@ export default function TransactionsPage() {
             <span>&bull;</span>
             <span className="trx-live-indicator">
               <span className="trx-live-dot pulse-indicator" />
-              <span>PostgreSQL Live Sync</span>
+              <span>Sinkronisasi database aktif</span>
             </span>
           </div>
           <h1 className="trx-page-title">Transaksi</h1>

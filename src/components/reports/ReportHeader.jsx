@@ -30,7 +30,7 @@ export default function ReportHeader({
   const defaultTitle = activeTab === 'staf' ? 'Laporan Staf' : 'Laporan Penjualan';
   const defaultSubtitle = activeTab === 'staf'
     ? 'Monitoring performa barista, kitchen, dan kasir, kecepatan pengerjaan pesanan, dan rincian tugas'
-    : 'Analisis penjualan, omzet, dan riwayat transaksi café tersinkronisasi realtime PostgreSQL';
+    : 'Analisis penjualan, omzet, dan riwayat transaksi café tersinkronisasi realtime database';
 
   return (
     <div className="report-header-section animate-fade-in">

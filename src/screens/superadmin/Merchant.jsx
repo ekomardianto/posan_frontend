@@ -177,7 +177,7 @@ export default function Merchant() {
             Profil Kafe & Gerai Operasional
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Informasi gerai, lokasi, administrasi, dan ringkasan transaksi kafe dari database PostgreSQL <code className="font-mono text-slate-700 bg-slate-100 px-1 py-0.5 rounded">posan_db</code>.
+            Informasi gerai, lokasi, administrasi, dan ringkasan transaksi kafe tersimpan terpusat.
           </p>
         </div>
 
@@ -223,7 +223,7 @@ export default function Merchant() {
       {loading && merchants.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-200/70 p-12 text-center flex flex-col items-center justify-center gap-3">
           <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-          <p className="text-sm font-semibold text-slate-700">Mengambil data dari database PostgreSQL...</p>
+          <p className="text-sm font-semibold text-slate-700">Mengambil data dari database...</p>
         </div>
       ) : (
         <Table
@@ -314,7 +314,7 @@ export default function Merchant() {
                 <p className="font-bold text-slate-800">
                   {selectedMerchant.totalTransactions} Total Transaksi
                 </p>
-                <p className="text-emerald-600 font-semibold">Tersimpan di posan_db</p>
+                <p className="text-emerald-600 font-semibold">Tersimpan di database</p>
               </div>
             </div>
           </div>

@@ -159,7 +159,7 @@ export default function ProductImportModal({ isOpen, onClose, onSuccess, categor
             <div>
               <h2 className="modal-title">Import Katalog Produk dari Excel</h2>
               <p className="modal-subtitle">
-                Unggah file spreadsheet (.xlsx, .xls, .csv) untuk menambahkan banyak produk sekaligus ke database PostgreSQL.
+                Unggah file spreadsheet (.xlsx, .xls, .csv) untuk menambahkan banyak produk sekaligus ke database.
               </p>
             </div>
           </div>
@@ -334,7 +334,7 @@ export default function ProductImportModal({ isOpen, onClose, onSuccess, categor
           {isImporting && (
             <div className="import-progress-box">
               <div className="progress-header">
-                <span>Mengimpor produk ke database PostgreSQL...</span>
+                <span>Mengimpor produk ke database...</span>
                 <span className="progress-count">
                   {importProgress.current} dari {importProgress.total} produk
                 </span>
@@ -359,7 +359,7 @@ export default function ProductImportModal({ isOpen, onClose, onSuccess, categor
                 </div>
                 <h3 className="result-title">Proses Import Selesai!</h3>
                 <p className="result-subtitle">
-                  Katalog produk telah berhasil disimpan ke database PostgreSQL.
+                  Katalog produk telah berhasil disimpan ke database.
                 </p>
               </div>
 

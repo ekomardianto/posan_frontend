@@ -31,10 +31,10 @@ import StaffReportTable from '../../components/reports/StaffReportTable';
 
 const initialEmptySalesReport = {
   kpi: {
-    totalTransactions: { label: 'TOTAL TRANSAKSI', value: 0, formattedValue: '0', changeText: '0%', isPositive: true, comparisonText: 'Data Live PostgreSQL', iconType: 'receipt' },
-    totalSales: { label: 'TOTAL PENJUALAN', value: 0, formattedValue: 'Rp0', changeText: '0%', isPositive: true, comparisonText: 'Data Live PostgreSQL', iconType: 'wallet' },
-    productsSold: { label: 'PRODUK TERJUAL', value: 0, unit: 'item', formattedValue: '0', changeText: '0%', isPositive: true, comparisonText: 'Data Live PostgreSQL', iconType: 'coffee' },
-    averageTransaction: { label: 'RATA-RATA TRANSAKSI', value: 0, formattedValue: 'Rp0', changeText: '0%', isPositive: true, comparisonText: 'Data Live PostgreSQL', iconType: 'chart' },
+    totalTransactions: { label: 'TOTAL TRANSAKSI', value: 0, formattedValue: '0', changeText: '0%', isPositive: true, comparisonText: 'Data Live database', iconType: 'receipt' },
+    totalSales: { label: 'TOTAL PENJUALAN', value: 0, formattedValue: 'Rp0', changeText: '0%', isPositive: true, comparisonText: 'Data Live database', iconType: 'wallet' },
+    productsSold: { label: 'PRODUK TERJUAL', value: 0, unit: 'item', formattedValue: '0', changeText: '0%', isPositive: true, comparisonText: 'Data Live database', iconType: 'coffee' },
+    averageTransaction: { label: 'RATA-RATA TRANSAKSI', value: 0, formattedValue: 'Rp0', changeText: '0%', isPositive: true, comparisonText: 'Data Live database', iconType: 'chart' },
   },
   salesPeriodChart: { granularity: 'Harian', dailyData: [], weeklyData: [], monthlyData: [], summaryFooter: { average: { label: 'Rata-rata', formattedValue: 'Rp0', rawValue: 0 }, lowest: { label: 'Terendah', formattedValue: 'Rp0', rawValue: 0 }, highest: { label: 'Hari Teramai', formattedValue: '-', isHighlight: true } } },
   paymentMethods: { totalPercentage: 0, methods: [] },
@@ -139,7 +139,7 @@ export default function ReportsPage({ initialTab = 'penjualan' }) {
       ]);
       showToast(
         'Sinkronisasi Berhasil',
-        'Data laporan penjualan & performa staf POSAN telah diperbarui langsung dari PostgreSQL.'
+        'Data laporan penjualan & performa staf POSAN telah diperbarui langsung dari database.'
       );
     } catch (err) {
       console.error('Sync error:', err);

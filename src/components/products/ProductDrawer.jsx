@@ -199,8 +199,8 @@ export default function ProductDrawer({
             </h2>
             <p className="drawer-subtitle">
               {isEditing
-                ? 'Perbarui informasi produk, kategori, dan harga jual pada database PostgreSQL.'
-                : 'Tambahkan item menu baru ke katalog kasir POSAN pada database PostgreSQL.'}
+                ? 'Perbarui informasi produk, kategori, dan harga jual pada database.'
+                : 'Tambahkan item menu baru ke katalog kasir POSAN pada database.'}
             </p>
           </div>
           <button
@@ -270,7 +270,7 @@ export default function ProductDrawer({
                 )}
               </select>
               <span className="form-helper-text">
-                Pilihan kategori dari database PostgreSQL.
+                Pilihan kategori dari database.
               </span>
               {errors.category && <span style={{ color: '#DC2626', fontSize: '0.72rem', fontWeight: 600 }}>{errors.category}</span>}
             </div>
@@ -479,7 +479,7 @@ export default function ProductDrawer({
             <div>
               <div className="artisan-info-title">Model Menu Kafe POSAN</div>
               <div>
-                Data produk tersimpan di database PostgreSQL dan langsung disinkronkan ke seluruh modul POSAN.
+                Data produk tersimpan di database dan langsung disinkronkan ke seluruh modul POSAN.
               </div>
             </div>
           </div>

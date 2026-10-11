@@ -118,7 +118,7 @@ export default function Topbar({ onToggleSidebar, title = 'Dashboard', onLogoutC
             </h1>
             <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              PostgreSQL Connected
+              Database terhubung
             </span>
           </div>
         </div>
@@ -163,7 +163,7 @@ export default function Topbar({ onToggleSidebar, title = 'Dashboard', onLogoutC
               <div className="px-4 pb-2.5 border-b border-slate-100 flex items-center justify-between">
                 <div>
                   <h3 className="text-xs font-bold text-slate-900">Notifikasi Database</h3>
-                  <p className="text-[11px] text-slate-400">Log aktivitas sistem PostgreSQL</p>
+                  <p className="text-[11px] text-slate-400">Log aktivitas sistem database</p>
                 </div>
                 {unreadCount > 0 && (
                   <button

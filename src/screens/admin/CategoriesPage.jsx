@@ -40,7 +40,7 @@ export default function CategoriesPage() {
       const data = await fetchCategories();
       setCategories(data || []);
       if (showSyncToast) {
-        showToast('Sinkronisasi Sukses', 'Data kategori telah diperbarui dari database PostgreSQL.');
+        showToast('Sinkronisasi Sukses', 'Data kategori telah diperbarui dari database.');
       }
     } catch (err) {
       console.error('Error loading categories:', err);
@@ -96,7 +96,7 @@ export default function CategoriesPage() {
         const res = await updateCategory(targetId, payload);
         if (res?.success) {
           await loadCategories();
-          showToast('Pembaruan Sukses', `Kategori "${payload.name}" berhasil diperbarui di database PostgreSQL.`);
+          showToast('Pembaruan Sukses', `Kategori "${payload.name}" berhasil diperbarui di database.`);
           setViewMode('list');
           setEditingCategory(null);
         } else {
@@ -106,7 +106,7 @@ export default function CategoriesPage() {
         const res = await createCategory(payload);
         if (res?.success) {
           await loadCategories();
-          showToast('Penambahan Sukses', `Kategori baru "${payload.name}" tersimpan di database PostgreSQL.`);
+          showToast('Penambahan Sukses', `Kategori baru "${payload.name}" tersimpan di database.`);
           setViewMode('list');
           setEditingCategory(null);
         } else {
@@ -145,7 +145,7 @@ export default function CategoriesPage() {
       const res = await deleteCategory(targetId);
       if (res?.success) {
         await loadCategories();
-        showToast('Kategori Dihapus', `Kategori "${target ? target.name : ''}" telah dihapus dari database PostgreSQL.`);
+        showToast('Kategori Dihapus', `Kategori "${target ? target.name : ''}" telah dihapus dari database.`);
       } else {
         showToast('Gagal Menghapus', res?.error || 'Gagal menghapus kategori dari database.', 'error');
       }
@@ -221,7 +221,7 @@ export default function CategoriesPage() {
               </div>
               <h1 className="categories-page-title">Kategori</h1>
               <p className="categories-page-subtitle">
-                Kelola kategori menu café dan struktur katalog pemesanan terpusat di database PostgreSQL.
+                Kelola kategori menu café dan struktur katalog pemesanan terpusat di database.
               </p>
             </div>
 

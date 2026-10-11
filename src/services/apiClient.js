@@ -1,6 +1,6 @@
 /**
  * Centralized API Client for POSAN Super Admin
- * Connects directly to Node.js / Express backend (PostgreSQL posan_db)
+ * Connects directly to Node.js / Express backend (database)
  */
 
 export function getApiBaseUrl() {

@@ -94,7 +94,7 @@ export default function PaymentMethod() {
   const [showApiKey, setShowApiKey] = useState(false);
   const [copiedWebhook, setCopiedWebhook] = useState(false);
 
-  // Load live data from Backend Node.js Express (PostgreSQL posan_db)
+  // Load live data from Backend Node.js Express (database)
   const loadMethods = useCallback(async () => {
     try {
       setLoading(true);
@@ -692,7 +692,7 @@ export default function PaymentMethod() {
       {loading && methods.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-200/70 p-12 text-center flex flex-col items-center justify-center gap-3">
           <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-          <p className="text-sm font-semibold text-slate-700">Mengambil data metode pembayaran dari database PostgreSQL...</p>
+          <p className="text-sm font-semibold text-slate-700">Mengambil data metode pembayaran dari database...</p>
         </div>
       ) : filteredMethods.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-200/70 p-12 text-center flex flex-col items-center justify-center gap-2">

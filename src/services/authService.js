@@ -109,7 +109,7 @@ export const authService = {
       const data = await apiRequest('/health/db', { method: 'GET' });
       return {
         connected: data.connected === true,
-        database: data.database || 'posan_db',
+        database: data.database || 'database',
         serverTime: data.serverTime,
       };
     } catch (err) {

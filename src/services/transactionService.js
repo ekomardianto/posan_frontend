@@ -125,7 +125,7 @@ export function computeTransactionStats(transactions = []) {
       label: 'VOLUME TRANSAKSI',
       value: totalTransactions,
       unit: 'Tiket',
-      comparisonText: 'Sinkronisasi Live PostgreSQL',
+      comparisonText: 'Sinkronisasi Live database',
     },
     dailyRevenue: {
       label: 'TOTAL OMZET',

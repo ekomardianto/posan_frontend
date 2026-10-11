@@ -39,7 +39,7 @@ export default function MerchantOverview({ merchants = [], loading = false }) {
         {loading && merchants.length === 0 ? (
           <div className="p-8 text-center flex flex-col items-center justify-center gap-2 text-slate-400">
             <Loader2 className="w-6 h-6 animate-spin text-brand-600" />
-            <span className="text-xs">Memuat data dari database PostgreSQL...</span>
+            <span className="text-xs">Memuat data dari database...</span>
           </div>
         ) : merchants.length === 0 ? (
           <div className="p-8 text-center text-slate-400 text-xs">

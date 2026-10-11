@@ -64,7 +64,7 @@ export default function Transactions() {
     { product_id: '', quantity: 1, notes: '', unit_price: 0, subtotal: 0, station: 'barista', product_name: '' }
   ]);
 
-  // Load transactions from PostgreSQL
+  // Load transactions from database
   const loadTransactions = useCallback(async () => {
     try {
       setLoading(true);
@@ -386,7 +386,7 @@ export default function Transactions() {
             </h1>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Data transaksi penjualan dan item pengerjaan stasiun dari database PostgreSQL <code className="font-mono text-slate-700 bg-slate-100 px-1 py-0.5 rounded">posan_db</code>.
+            Data transaksi penjualan dan item pengerjaan stasiun tercatat secara terpusat.
           </p>
         </div>
 
@@ -464,7 +464,7 @@ export default function Transactions() {
             </span>
             <p className="text-sm font-bold text-emerald-700 mt-1 flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>PostgreSQL Synchronized</span>
+              <span>Database tersinkronisasi</span>
             </p>
           </div>
           <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100 shadow-2xs">
@@ -510,7 +510,7 @@ export default function Transactions() {
       {loading && transactions.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-200/70 p-12 text-center flex flex-col items-center justify-center gap-3">
           <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-          <p className="text-sm font-semibold text-slate-700">Mengambil data transaksi dari database PostgreSQL...</p>
+          <p className="text-sm font-semibold text-slate-700">Mengambil data transaksi dari database...</p>
         </div>
       ) : (
         <Table
@@ -518,7 +518,7 @@ export default function Transactions() {
           data={paginatedData}
           keyField="id"
           onRowClick={handleOpenDetail}
-          emptyMessage="Belum ada transaksi ditemukan di database PostgreSQL."
+          emptyMessage="Belum ada transaksi ditemukan di database."
           emptySubtext="Transaksi yang diproses oleh kasir akan otomatis muncul di sini."
           pagination={{
             currentPage,

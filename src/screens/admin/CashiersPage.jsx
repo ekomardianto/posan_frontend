@@ -103,15 +103,15 @@ export default function CashiersPage() {
           await loadCashiers();
           showToast('Data Diperbarui', `Informasi staf ${formData.name} berhasil diperbarui.`);
         } else {
-          showToast('Gagal Memperbarui', res?.error || 'Gagal memperbarui di database PostgreSQL posan_db.', 'error');
+          showToast('Gagal Memperbarui', res?.error || 'Gagal memperbarui di database.', 'error');
         }
       } else {
         const res = await createCashier(formData);
         if (res?.success) {
           await loadCashiers();
-          showToast('Staf Ditambahkan', `Akun staf baru ${formData.name} berhasil didaftarkan di PostgreSQL posan_db.`);
+          showToast('Staf Ditambahkan', `Akun staf baru ${formData.name} berhasil didaftarkan di database.`);
         } else {
-          showToast('Gagal Menambahkan', res?.error || 'Gagal mendaftarkan staf ke database PostgreSQL posan_db.', 'error');
+          showToast('Gagal Menambahkan', res?.error || 'Gagal mendaftarkan staf ke database.', 'error');
         }
       }
     } catch (err) {

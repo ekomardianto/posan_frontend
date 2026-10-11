@@ -32,7 +32,7 @@ export default function Dashboard() {
   const [newUserPassword, setNewUserPassword] = useState('');
   const [newUserRole, setNewUserRole] = useState('admin');
 
-  // Load live data from PostgreSQL via backend API
+  // Load live data from database via backend API
   const loadDashboardData = useCallback(async () => {
     try {
       setLoading(true);
@@ -48,7 +48,7 @@ export default function Dashboard() {
       setActivitiesList(activitiesData);
     } catch (err) {
       console.error('Error loading dashboard live data:', err);
-      setError(err.message || 'Gagal memuat data dari database PostgreSQL.');
+      setError(err.message || 'Gagal memuat data dari database.');
     } finally {
       setLoading(false);
     }
@@ -58,7 +58,7 @@ export default function Dashboard() {
     loadDashboardData();
   }, [loadDashboardData]);
 
-  // Handle Add Staff / Admin into PostgreSQL
+  // Handle Add Staff / Admin into database
   const handleAddUserSubmit = async (e) => {
     if (e) e.preventDefault();
     if (!newUserName.trim() || !newUserEmail.trim() || submitting) return;
@@ -107,7 +107,7 @@ export default function Dashboard() {
             </h1>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed">
-            Pantau seluruh operasional sistem POSAN, akun staf kafe, transaksi penjualan, dan gateway pembayaran langsung dari database PostgreSQL <span className="font-mono font-semibold text-slate-700">posan_db</span>.
+            Pantau seluruh operasional sistem POSAN, akun staf kafe, transaksi penjualan, dan gateway pembayaran secara terpusat.
           </p>
         </div>
 
@@ -131,7 +131,7 @@ export default function Dashboard() {
 
           <div className="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>PostgreSQL Online</span>
+            <span>Database aktif</span>
           </div>
         </div>
       </div>
@@ -189,7 +189,7 @@ export default function Dashboard() {
         isOpen={isUserModalOpen}
         onClose={() => !submitting && setIsUserModalOpen(false)}
         title="Pendaftaran Akun Pengguna Baru"
-        description="Tambahkan akun staf baru (Admin, Kasir, Barista, atau Kitchen) ke database PostgreSQL."
+        description="Tambahkan akun staf baru (Admin, Kasir, Barista, atau Kitchen) ke database."
         icon={Sparkles}
         size="md"
         footer={

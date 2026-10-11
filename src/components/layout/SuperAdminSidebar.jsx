@@ -416,7 +416,7 @@ export default function Sidebar({ isOpen, onClose, onLogoutClick }) {
           <div className="mt-6 mx-1 p-3 rounded-xl bg-slate-50 border border-slate-200/60">
             <div className="flex items-center gap-2 mb-1">
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              <span className="text-xs font-bold text-slate-800">PostgreSQL (posan_db)</span>
+              <span className="text-xs font-bold text-slate-800">Database</span>
             </div>
             <p className="text-[11px] text-slate-500 leading-relaxed">
               Koneksi backend Express port 3000 aktif.

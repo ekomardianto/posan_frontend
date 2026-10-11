@@ -426,7 +426,7 @@ export function exportReportToPDF(reportData, filterState = {}) {
   doc.setFontSize(7.5);
   doc.setTextColor(158, 149, 141);
   doc.text('POSAN Cafe Backoffice - Dokumen ini dibuat otomatis oleh sistem.', 14, pageHeight - 8);
-  doc.text(`Dicetak Real-time dari Database PostgreSQL`, 196, pageHeight - 8, { align: 'right' });
+  doc.text(`Dicetak Real-time dari database`, 196, pageHeight - 8, { align: 'right' });
 
   // Generate clean filename
   const cleanPeriod = periodText.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 20);
@@ -668,7 +668,7 @@ export function exportStaffReportToPDF(staffReportData, filterState = {}) {
   doc.setFontSize(7.5);
   doc.setTextColor(158, 149, 141);
   doc.text('POSAN Cafe Backoffice - Dokumen Laporan Kinerja Staf Real-time.', 14, pageHeight - 8);
-  doc.text(`Tersinkronisasi Realtime PostgreSQL`, 196, pageHeight - 8, { align: 'right' });
+  doc.text(`Tersinkronisasi Database realtime`, 196, pageHeight - 8, { align: 'right' });
 
   const cleanPeriod = periodText.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 20);
   doc.save(`Laporan_Kinerja_Staf_POSAN_${cleanPeriod}_${Date.now()}.pdf`);

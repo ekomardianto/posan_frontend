@@ -141,7 +141,7 @@ export default function Users() {
     setTimeout(() => setSuccessToast(''), 3500);
   };
 
-  // Load live users from PostgreSQL
+  // Load live users from database
   const loadUsers = useCallback(async () => {
     try {
       setLoading(true);
@@ -149,8 +149,8 @@ export default function Users() {
       const data = await userService.getUsers();
       setUsers(data);
     } catch (err) {
-      console.error('Error loading users from PostgreSQL:', err);
-      setErrorMessage(err.message || 'Gagal memuat daftar pengguna dari database PostgreSQL.');
+      console.error('Error loading users from database:', err);
+      setErrorMessage(err.message || 'Gagal memuat daftar pengguna dari database.');
     } finally {
       setLoading(false);
     }
@@ -280,7 +280,7 @@ export default function Users() {
       setErrorMessage('');
       await userService.createUser(formData);
       setIsAddModalOpen(false);
-      showToast(`Pengguna "${formData.name}" (${formData.role.toUpperCase()}) berhasil ditambahkan ke database PostgreSQL.`);
+      showToast(`Pengguna "${formData.name}" (${formData.role.toUpperCase()}) berhasil ditambahkan ke database.`);
       await loadUsers();
     } catch (err) {
       setErrorMessage(err.message || 'Gagal menambahkan pengguna baru.');
@@ -299,7 +299,7 @@ export default function Users() {
       setErrorMessage('');
       await userService.updateUser(selectedUser.id, formData);
       setIsEditModalOpen(false);
-      showToast(`Data akun "${formData.name}" berhasil diperbarui di PostgreSQL.`);
+      showToast(`Data akun "${formData.name}" berhasil diperbarui di database.`);
       await loadUsers();
     } catch (err) {
       setErrorMessage(err.message || 'Gagal memperbarui data pengguna.');
@@ -563,8 +563,8 @@ export default function Users() {
           </div>
           <p className="text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed">
             {isSuperAdmin
-              ? 'Melihat daftar seluruh pengguna, staf kafe, dan asal gerai terdaftar di database PostgreSQL posan_db.'
-              : 'Kelola seluruh akun kasir, admin outlet, barista, dan kitchen yang tersimpan secara terpusat di database PostgreSQL posan_db.'}
+              ? 'Melihat daftar seluruh pengguna, staf kafe, dan asal gerai terdaftar di database.'
+              : 'Kelola seluruh akun kasir, admin outlet, barista, dan kitchen yang tersimpan secara terpusat di database.'}
           </p>
         </div>
 
@@ -575,7 +575,7 @@ export default function Users() {
             icon={RefreshCw}
             onClick={loadUsers}
             disabled={loading}
-            title="Muat Ulang Data PostgreSQL"
+            title="Muat ulang data"
           >
             {loading ? 'Menyinkronkan...' : 'Sinkron'}
           </Button>
@@ -650,7 +650,7 @@ export default function Users() {
           <div>
             <p className="text-xs font-semibold text-slate-500">Total Akun ({currentTab.label})</p>
             <p className="text-2xl font-extrabold text-slate-900 mt-0.5">{stats.total}</p>
-            <p className="text-[11px] text-slate-400 mt-0.5">Tersimpan di PostgreSQL</p>
+            <p className="text-[11px] text-slate-400 mt-0.5">Tersimpan di database</p>
           </div>
           <div className="w-11 h-11 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center">
             <UsersIcon className="w-5 h-5" />
@@ -727,7 +727,7 @@ export default function Users() {
         {loading ? (
           <div className="py-16 flex flex-col items-center justify-center text-slate-400 space-y-3">
             <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-            <p className="text-xs font-semibold">Memuat data pengguna dari database PostgreSQL...</p>
+            <p className="text-xs font-semibold">Memuat data pengguna dari database...</p>
           </div>
         ) : filteredUsers.length === 0 ? (
           <div className="py-16 text-center text-slate-400 space-y-3">
@@ -761,7 +761,7 @@ export default function Users() {
         isOpen={isAddModalOpen}
         onClose={() => !submitting && setIsAddModalOpen(false)}
         title={`Tambah Pengguna Baru (${currentTab.label})`}
-        description="Data akun pengguna baru akan diverifikasi dan disimpan langsung ke tabel users PostgreSQL"
+        description="Data akun pengguna baru akan diverifikasi dan disimpan langsung ke tabel users database"
         size="md"
         footer={
           <div className="flex items-center justify-end gap-2">
@@ -1027,7 +1027,7 @@ export default function Users() {
         isOpen={isDeleteModalOpen}
         onClose={() => !submitting && setIsDeleteModalOpen(false)}
         title="Hapus Akun Pengguna"
-        description="Tindakan ini akan menghapus data akun dari database PostgreSQL"
+        description="Tindakan ini akan menghapus data akun dari database"
         size="sm"
         footer={
           <div className="flex items-center justify-end gap-2">

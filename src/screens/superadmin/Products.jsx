@@ -72,7 +72,7 @@ export default function Products() {
     station: 'barista',
   });
 
-  // Load live data from PostgreSQL
+  // Load live data from database
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
@@ -86,7 +86,7 @@ export default function Products() {
       setCategories(categoriesData);
     } catch (err) {
       console.error('Error loading products/categories:', err);
-      setErrorMessage(err.message || 'Gagal memuat data dari database PostgreSQL.');
+      setErrorMessage(err.message || 'Gagal memuat data dari database.');
     } finally {
       setLoading(false);
     }
@@ -520,7 +520,7 @@ export default function Products() {
             </h1>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Kelola menu kopi, makanan, minuman, dan stasiun pengerjaan di database PostgreSQL <code className="font-mono text-slate-700 bg-slate-100 px-1 py-0.5 rounded">posan_db</code>.
+            Kelola menu kopi, makanan, minuman, dan stasiun pengerjaan dengan data terpusat.
           </p>
         </div>
 
@@ -652,14 +652,14 @@ export default function Products() {
       {loading ? (
         <div className="bg-white rounded-2xl border border-slate-200/70 p-12 text-center flex flex-col items-center justify-center gap-3">
           <Loader2 className="w-8 h-8 animate-spin text-brand-600" />
-          <p className="text-sm font-semibold text-slate-700">Mengambil data dari database PostgreSQL...</p>
+          <p className="text-sm font-semibold text-slate-700">Mengambil data dari database...</p>
         </div>
       ) : activeTab === 'products' ? (
         <Table
           columns={productColumns}
           data={paginatedProducts}
           keyField="id"
-          emptyMessage="Tidak ada produk ditemukan di database PostgreSQL."
+          emptyMessage="Tidak ada produk ditemukan di database."
           emptySubtext="Klik tombol Tambah Produk untuk menambahkan menu baru."
           pagination={{
             currentPage,
@@ -674,7 +674,7 @@ export default function Products() {
           columns={categoryColumns}
           data={filteredCategories}
           keyField="id"
-          emptyMessage="Tidak ada kategori ditemukan di database PostgreSQL."
+          emptyMessage="Tidak ada kategori ditemukan di database."
           emptySubtext="Klik tombol Tambah Kategori untuk menambahkan kategori menu baru."
         />
       )}
@@ -684,7 +684,7 @@ export default function Products() {
         isOpen={isAddProductModalOpen}
         onClose={() => !submitting && setIsAddProductModalOpen(false)}
         title="Tambah Produk / Menu Baru"
-        description="Simpan data produk baru ke katalog menu database PostgreSQL posan_db."
+        description="Simpan data produk baru ke katalog menu database."
         icon={Utensils}
         size="md"
         footer={
@@ -909,7 +909,7 @@ export default function Products() {
         isOpen={isDeleteProductModalOpen}
         onClose={() => !submitting && setIsDeleteProductModalOpen(false)}
         title="Hapus Produk dari Database?"
-        description={`Produk "${selectedProduct?.name}" akan dihapus permanen dari PostgreSQL.`}
+        description={`Produk "${selectedProduct?.name}" akan dihapus permanen dari database.`}
         icon={Trash2}
         size="sm"
         footer={
@@ -944,7 +944,7 @@ export default function Products() {
         isOpen={isAddCategoryModalOpen}
         onClose={() => !submitting && setIsAddCategoryModalOpen(false)}
         title="Tambah Kategori Menu Baru"
-        description="Daftarkan kelompok kategori baru ke database PostgreSQL."
+        description="Daftarkan kelompok kategori baru ke database."
         icon={FolderTree}
         size="md"
         footer={
@@ -1010,7 +1010,7 @@ export default function Products() {
         isOpen={isEditCategoryModalOpen}
         onClose={() => !submitting && setIsEditCategoryModalOpen(false)}
         title={`Edit Kategori - ${selectedCategory?.name}`}
-        description="Perbarui nama atau deskripsi kategori di database PostgreSQL."
+        description="Perbarui nama atau deskripsi kategori di database."
         icon={Edit2}
         size="md"
         footer={

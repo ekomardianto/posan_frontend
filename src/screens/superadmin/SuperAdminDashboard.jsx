@@ -32,7 +32,7 @@ export default function SuperAdminDashboard({ onNavigate }) {
       setUsers(usersData);
     } catch (err) {
       console.error('Error loading super admin dashboard:', err);
-      setErrorMsg(err.message || 'Gagal memuat data dari database PostgreSQL.');
+      setErrorMsg(err.message || 'Gagal memuat data dari database.');
     } finally {
       setIsLoading(false);
     }
@@ -59,7 +59,7 @@ export default function SuperAdminDashboard({ onNavigate }) {
           </div>
           <h1>Selamat Datang, Super Admin POSAN 👋</h1>
           <p>
-            Kelola seluruh ekosistem multi-tenant kafe, pantau performa omzet gabungan, dan kelola otorisasi akun staf secara terpusat langsung ke PostgreSQL.
+            Kelola seluruh ekosistem multi-tenant kafe, pantau performa omzet gabungan, dan kelola otorisasi akun staf secara terpusat langsung ke database.
           </p>
         </div>
 

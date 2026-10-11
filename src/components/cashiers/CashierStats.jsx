@@ -62,7 +62,7 @@ export default function CashierStats({ cashiers = [] }) {
           <div className="cashier-stat-val-group">
             <span className="cashier-stat-number" style={{ fontSize: '1.25rem', color: '#15803D' }}>Aktif</span>
           </div>
-          <span className="cashier-stat-subtext">PostgreSQL Database Sync</span>
+          <span className="cashier-stat-subtext">Sinkronisasi database</span>
         </div>
         <div className="cashier-stat-icon-wrapper icon-sessions">
           <FileText size={20} strokeWidth={2.2} />
