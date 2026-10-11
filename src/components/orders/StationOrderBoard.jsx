@@ -21,7 +21,6 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { updateOrderItemStatus } from '../../services/orderService.js';
-import '../../styles/dashboard.css';
 
 // Web Audio API chime player
 function playChimeSound() {

@@ -15,7 +15,6 @@ import {
 import posanLogo from '../../assets/posan-logo.jpg';
 import { useAuth } from '../../context/AuthContext.jsx';
 import LoadingPage from '../../components/ui/LoadingPage.jsx';
-import '../../styles/auth.css';
 
 export default function LoginPage() {
   const { login } = useAuth();

@@ -1,4 +1,5 @@
 import '../src/index.css'
+import '../src/styles/auth.css'
 
 export const metadata = {
   title: 'POSAN Admin',

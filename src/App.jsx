@@ -1,34 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
-import LoginPage from './pages/auth/LoginPage.jsx';
+import LoginPage from './screens/auth/LoginPage.jsx';
 
 // Admin Outlet Components & Pages
 import Sidebar from './components/layout/Sidebar.jsx';
 import Header from './components/layout/Header.jsx';
-import AdminDashboard from './pages/admin/AdminDashboard.jsx';
-import ProductsPage from './pages/admin/ProductsPage.jsx';
-import CategoriesPage from './pages/admin/CategoriesPage.jsx';
-import TransactionsPage from './pages/admin/TransactionsPage.jsx';
-import CashiersPage from './pages/admin/CashiersPage.jsx';
-import PaymentMethodsPage from './pages/admin/PaymentMethodsPage.jsx';
-import ReportsPage from './pages/admin/ReportsPage.jsx';
-import ProfilePage from './pages/admin/ProfilePage.jsx';
-import ReceiptSettingsPage from './pages/admin/ReceiptSettingsPage.jsx';
-import BaristaOrdersPage from './pages/barista/BaristaOrdersPage.jsx';
-import KitchenOrdersPage from './pages/kitchen/KitchenOrdersPage.jsx';
+import AdminDashboard from './screens/admin/AdminDashboard.jsx';
+import ProductsPage from './screens/admin/ProductsPage.jsx';
+import CategoriesPage from './screens/admin/CategoriesPage.jsx';
+import TransactionsPage from './screens/admin/TransactionsPage.jsx';
+import CashiersPage from './screens/admin/CashiersPage.jsx';
+import PaymentMethodsPage from './screens/admin/PaymentMethodsPage.jsx';
+import ReportsPage from './screens/admin/ReportsPage.jsx';
+import ProfilePage from './screens/admin/ProfilePage.jsx';
+import ReceiptSettingsPage from './screens/admin/ReceiptSettingsPage.jsx';
+import BaristaOrdersPage from './screens/barista/BaristaOrdersPage.jsx';
+import KitchenOrdersPage from './screens/kitchen/KitchenOrdersPage.jsx';
 
 // Super Admin Layout & Pages (Matching POSAN Superadmin)
 import SuperAdminLayout from './components/layout/SuperAdminLayout.jsx';
-import SuperAdminDashboard from './pages/superadmin/Dashboard.jsx';
-import SuperAdminUsers from './pages/superadmin/Users.jsx';
-import SuperAdminMerchant from './pages/superadmin/Merchant.jsx';
-import SuperAdminPaymentMethod from './pages/superadmin/PaymentMethod.jsx';
-import SuperAdminReceiptSettings from './pages/superadmin/ReceiptSettings.jsx';
-import SuperAdminProfile from './pages/superadmin/Profile.jsx';
-import SuperAdminProducts from './pages/superadmin/Products.jsx';
-import SuperAdminOrders from './pages/superadmin/Orders.jsx';
-import SuperAdminTransactions from './pages/superadmin/Transactions.jsx';
+import SuperAdminDashboard from './screens/superadmin/Dashboard.jsx';
+import SuperAdminUsers from './screens/superadmin/Users.jsx';
+import SuperAdminMerchant from './screens/superadmin/Merchant.jsx';
+import SuperAdminPaymentMethod from './screens/superadmin/PaymentMethod.jsx';
+import SuperAdminReceiptSettings from './screens/superadmin/ReceiptSettings.jsx';
+import SuperAdminProfile from './screens/superadmin/Profile.jsx';
+import SuperAdminProducts from './screens/superadmin/Products.jsx';
+import SuperAdminOrders from './screens/superadmin/Orders.jsx';
+import SuperAdminTransactions from './screens/superadmin/Transactions.jsx';
 
 import LoadingPage from './components/ui/LoadingPage.jsx';
 import { LoadingProvider } from './context/LoadingContext.jsx';
