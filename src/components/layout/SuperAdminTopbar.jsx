@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import {
   Menu,
@@ -16,7 +16,7 @@ import {
 import { dashboardService } from '../../services/dashboardService';
 
 export default function Topbar({ onToggleSidebar, title = 'Dashboard', onLogoutClick }) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { user } = useAuth();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -96,7 +96,7 @@ export default function Topbar({ onToggleSidebar, title = 'Dashboard', onLogoutC
 
   const handleGoToProfile = (tab = 'account') => {
     setShowProfileMenu(false);
-    navigate('/superadmin/profile');
+    router.push('/superadmin/profile');
   };
 
   return (

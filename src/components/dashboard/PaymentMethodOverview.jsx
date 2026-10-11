@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import {
   CreditCard,
   Banknote,
@@ -25,7 +25,7 @@ const iconLookup = {
 };
 
 export default function PaymentMethodOverview({ onDataChange }) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const alert = useAlert();
   const [methods, setMethods] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -85,7 +85,7 @@ export default function PaymentMethodOverview({ onDataChange }) {
             variant="ghost"
             size="sm"
             iconRight={ArrowRight}
-            onClick={() => navigate('/superadmin/payment-method')}
+            onClick={() => router.push('/superadmin/payment-method')}
             className="text-brand-700 hover:text-brand-800 p-0 text-xs"
           >
             Kelola
@@ -160,7 +160,7 @@ export default function PaymentMethodOverview({ onDataChange }) {
           variant="secondary"
           size="md"
           icon={CreditCard}
-          onClick={() => navigate('/superadmin/payment-method')}
+          onClick={() => router.push('/superadmin/payment-method')}
           className="w-full text-slate-700 bg-slate-100 hover:bg-slate-200/80"
         >
           Kelola Payment Method

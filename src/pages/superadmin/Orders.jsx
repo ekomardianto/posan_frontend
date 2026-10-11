@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   Coffee,
   ChefHat,
@@ -27,9 +27,9 @@ import Select from '../../components/ui/Select';
 
 export default function Orders() {
   const { role } = useAuth();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { stationType } = useParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  const stationType = pathname.split('/').filter(Boolean).at(-1);
 
   // Determine active station: 'barista' | 'kitchen'
   const activeStation = useMemo(() => {
@@ -41,9 +41,9 @@ export default function Orders() {
       if (['barista', 'kitchen'].includes(lower)) return lower;
     }
 
-    if (location.pathname.includes('/kitchen')) return 'kitchen';
+    if (pathname.includes('/kitchen')) return 'kitchen';
     return 'barista';
-  }, [role, stationType, location.pathname]);
+  }, [role, stationType, pathname]);
 
   const [orders, setOrders] = useState([]);
   const [stats, setStats] = useState({
@@ -207,7 +207,7 @@ export default function Orders() {
         <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200/70 p-2 shadow-sm flex items-center gap-2">
           <button
             type="button"
-            onClick={() => navigate('/superadmin/orders/barista')}
+            onClick={() => router.push('/superadmin/orders/barista')}
             className={`flex-1 flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer ${
               activeStation === 'barista'
                 ? 'bg-amber-500 text-white shadow-sm'
@@ -220,7 +220,7 @@ export default function Orders() {
 
           <button
             type="button"
-            onClick={() => navigate('/superadmin/orders/kitchen')}
+            onClick={() => router.push('/superadmin/orders/kitchen')}
             className={`flex-1 flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer ${
               activeStation === 'kitchen'
                 ? 'bg-rose-600 text-white shadow-sm'

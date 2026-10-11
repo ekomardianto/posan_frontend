@@ -48,9 +48,9 @@ jobs:
           APP_ENV_CONTENT: ${{ secrets.APP_ENV_CONTENT }}
         run: |
           set -euo pipefail
-          VITE_ENV_FILE=$(mktemp)
-          trap 'rm -f "$VITE_ENV_FILE"' EXIT
-          export VITE_ENV_FILE
+          NEXT_PUBLIC_ENV_FILE=$(mktemp)
+          trap 'rm -f "$NEXT_PUBLIC_ENV_FILE"' EXIT
+          export NEXT_PUBLIC_ENV_FILE
           python3 - <<'PY'
           import os
           import re
@@ -60,11 +60,11 @@ jobs:
           lines = []
           has_api_url = False
           for line in content.splitlines():
-              match = re.match(r"^\s*(?:export\s+)?(VITE_[A-Za-z0-9_]*)\s*=", line)
+              match = re.match(r"^\s*(?:export\s+)?(NEXT_PUBLIC_[A-Za-z0-9_]*)\s*=", line)
               if not match:
                   continue
               lines.append(line)
-              if match.group(1) == "VITE_API_BASE_URL":
+              if match.group(1) == "NEXT_PUBLIC_API_BASE_URL":
                   value = line.split("=", 1)[1].strip()
                   if value.startswith(("\"", "'")):
                       value = value[1:].split(value[0], 1)[0]
@@ -73,16 +73,16 @@ jobs:
                   has_api_url = bool(value)
 
           if not has_api_url:
-              sys.exit("APP_ENV_CONTENT must define a non-empty VITE_API_BASE_URL")
+              sys.exit("APP_ENV_CONTENT must define a non-empty NEXT_PUBLIC_API_BASE_URL")
 
-          with open(os.environ["VITE_ENV_FILE"], "w", encoding="utf-8") as env_file:
+          with open(os.environ["NEXT_PUBLIC_ENV_FILE"], "w", encoding="utf-8") as env_file:
               env_file.write("\n".join(lines) + "\n")
           PY
-          VITE_ENV_CACHEBUST=$(sha256sum "$VITE_ENV_FILE" | cut -d ' ' -f 1)
+          NEXT_PUBLIC_ENV_CACHEBUST=$(sha256sum "$NEXT_PUBLIC_ENV_FILE" | cut -d ' ' -f 1)
           docker build \
             --pull \
-            --secret "id=vite_env,src=$VITE_ENV_FILE" \
-            --build-arg "VITE_ENV_CACHEBUST=$VITE_ENV_CACHEBUST" \
+            --secret "id=next_public_env,src=$NEXT_PUBLIC_ENV_FILE" \
+            --build-arg "NEXT_PUBLIC_ENV_CACHEBUST=$NEXT_PUBLIC_ENV_CACHEBUST" \
             --tag posan-frontend:staging \
             .
           docker save posan-frontend:staging | gzip -1 > /tmp/posan-frontend-image.tar.gz

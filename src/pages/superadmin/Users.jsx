@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   Users as UsersIcon,
   Shield,
@@ -83,14 +83,14 @@ export default function Users() {
   const isSuperAdmin = role === 'super_admin';
   const canManageUsers = role === 'admin';
 
-  const { roleTab } = useParams();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const pathname = usePathname();
+  const router = useRouter();
+  const roleTab = pathname.split('/').filter(Boolean).at(-1);
 
   // Determine active tab from URL: /superadmin/users/:roleTab
   const activeTabId = useMemo(() => {
     if (!roleTab) {
-      const path = location.pathname.toLowerCase();
+      const path = pathname.toLowerCase();
       if (path.includes('/admin')) return 'admin';
       if (path.includes('/kasir')) return 'kasir';
       if (path.includes('/barista')) return 'barista';
@@ -102,7 +102,7 @@ export default function Users() {
       return clean;
     }
     return 'admin';
-  }, [roleTab, location.pathname]);
+  }, [roleTab, pathname]);
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -165,7 +165,7 @@ export default function Users() {
     setCurrentPage(1);
     setSearchQuery('');
     setStatusFilter('ALL');
-    navigate(`/superadmin/users/${tabId}`);
+    router.push(`/superadmin/users/${tabId}`);
   };
 
   // Filtered dataset according to active tab + search + status

@@ -1,10 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { CreditCard, Users, Sparkles, ReceiptText, Store, PlusCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export default function QuickActions({ onAddUser }) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { role } = useAuth();
   const isSuperAdmin = role === 'super_admin';
 
@@ -25,7 +25,7 @@ export default function QuickActions({ onAddUser }) {
         {isSuperAdmin ? (
           <button
             type="button"
-            onClick={() => navigate('/superadmin/users/admin')}
+            onClick={() => router.push('/superadmin/users/admin')}
             className="flex items-center gap-2.5 p-3 rounded-xl bg-indigo-50/60 hover:bg-indigo-50 border border-indigo-200/60 hover:border-indigo-300 text-indigo-800 font-semibold text-xs transition-all group shadow-2xs hover:shadow-xs cursor-pointer"
           >
             <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
@@ -39,7 +39,7 @@ export default function QuickActions({ onAddUser }) {
         ) : (
           <button
             type="button"
-            onClick={onAddUser || (() => navigate('/superadmin/users/admin'))}
+            onClick={onAddUser || (() => router.push('/superadmin/users/admin'))}
             className="flex items-center gap-2.5 p-3 rounded-xl bg-brand-50/60 hover:bg-brand-50 border border-brand-200/60 hover:border-brand-300 text-brand-800 font-semibold text-xs transition-all group shadow-2xs hover:shadow-xs cursor-pointer"
           >
             <div className="w-8 h-8 rounded-lg bg-brand-500 text-white flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
@@ -55,7 +55,7 @@ export default function QuickActions({ onAddUser }) {
         {/* Slot 2 */}
         <button
           type="button"
-          onClick={() => navigate('/superadmin/users/kasir')}
+          onClick={() => router.push('/superadmin/users/kasir')}
           className="flex items-center gap-2.5 p-3 rounded-xl bg-emerald-50/60 hover:bg-emerald-50 border border-emerald-200/60 hover:border-emerald-300 text-emerald-800 font-semibold text-xs transition-all group shadow-2xs hover:shadow-xs cursor-pointer"
         >
           <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
@@ -71,7 +71,7 @@ export default function QuickActions({ onAddUser }) {
         {isSuperAdmin ? (
           <button
             type="button"
-            onClick={() => navigate('/superadmin/merchant')}
+          onClick={() => router.push('/superadmin/merchant')}
             className="flex items-center gap-2.5 p-3 rounded-xl bg-blue-50/60 hover:bg-blue-50 border border-blue-200/60 hover:border-blue-300 text-blue-800 font-semibold text-xs transition-all group shadow-2xs hover:shadow-xs cursor-pointer"
           >
             <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
@@ -85,7 +85,7 @@ export default function QuickActions({ onAddUser }) {
         ) : (
           <button
             type="button"
-            onClick={() => navigate('/superadmin/transactions')}
+          onClick={() => router.push('/superadmin/transactions')}
             className="flex items-center gap-2.5 p-3 rounded-xl bg-blue-50/60 hover:bg-blue-50 border border-blue-200/60 hover:border-blue-300 text-blue-800 font-semibold text-xs transition-all group shadow-2xs hover:shadow-xs cursor-pointer"
           >
             <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
@@ -101,7 +101,7 @@ export default function QuickActions({ onAddUser }) {
         {/* Slot 4 */}
         <button
           type="button"
-          onClick={() => navigate('/superadmin/payment-method')}
+          onClick={() => router.push('/superadmin/payment-method')}
           className="flex items-center gap-2.5 p-3 rounded-xl bg-violet-50/60 hover:bg-violet-50 border border-violet-200/60 hover:border-violet-300 text-violet-800 font-semibold text-xs transition-all group hover:border-violet-300 cursor-pointer"
         >
           <div className="w-8 h-8 rounded-lg bg-violet-600 text-white flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">

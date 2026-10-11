@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { usePathname, useRouter } from 'next/navigation';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
 import LoginPage from './pages/auth/LoginPage.jsx';
 
@@ -45,6 +45,16 @@ function LoadingScreen() {
   );
 }
 
+function ClientRedirect({ to }) {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace(to);
+  }, [router, to]);
+
+  return null;
+}
+
 // Protected Route Component
 function ProtectedRoute({ children, allowedRoles }) {
   const { isAuthenticated, isLoading, isSuperAdmin, isAdmin, rawRole } = useAuth();
@@ -54,12 +64,12 @@ function ProtectedRoute({ children, allowedRoles }) {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <ClientRedirect to="/login" />;
   }
 
   // Non-admin roles (kasir, barista, kitchen) are never permitted in Web Admin
   if (rawRole === 'kasir' || rawRole === 'barista' || rawRole === 'kitchen') {
-    return <Navigate to="/login" replace />;
+    return <ClientRedirect to="/login" />;
   }
 
   if (allowedRoles && allowedRoles.length > 0) {
@@ -69,9 +79,9 @@ function ProtectedRoute({ children, allowedRoles }) {
 
     if (!isAllowed) {
       if (isSuperAdmin) {
-        return <Navigate to="/superadmin/dashboard" replace />;
+        return <ClientRedirect to="/superadmin/dashboard" />;
       }
-      return <Navigate to="/login" replace />;
+      return <ClientRedirect to="/login" />;
     }
   }
 
@@ -141,12 +151,12 @@ function RootRedirect() {
   const { isAuthenticated, isLoading, isSuperAdmin, isAdmin } = useAuth();
 
   if (isLoading) return <LoadingScreen />;
-  if (!isAuthenticated || (!isSuperAdmin && !isAdmin)) return <Navigate to="/login" replace />;
+  if (!isAuthenticated || (!isSuperAdmin && !isAdmin)) return <ClientRedirect to="/login" />;
 
   if (isSuperAdmin) {
-    return <Navigate to="/superadmin/dashboard" replace />;
+    return <ClientRedirect to="/superadmin/dashboard" />;
   }
-  return <Navigate to="/admin" replace />;
+  return <ClientRedirect to="/admin" />;
 }
 
 // Login Page Wrapper (Redirects if already authenticated as admin/superadmin)
@@ -156,58 +166,65 @@ function LoginRoute() {
   if (isLoading) return <LoadingScreen />;
   if (isAuthenticated && (isSuperAdmin || isAdmin)) {
     if (isSuperAdmin) {
-      return <Navigate to="/superadmin/dashboard" replace />;
+      return <ClientRedirect to="/superadmin/dashboard" />;
     }
-    return <Navigate to="/admin" replace />;
+    return <ClientRedirect to="/admin" />;
   }
 
   return <LoginPage />;
 }
 
 function AppRoutes() {
-  return (
-    <Routes>
-      {/* 1. Public Auth Route */}
-      <Route path="/login" element={<LoginRoute />} />
+  const pathname = usePathname();
 
-      {/* 2. Super Admin Workspace (Super Admin Only) */}
-      <Route
-        path="/superadmin"
-        element={
-          <ProtectedRoute allowedRoles={['super_admin']}>
-            <SuperAdminLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<Navigate to="/superadmin/dashboard" replace />} />
-        <Route path="dashboard" element={<SuperAdminDashboard />} />
-        <Route path="users" element={<Navigate to="/superadmin/users/admin" replace />} />
-        <Route path="users/:roleTab" element={<SuperAdminUsers />} />
-        <Route path="merchant" element={<SuperAdminMerchant />} />
-        <Route path="payment-method" element={<SuperAdminPaymentMethod />} />
-        <Route path="receipt-settings" element={<SuperAdminReceiptSettings />} />
-        <Route path="profile" element={<SuperAdminProfile />} />
-        <Route path="products" element={<SuperAdminProducts />} />
-        <Route path="orders" element={<SuperAdminOrders />} />
-        <Route path="transactions" element={<SuperAdminTransactions />} />
-        <Route path="*" element={<Navigate to="/superadmin/dashboard" replace />} />
-      </Route>
+  if (pathname === '/login') return <LoginRoute />;
 
-      {/* 3. Admin Outlet Workspace (Admin Only) */}
-      <Route
-        path="/admin/*"
-        element={
-          <ProtectedRoute allowedRoles={['admin', 'super_admin']}>
-            <AdminPortalLayout />
-          </ProtectedRoute>
-        }
-      />
+  if (pathname === '/admin' || pathname.startsWith('/admin/')) {
+    return (
+      <ProtectedRoute allowedRoles={['admin', 'super_admin']}>
+        <AdminPortalLayout />
+      </ProtectedRoute>
+    );
+  }
 
-      {/* Root and Fallbacks */}
-      <Route path="/" element={<RootRedirect />} />
-      <Route path="*" element={<RootRedirect />} />
-    </Routes>
-  );
+  if (pathname === '/superadmin' || pathname.startsWith('/superadmin/')) {
+    const route = pathname.slice('/superadmin/'.length).split('/').filter(Boolean);
+    let page;
+
+    if (pathname === '/superadmin') {
+      page = <ClientRedirect to="/superadmin/dashboard" />;
+    } else if (route[0] === 'dashboard') {
+      page = <SuperAdminDashboard />;
+    } else if (route[0] === 'users' && !route[1]) {
+      page = <ClientRedirect to="/superadmin/users/admin" />;
+    } else if (route[0] === 'users') {
+      page = <SuperAdminUsers />;
+    } else if (route[0] === 'merchant') {
+      page = <SuperAdminMerchant />;
+    } else if (route[0] === 'payment-method') {
+      page = <SuperAdminPaymentMethod />;
+    } else if (route[0] === 'receipt-settings') {
+      page = <SuperAdminReceiptSettings />;
+    } else if (route[0] === 'profile') {
+      page = <SuperAdminProfile />;
+    } else if (route[0] === 'products') {
+      page = <SuperAdminProducts />;
+    } else if (route[0] === 'orders') {
+      page = <SuperAdminOrders />;
+    } else if (route[0] === 'transactions') {
+      page = <SuperAdminTransactions />;
+    } else {
+      page = <ClientRedirect to="/superadmin/dashboard" />;
+    }
+
+    return (
+      <ProtectedRoute allowedRoles={['super_admin']}>
+        <SuperAdminLayout>{page}</SuperAdminLayout>
+      </ProtectedRoute>
+    );
+  }
+
+  return <RootRedirect />;
 }
 
 export default function App() {
@@ -215,9 +232,7 @@ export default function App() {
     <AuthProvider>
       <LoadingProvider>
         <AlertProvider>
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
+          <AppRoutes />
         </AlertProvider>
       </LoadingProvider>
     </AuthProvider>

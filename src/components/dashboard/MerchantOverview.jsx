@@ -1,11 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { ArrowRight, Users, UserRound, Utensils, Loader2 } from 'lucide-react';
 import Badge from '../ui/Badge';
 import Button from '../ui/Button';
 
 export default function MerchantOverview({ merchants = [], loading = false }) {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   return (
     <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200/70 shadow-sm flex flex-col">
@@ -27,7 +27,7 @@ export default function MerchantOverview({ merchants = [], loading = false }) {
           variant="outline"
           size="sm"
           iconRight={ArrowRight}
-          onClick={() => navigate('/superadmin/merchant')}
+          onClick={() => router.push('/superadmin/merchant')}
           className="self-start sm:self-auto text-brand-700 bg-brand-50/50 border-brand-200 hover:bg-brand-100/60"
         >
           Lihat Profil Kafe
@@ -61,7 +61,7 @@ export default function MerchantOverview({ merchants = [], loading = false }) {
                 <tr
                   key={item.id}
                   className="hover:bg-slate-50/60 transition-colors group cursor-pointer"
-                  onClick={() => navigate('/superadmin/merchant')}
+                  onClick={() => router.push('/superadmin/merchant')}
                 >
                   {/* Merchant Name & Avatar */}
                   <td className="py-3.5 px-5 sm:px-6 whitespace-nowrap">

@@ -1,21 +1,29 @@
-FROM node:22-alpine
-
+FROM node:22-alpine AS deps
 WORKDIR /app
-
 COPY package.json package-lock.json ./
 RUN npm ci
 
+FROM node:22-alpine AS builder
+WORKDIR /app
+ENV NEXT_TELEMETRY_DISABLED=1
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ARG VITE_ENV_CACHEBUST
-RUN --mount=type=secret,id=vite_env,dst=/tmp/vite.env \
-    cp /tmp/vite.env .env.production \
-    && test -n "$VITE_ENV_CACHEBUST" \
+ARG NEXT_PUBLIC_ENV_CACHEBUST
+RUN --mount=type=secret,id=next_public_env,dst=/tmp/next-public.env \
+    cp /tmp/next-public.env .env.production \
+    && test -n "$NEXT_PUBLIC_ENV_CACHEBUST" \
     && npm run build \
     && rm .env.production
 
-ENV NODE_ENV=production
-
+FROM node:22-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    PORT=3011 \
+    HOSTNAME=0.0.0.0
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 EXPOSE 3011
-
-CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "3011", "--strictPort"]
+CMD ["node", "server.js"]

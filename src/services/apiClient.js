@@ -4,9 +4,9 @@
  */
 
 export function getApiBaseUrl() {
-  const envUrl = import.meta.env.VITE_API_BASE_URL?.trim();
+  const envUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
   if (!envUrl) {
-    throw new Error('VITE_API_BASE_URL wajib diatur di file .env sebelum frontend dijalankan.');
+    throw new Error('NEXT_PUBLIC_API_BASE_URL wajib diatur di file .env sebelum frontend dijalankan.');
   }
   return envUrl.replace(/\/+$/, '');
 }
@@ -99,7 +99,7 @@ export async function apiRequest(endpoint, options = {}) {
     }
     // Network or connection refused error
     const networkError = new Error(
-      'Gagal terhubung ke server backend POSAN. Periksa VITE_API_BASE_URL dan pastikan backend dapat diakses.'
+      'Gagal terhubung ke server backend POSAN. Periksa NEXT_PUBLIC_API_BASE_URL dan pastikan backend dapat diakses.'
     );
     networkError.status = 0;
     networkError.originalError = err;

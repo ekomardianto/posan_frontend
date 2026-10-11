@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import {
   LayoutDashboard,
@@ -49,18 +50,33 @@ const userSubMenuItems = [
   },
 ];
 
+function ActiveLink({ to, className, children, ...props }) {
+  const pathname = usePathname();
+  const isActive = pathname === to;
+
+  return (
+    <Link
+      href={to}
+      className={typeof className === 'function' ? className({ isActive }) : className}
+      {...props}
+    >
+      {typeof children === 'function' ? children({ isActive }) : children}
+    </Link>
+  );
+}
+
 export default function Sidebar({ isOpen, onClose, onLogoutClick }) {
   const { user, role, isSuperAdmin, isAdmin, isCashier, isBarista, isKitchen } = useAuth();
-  const location = useLocation();
+  const pathname = usePathname();
 
   // Check if current path is in users menu
   const isUsersRouteActive =
-    location.pathname.startsWith('/superadmin/users') ||
-    location.pathname.startsWith('/superadmin/admin') ||
-    location.pathname.startsWith('/superadmin/cashier');
+    pathname.startsWith('/superadmin/users') ||
+    pathname.startsWith('/superadmin/admin') ||
+    pathname.startsWith('/superadmin/cashier');
 
   // Check if orders menu is active
-  const isOrdersRouteActive = location.pathname.startsWith('/superadmin/orders');
+  const isOrdersRouteActive = pathname.startsWith('/superadmin/orders');
 
   const [isUsersMenuOpen, setIsUsersMenuOpen] = useState(true);
   const [isOrdersMenuOpen, setIsOrdersMenuOpen] = useState(true);
@@ -184,7 +200,7 @@ export default function Sidebar({ isOpen, onClose, onLogoutClick }) {
 
           <nav className="space-y-1">
             {/* 1. Dashboard (Super Admin) */}
-            <NavLink
+            <ActiveLink
               to="/superadmin/dashboard"
               onClick={() => {
                 if (window.innerWidth < 1024) onClose();
@@ -210,7 +226,7 @@ export default function Sidebar({ isOpen, onClose, onLogoutClick }) {
                   {isActive && <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />}
                 </>
               )}
-            </NavLink>
+            </ActiveLink>
 
             {/* 2. Menu User & Staf (Super Admin) */}
             <div className="space-y-1">
@@ -245,7 +261,7 @@ export default function Sidebar({ isOpen, onClose, onLogoutClick }) {
                   {userSubMenuItems.map((sub) => {
                     const SubIcon = sub.icon;
                     return (
-                      <NavLink
+                      <ActiveLink
                         key={sub.path}
                         to={sub.path}
                         onClick={() => {
@@ -272,7 +288,7 @@ export default function Sidebar({ isOpen, onClose, onLogoutClick }) {
                             {isActive && <div className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />}
                           </>
                         )}
-                      </NavLink>
+                      </ActiveLink>
                     );
                   })}
                 </div>
@@ -280,7 +296,7 @@ export default function Sidebar({ isOpen, onClose, onLogoutClick }) {
             </div>
 
             {/* 3. Payment Method */}
-            <NavLink
+            <ActiveLink
               to="/superadmin/payment-method"
               onClick={() => {
                 if (window.innerWidth < 1024) onClose();
@@ -306,10 +322,10 @@ export default function Sidebar({ isOpen, onClose, onLogoutClick }) {
                   {isActive && <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />}
                 </>
               )}
-            </NavLink>
+            </ActiveLink>
 
             {/* 4. Profil Kafe & Gerai */}
-            <NavLink
+            <ActiveLink
               to="/superadmin/merchant"
               onClick={() => {
                 if (window.innerWidth < 1024) onClose();
@@ -335,10 +351,10 @@ export default function Sidebar({ isOpen, onClose, onLogoutClick }) {
                   {isActive && <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />}
                 </>
               )}
-            </NavLink>
+            </ActiveLink>
 
             {/* 5. Pengaturan Struk & Printer */}
-            <NavLink
+            <ActiveLink
               to="/superadmin/receipt-settings"
               onClick={() => {
                 if (window.innerWidth < 1024) onClose();
@@ -364,10 +380,10 @@ export default function Sidebar({ isOpen, onClose, onLogoutClick }) {
                   {isActive && <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />}
                 </>
               )}
-            </NavLink>
+            </ActiveLink>
 
             {/* 8. Profil Akun (Semua Role) */}
-            <NavLink
+            <ActiveLink
               to="/superadmin/profile"
               onClick={() => {
                 if (window.innerWidth < 1024) onClose();
@@ -393,7 +409,7 @@ export default function Sidebar({ isOpen, onClose, onLogoutClick }) {
                   {isActive && <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />}
                 </>
               )}
-            </NavLink>
+            </ActiveLink>
           </nav>
 
           {/* System Status Pill */}
