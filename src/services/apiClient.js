@@ -4,21 +4,13 @@
  */
 
 export function getApiBaseUrl() {
-  const envUrl = import.meta.env.VITE_API_BASE_URL;
-  if (envUrl && !envUrl.includes('192.168.1.18')) {
-    // If accessing via IP address from another device and envUrl is localhost, use current host IP
-    if (typeof window !== 'undefined' && window.location && window.location.hostname && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-      return `http://${window.location.hostname}:3000/api`;
-    }
-    return envUrl;
+  const envUrl = import.meta.env.VITE_API_BASE_URL?.trim();
+  if (!envUrl) {
+    throw new Error('VITE_API_BASE_URL wajib diatur di file .env sebelum frontend dijalankan.');
   }
-  if (typeof window !== 'undefined' && window.location && window.location.hostname) {
-    return `http://${window.location.hostname}:3000/api`;
-  }
-  return 'http://localhost:3000/api';
+  return envUrl.replace(/\/+$/, '');
 }
 
-const API_BASE_URL = getApiBaseUrl();
 const TOKEN_KEY = 'posan_auth_token';
 const USER_KEY = 'posan_auth_user';
 
@@ -107,7 +99,7 @@ export async function apiRequest(endpoint, options = {}) {
     }
     // Network or connection refused error
     const networkError = new Error(
-      'Gagal terhubung ke server backend POSAN (http://localhost:3000). Pastikan backend sedang berjalan.'
+      'Gagal terhubung ke server backend POSAN. Periksa VITE_API_BASE_URL dan pastikan backend dapat diakses.'
     );
     networkError.status = 0;
     networkError.originalError = err;

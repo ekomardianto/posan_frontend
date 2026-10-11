@@ -1,0 +1,126 @@
+name: Deploy posan_frontend
+
+on:
+  push:
+    branches:
+      - staging
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-posan-frontend-staging
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build and deploy to staging
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      APP_ENV_CONTENT: ${{ secrets.APP_ENV_CONTENT }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+      SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+      SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      TS_OAUTH_CLIENT_ID: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+      TS_OAUTH_SECRET: ${{ secrets.TS_OAUTH_SECRET }}
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Validate deployment settings
+        run: |
+          set -euo pipefail
+          test -n "$APP_ENV_CONTENT"
+          test -n "$SSH_HOST"
+          test -n "$SSH_USERNAME"
+          test -n "$SSH_PASSWORD"
+          test -n "$SSH_KNOWN_HOSTS"
+          test -n "$TS_OAUTH_CLIENT_ID"
+          test -n "$TS_OAUTH_SECRET"
+
+      - name: Build frontend image
+        run: |
+          set -euo pipefail
+          VITE_ENV_FILE=$(mktemp)
+          trap 'rm -f "$VITE_ENV_FILE"' EXIT
+          export VITE_ENV_FILE
+          python3 - <<'PY'
+          import os
+          import re
+          import sys
+
+          content = os.environ["APP_ENV_CONTENT"]
+          lines = []
+          has_api_url = False
+          for line in content.splitlines():
+              match = re.match(r"^\s*(?:export\s+)?(VITE_[A-Za-z0-9_]*)\s*=", line)
+              if not match:
+                  continue
+              lines.append(line)
+              if match.group(1) == "VITE_API_BASE_URL":
+                  value = line.split("=", 1)[1].strip()
+                  if value.startswith(("\"", "'")):
+                      value = value[1:].split(value[0], 1)[0]
+                  else:
+                      value = value.split("#", 1)[0].strip()
+                  has_api_url = bool(value)
+
+          if not has_api_url:
+              sys.exit("APP_ENV_CONTENT must define a non-empty VITE_API_BASE_URL")
+
+          with open(os.environ["VITE_ENV_FILE"], "w", encoding="utf-8") as env_file:
+              env_file.write("\n".join(lines) + "\n")
+          PY
+          VITE_ENV_CACHEBUST=$(sha256sum "$VITE_ENV_FILE" | cut -d ' ' -f 1)
+          docker build \
+            --secret "id=vite_env,src=$VITE_ENV_FILE" \
+            --build-arg "VITE_ENV_CACHEBUST=$VITE_ENV_CACHEBUST" \
+            --tag posan-frontend:staging \
+            .
+          docker save posan-frontend:staging | gzip -1 > /tmp/posan-frontend-image.tar.gz
+
+      - name: Connect to server through Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Transfer image and deploy over SSH
+        env:
+          SSHPASS: ${{ secrets.SSH_PASSWORD }}
+        run: |
+          set -euo pipefail
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+          trap 'rm -f /tmp/posan-frontend-image.tar.gz' EXIT
+
+          sshpass -e ssh -o StrictHostKeyChecking=yes \
+            "${SSH_USERNAME}@${SSH_HOST}" \
+            'mkdir -p /opt/posan-frontend && chmod 700 /opt/posan-frontend'
+
+          sshpass -e scp -o StrictHostKeyChecking=yes \
+            /tmp/posan-frontend-image.tar.gz \
+            "${SSH_USERNAME}@${SSH_HOST}:/opt/posan-frontend/frontend-image.tar.gz"
+
+          sshpass -e ssh -o StrictHostKeyChecking=yes \
+            -o ServerAliveInterval=30 \
+            "${SSH_USERNAME}@${SSH_HOST}" 'bash -se' <<'REMOTE'
+          set -euo pipefail
+          cd /opt/posan-frontend
+          trap 'rm -f frontend-image.tar.gz' EXIT
+
+          gzip -dc frontend-image.tar.gz | docker load
+          docker stop posan-frontend-staging || true
+          docker rm posan-frontend-staging || true
+          docker run -d \
+            --name posan-frontend-staging \
+            --network host \
+            --restart unless-stopped \
+            posan-frontend:staging
+          REMOTE

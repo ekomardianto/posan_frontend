@@ -44,7 +44,7 @@ export const adminService = {
     return await userService.createUser({
       name,
       email,
-      password: password || 'admin123',
+      password,
       role: role === 'Super Admin' ? 'super_admin' : 'admin',
       is_active: status === 'Active' || status === true,
     });

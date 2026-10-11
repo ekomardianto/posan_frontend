@@ -355,8 +355,10 @@ export default function SuperAdminMerchants() {
                       Password Login Admin
                     </label>
                     <input
-                      type="text"
-                      placeholder="Default: admin123"
+                      type="password"
+                      required
+                      minLength={6}
+                      placeholder="Minimal 6 karakter"
                       value={formData.adminPassword}
                       onChange={(e) => setFormData({ ...formData, adminPassword: e.target.value })}
                       style={{ width: '100%', padding: '9px 12px', borderRadius: 10, background: '#0F172A', border: '1px solid rgba(255,255,255,0.12)', color: '#FFFFFF', fontSize: '0.82rem', boxSizing: 'border-box' }}

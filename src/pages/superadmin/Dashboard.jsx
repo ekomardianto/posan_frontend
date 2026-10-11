@@ -68,7 +68,7 @@ export default function Dashboard() {
       await userService.createUser({
         name: newUserName.trim(),
         email: newUserEmail.trim(),
-        password: newUserPassword.trim() || 'posan123',
+        password: newUserPassword.trim(),
         role: newUserRole,
         is_active: true,
       });

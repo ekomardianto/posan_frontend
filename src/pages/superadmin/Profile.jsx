@@ -20,6 +20,7 @@ import Select from '../../components/ui/Select';
 import { useAuth } from '../../context/AuthContext';
 import { userService } from '../../services/userService';
 import { dashboardService } from '../../services/dashboardService';
+import { getApiBaseUrl } from '../../services/apiClient';
 
 export default function Profile() {
   const { user, profile, refreshProfile } = useAuth();
@@ -531,7 +532,7 @@ export default function Profile() {
             <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200/60 flex items-center justify-between">
               <div>
                 <p className="font-bold text-slate-800">API Endpoint Backend</p>
-                <p className="text-slate-500 font-mono text-[11px]">http://localhost:3000/api</p>
+                <p className="text-slate-500 font-mono text-[11px]">{getApiBaseUrl()}</p>
               </div>
               <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-lg border border-emerald-200">
                 ONLINE
