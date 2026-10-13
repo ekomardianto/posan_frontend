@@ -15,6 +15,7 @@ import PaymentMethodsPage from './screens/admin/PaymentMethodsPage.jsx';
 import ReportsPage from './screens/admin/ReportsPage.jsx';
 import ProfilePage from './screens/admin/ProfilePage.jsx';
 import ReceiptSettingsPage from './screens/admin/ReceiptSettingsPage.jsx';
+import InventoryPage from './screens/admin/InventoryPage.jsx';
 import BaristaOrdersPage from './screens/barista/BaristaOrdersPage.jsx';
 import KitchenOrdersPage from './screens/kitchen/KitchenOrdersPage.jsx';
 
@@ -119,6 +120,12 @@ function AdminPortalLayout() {
       case 'kategori':
       case 'categories':
         return <CategoriesPage />;
+      case 'inventori':
+      case 'inventory':
+      case 'bahan':
+      case 'opname':
+      case 'stock-opname':
+        return <InventoryPage />;
       case 'transaksi':
       case 'transactions':
         return <TransactionsPage />;
@@ -137,6 +144,11 @@ function AdminPortalLayout() {
       case 'staff-reports':
       case 'staff-report':
         return <ReportsPage initialTab="staf" />;
+      case 'absen':
+      case 'absensi':
+      case 'laporan-absen':
+      case 'attendance':
+        return <ReportsPage initialTab="absen" />;
       case 'pengaturan-struk':
       case 'receipt-settings':
       case 'struk':

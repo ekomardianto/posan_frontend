@@ -26,9 +26,21 @@ export default function ReportHeader({
     setSyncTime(formatSyncTime());
   }, [isSyncing]);
 
-  const defaultOverline = activeTab === 'staf' ? 'PRODUKTIVITAS & KINERJA TIM' : 'RINGKASAN ANALITIK BISNIS';
-  const defaultTitle = activeTab === 'staf' ? 'Laporan Staf' : 'Laporan Penjualan';
-  const defaultSubtitle = activeTab === 'staf'
+  const defaultOverline = activeTab === 'absen'
+    ? 'PRESENSI & JAM KERJA STAF'
+    : activeTab === 'staf'
+    ? 'PRODUKTIVITAS & KINERJA TIM'
+    : 'RINGKASAN ANALITIK BISNIS';
+
+  const defaultTitle = activeTab === 'absen'
+    ? 'Laporan Presensi Staf'
+    : activeTab === 'staf'
+    ? 'Laporan Staf'
+    : 'Laporan Penjualan';
+
+  const defaultSubtitle = activeTab === 'absen'
+    ? 'Monitoring kehadiran, jam masuk & pulang, durasi shift, dan staf aktif bertugas dari Mobile POS'
+    : activeTab === 'staf'
     ? 'Monitoring performa barista, kitchen, dan kasir, kecepatan pengerjaan pesanan, dan rincian tugas'
     : 'Analisis penjualan, omzet, dan riwayat transaksi café tersinkronisasi realtime database';
 

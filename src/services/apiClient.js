@@ -4,9 +4,9 @@
  */
 
 export function getApiBaseUrl() {
-  const envUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
+  const envUrl = (process.env.NEXT_PUBLIC_API_BASE_URL || 'https://posan.epay.co.id/posanbackend/dev/api')?.trim();
   if (!envUrl) {
-    throw new Error('NEXT_PUBLIC_API_BASE_URL wajib diatur di file .env sebelum frontend dijalankan.');
+    return 'https://posan.epay.co.id/posanbackend/dev/api';
   }
   return envUrl.replace(/\/+$/, '');
 }

@@ -328,8 +328,6 @@ export default function TransactionsPage() {
             <TransactionDetailPanel
               transaction={activeTransaction}
               onClose={() => setIsDetailOpen(false)}
-              onPrintReceipt={handlePrintReceipt}
-              onSendReceipt={handleSendReceipt}
             />
           </div>
         )}

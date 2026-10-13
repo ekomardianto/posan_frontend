@@ -697,3 +697,215 @@ export function exportStaffReportToCSV(staffReportData, filterState = {}) {
   document.body.removeChild(link);
 }
 
+/**
+ * 7. EXPORT ATTENDANCE REPORT TO EXCEL (.xlsx)
+ */
+export function exportAttendanceToExcel(attendanceData, filterState = {}) {
+  const wb = XLSX.utils.book_new();
+
+  const periodText = filterState.dateRangeText || attendanceData.periodLabel || 'Seminggu (7 Hari)';
+  const staffText = filterState.staffName || 'Semua Staf';
+  const roleText = filterState.roleName || 'Semua Peran';
+  const statusText = filterState.statusName || 'Semua Status';
+  const generatedAt = new Date().toLocaleString('id-ID', {
+    dateStyle: 'full',
+    timeStyle: 'short'
+  });
+
+  // SHEET 1: RINGKASAN PRESENSI
+  const summarySheetData = [
+    ['POSAN CAFÉ - LAPORAN PRESENSI & KEHADIRAN STAF'],
+    [`Periode: ${periodText}`],
+    [''],
+    ['PARAMETER FILTER'],
+    ['Periode', periodText],
+    ['Filter Staf', staffText],
+    ['Filter Peran', roleText],
+    ['Filter Status', statusText],
+    ['Waktu Unduh', generatedAt],
+    ['Sumber Data', 'Tersinkronisasi Mobile POS & Cloud Database'],
+    [''],
+    ['RINGKASAN METRIK UTAMA (KPI)'],
+    ['Metrik', 'Nilai', 'Keterangan'],
+    ['Total Presensi', attendanceData.kpi?.totalRecords?.formattedValue || '0', 'Total kehadiran shift'],
+    ['Staf Aktif Saat Ini', attendanceData.kpi?.activeWorking?.formattedValue || '0', 'Sedang bekerja bertugas'],
+    ['Total Jam Kerja', attendanceData.kpi?.totalWorkHours?.formattedValue || '0 Jam', 'Akumulasi durasi shift'],
+    ['Rata-Rata Durasi Shift', attendanceData.kpi?.avgShiftHours?.formattedValue || '0 Jam', 'Standar 8 jam kerja'],
+    ['Tingkat Ketepatan Waktu', attendanceData.kpi?.onTimeRate?.formattedValue || '100%', 'Berdasarkan toleransi jam masuk'],
+    [''],
+    ['LOG DETAIL PRESENSI STAF'],
+    ['No', 'Tanggal', 'Nama Staf', 'Peran / Stasiun', 'Jam Masuk', 'Jam Pulang', 'Durasi Shift', 'Status', 'Catatan'],
+    ...(attendanceData.attendanceRecords || []).map((r, idx) => {
+      const inTime = r.check_in_time ? new Date(r.check_in_time).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '-';
+      const outTime = r.check_out_time ? new Date(r.check_out_time).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : (r.status === 'working' ? 'Sedang Bekerja' : '-');
+      const roleStr = (r.role || '').toUpperCase();
+      const statusStr = r.status === 'working' ? 'Sedang Bekerja' : (r.status === 'completed' ? 'Selesai' : r.status || '-');
+      return [
+        idx + 1,
+        r.date,
+        r.user_name,
+        roleStr,
+        inTime,
+        outTime,
+        r.formattedDuration || '-',
+        statusStr,
+        r.notes || '-'
+      ];
+    })
+  ];
+
+  const wsSummary = XLSX.utils.aoa_to_sheet(summarySheetData);
+  wsSummary['!cols'] = [
+    { wch: 6 },
+    { wch: 15 },
+    { wch: 22 },
+    { wch: 16 },
+    { wch: 14 },
+    { wch: 16 },
+    { wch: 18 },
+    { wch: 18 },
+    { wch: 30 }
+  ];
+
+  XLSX.utils.book_append_sheet(wb, wsSummary, 'Presensi Staf');
+  const cleanPeriod = periodText.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 20);
+  XLSX.writeFile(wb, `Laporan_Presensi_Staf_POSAN_${cleanPeriod}_${Date.now()}.xlsx`);
+}
+
+/**
+ * 8. EXPORT ATTENDANCE REPORT TO PDF (.pdf)
+ */
+export function exportAttendanceToPDF(attendanceData, filterState = {}) {
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4'
+  });
+
+  const periodText = filterState.dateRangeText || attendanceData.periodLabel || 'Seminggu (7 Hari)';
+  const staffText = filterState.staffName || 'Semua Staf';
+  const roleText = filterState.roleName || 'Semua Peran';
+  const generatedAt = new Date().toLocaleString('id-ID', {
+    dateStyle: 'full',
+    timeStyle: 'short'
+  });
+
+  // Header POSAN
+  doc.setFillColor(34, 28, 24); // #221C18 dark brown
+  doc.rect(0, 0, 210, 28, 'F');
+
+  doc.setFontSize(16);
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.text('POSAN CAFE', 14, 12);
+
+  doc.setFontSize(9);
+  doc.setTextColor(230, 215, 195);
+  doc.setFont('helvetica', 'normal');
+  doc.text('LAPORAN PRESENSI & LOG KEHADIRAN STAF', 14, 18);
+  doc.text(`Periode: ${periodText} | Dicetak: ${generatedAt}`, 14, 24);
+
+  // KPI Quick Box
+  doc.setFillColor(248, 245, 240);
+  doc.roundedRect(14, 32, 182, 18, 2, 2, 'F');
+
+  doc.setFontSize(8);
+  doc.setTextColor(110, 95, 80);
+  doc.text('TOTAL PRESENSI', 20, 38);
+  doc.text('STAF AKTIF', 68, 38);
+  doc.text('TOTAL JAM KERJA', 115, 38);
+  doc.text('KETEPATAN WAKTU', 160, 38);
+
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(34, 28, 24);
+  doc.text(attendanceData.kpi?.totalRecords?.formattedValue || '0', 20, 45);
+  doc.text(attendanceData.kpi?.activeWorking?.formattedValue || '0', 68, 45);
+  doc.text(attendanceData.kpi?.totalWorkHours?.formattedValue || '0 Jam', 115, 45);
+  doc.text(attendanceData.kpi?.onTimeRate?.formattedValue || '100%', 160, 45);
+
+  // Table
+  autoTable(doc, {
+    startY: 54,
+    head: [['No', 'Tanggal', 'Nama Staf', 'Peran', 'Jam Masuk', 'Jam Pulang', 'Durasi', 'Status']],
+    body: (attendanceData.attendanceRecords || []).map((r, i) => {
+      const inTime = r.check_in_time ? new Date(r.check_in_time).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '-';
+      const outTime = r.check_out_time ? new Date(r.check_out_time).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : (r.status === 'working' ? 'Aktif' : '-');
+      const statusStr = r.status === 'working' ? 'Sedang Bekerja' : 'Shift Selesai';
+      return [
+        i + 1,
+        r.date,
+        r.user_name,
+        (r.role || '').toUpperCase(),
+        inTime,
+        outTime,
+        r.formattedDuration || '-',
+        statusStr
+      ];
+    }),
+    theme: 'grid',
+    headStyles: {
+      fillColor: [34, 28, 24],
+      textColor: [255, 255, 255],
+      fontSize: 8,
+      fontStyle: 'bold'
+    },
+    styles: {
+      fontSize: 7.5,
+      cellPadding: 2.2,
+      textColor: [30, 23, 19]
+    },
+    alternateRowStyles: {
+      fillColor: [250, 247, 242]
+    },
+    columnStyles: {
+      0: { halign: 'center', cellWidth: 10 },
+      1: { cellWidth: 24 },
+      2: { fontStyle: 'bold', cellWidth: 38 },
+      3: { cellWidth: 22 },
+      4: { halign: 'center', cellWidth: 22 },
+      5: { halign: 'center', cellWidth: 22 },
+      6: { halign: 'center', cellWidth: 26 },
+      7: { fontStyle: 'bold', cellWidth: 28 }
+    }
+  });
+
+  const pageHeight = doc.internal.pageSize.height || 297;
+  doc.setFontSize(7.5);
+  doc.setTextColor(158, 149, 141);
+  doc.text('POSAN Cafe Backoffice - Dokumen Laporan Presensi Staf Mobile POS.', 14, pageHeight - 8);
+  doc.text(`Tersinkronisasi Realtime`, 196, pageHeight - 8, { align: 'right' });
+
+  const cleanPeriod = periodText.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 20);
+  doc.save(`Laporan_Presensi_Staf_POSAN_${cleanPeriod}_${Date.now()}.pdf`);
+}
+
+/**
+ * 9. EXPORT ATTENDANCE REPORT TO CSV (.csv)
+ */
+export function exportAttendanceToCSV(attendanceData, filterState = {}) {
+  const periodText = filterState.dateRangeText || attendanceData.periodLabel || 'Seminggu (7 Hari)';
+
+  const headers = 'No,Tanggal,Nama Staf,Peran,Jam Masuk,Jam Pulang,Durasi Kerja,Status,Catatan\n';
+  const rows = (attendanceData.attendanceRecords || [])
+    .map((r, idx) => {
+      const inTime = r.check_in_time ? new Date(r.check_in_time).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '-';
+      const outTime = r.check_out_time ? new Date(r.check_out_time).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : (r.status === 'working' ? 'Sedang Bekerja' : '-');
+      const statusStr = r.status === 'working' ? 'Sedang Bekerja' : 'Shift Selesai';
+      return `"${idx + 1}","${r.date}","${r.user_name}","${r.role}","${inTime}","${outTime}","${r.formattedDuration || '-'}","${statusStr}","${r.notes || '-'}"`;
+    })
+    .join('\n');
+
+  const blob = new Blob([`# POSAN CAFE - LAPORAN PRESENSI STAF (${periodText})\n${headers}${rows}`], {
+    type: 'text/csv;charset=utf-8;'
+  });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', `laporan_presensi_staf_posan_${Date.now()}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { CheckCircle2, X, BarChart3, Users, Clock, Timer, Sparkles } from 'lucide-react';
+import { CheckCircle2, X, BarChart3, Users, Clock, Timer, Sparkles, UserCheck } from 'lucide-react';
 import { fetchReportData } from '../../services/reportService';
 import { fetchStaffPerformanceReport } from '../../services/staffReportService';
+import { fetchAttendanceReport } from '../../services/attendanceService';
 import {
   exportReportToExcel,
   exportReportToPDF,
@@ -9,6 +10,9 @@ import {
   exportStaffReportToExcel,
   exportStaffReportToPDF,
   exportStaffReportToCSV,
+  exportAttendanceToExcel,
+  exportAttendanceToPDF,
+  exportAttendanceToCSV,
 } from '../../utils/exportReportUtils';
 
 // Sales Report Components
@@ -28,6 +32,12 @@ import StaffProductivityChart from '../../components/reports/StaffProductivityCh
 import StaffLeaderboard from '../../components/reports/StaffLeaderboard';
 import StaffStationBreakdown from '../../components/reports/StaffStationBreakdown';
 import StaffReportTable from '../../components/reports/StaffReportTable';
+
+// Attendance Report Components (Mobile POS Integration)
+import AttendanceReportFilters from '../../components/reports/AttendanceReportFilters';
+import AttendanceReportKpiCards from '../../components/reports/AttendanceReportKpiCards';
+import AttendanceAnalyticsOverview from '../../components/reports/AttendanceAnalyticsOverview';
+import AttendanceReportTable from '../../components/reports/AttendanceReportTable';
 
 const initialEmptySalesReport = {
   kpi: {
@@ -55,13 +65,34 @@ const initialEmptyStaffReport = {
   availableStaffList: [],
 };
 
+const initialEmptyAttendanceReport = {
+  kpi: {
+    totalRecords: { label: 'TOTAL PRESENSI', value: 0, formattedValue: '0 Kehadiran', comparisonText: 'Tercatat di sistem', iconType: 'calendar' },
+    activeWorking: { label: 'STAF AKTIF SAAT INI', value: 0, formattedValue: '0 Orang', comparisonText: 'Sedang bertugas di outlet', iconType: 'user-check' },
+    totalWorkHours: { label: 'TOTAL JAM KERJA', value: 0, formattedValue: '0 Jam', comparisonText: 'Akumulasi seluruh shift', iconType: 'clock' },
+    avgShiftHours: { label: 'RATA-RATA DURASI SHIFT', value: 0, formattedValue: '0 Jam', comparisonText: 'Standar 8 jam reguler', iconType: 'timer' },
+    onTimeRate: { label: 'TINGKAT KETEPATAN WAKTU', value: 100, formattedValue: '100%', comparisonText: 'Tepat waktu', iconType: 'award' },
+  },
+  attendanceRecords: [],
+  availableStaffList: [],
+  periodLabel: 'Seminggu (7 Hari)',
+};
+
 export default function ReportsPage({ initialTab = 'penjualan' }) {
-  // Main Tab State: 'penjualan' | 'staf'
-  const [activeTab, setActiveTab] = useState(initialTab === 'staf' ? 'staf' : 'penjualan');
+  // Main Tab State: 'penjualan' | 'staf' | 'absen'
+  const [activeTab, setActiveTab] = useState(
+    initialTab === 'absen' || initialTab === 'absensi'
+      ? 'absen'
+      : initialTab === 'staf'
+      ? 'staf'
+      : 'penjualan'
+  );
 
   // Update tab if initialTab changes externally
   useEffect(() => {
-    if (initialTab === 'staf') {
+    if (initialTab === 'absen' || initialTab === 'absensi') {
+      setActiveTab('absen');
+    } else if (initialTab === 'staf') {
       setActiveTab('staf');
     } else if (initialTab === 'penjualan') {
       setActiveTab('penjualan');
@@ -86,6 +117,17 @@ export default function ReportsPage({ initialTab = 'penjualan' }) {
   const [selectedRole, setSelectedRole] = useState('all');
   const [staffSearchKeyword, setStaffSearchKeyword] = useState('');
   const [currentStaffData, setCurrentStaffData] = useState(initialEmptyStaffReport);
+
+  // ==========================================
+  // 3. Attendance Report States (Mobile POS)
+  // ==========================================
+  const [attendancePeriod, setAttendancePeriod] = useState('7days');
+  const [attendanceDateRangeText, setAttendanceDateRangeText] = useState('Seminggu (7 Hari)');
+  const [selectedAttendanceStaff, setSelectedAttendanceStaff] = useState('all');
+  const [selectedAttendanceRole, setSelectedAttendanceRole] = useState('all');
+  const [selectedAttendanceStatus, setSelectedAttendanceStatus] = useState('all');
+  const [attendanceSearchKeyword, setAttendanceSearchKeyword] = useState('');
+  const [currentAttendanceData, setCurrentAttendanceData] = useState(initialEmptyAttendanceReport);
 
   // Shared UI & Feedback States
   const [isSyncing, setIsSyncing] = useState(false);
@@ -123,11 +165,33 @@ export default function ReportsPage({ initialTab = 'penjualan' }) {
     }
   };
 
+  // Load Attendance Report Data
+  const loadAttendanceReport = async (
+    period = attendancePeriod,
+    staff = selectedAttendanceStaff,
+    role = selectedAttendanceRole,
+    status = selectedAttendanceStatus,
+    search = attendanceSearchKeyword,
+    customStart = null,
+    customEnd = null
+  ) => {
+    try {
+      const data = await fetchAttendanceReport(period, staff, role, status, search, customStart, customEnd);
+      if (data) {
+        setCurrentAttendanceData(data);
+      }
+    } catch (err) {
+      console.error('Error loading attendance report:', err);
+    }
+  };
+
   // Initial Load
   useEffect(() => {
     loadSalesReport(activePeriod, selectedCashier, selectedPaymentMethod);
     loadStaffReport(staffPeriod, selectedStaff, selectedRole);
+    loadAttendanceReport(attendancePeriod, selectedAttendanceStaff, selectedAttendanceRole, selectedAttendanceStatus);
   }, []);
+
 
   // Sync Data Handler
   const handleSync = async () => {
@@ -136,10 +200,11 @@ export default function ReportsPage({ initialTab = 'penjualan' }) {
       await Promise.all([
         loadSalesReport(activePeriod, selectedCashier, selectedPaymentMethod),
         loadStaffReport(staffPeriod, selectedStaff, selectedRole),
+        loadAttendanceReport(attendancePeriod, selectedAttendanceStaff, selectedAttendanceRole, selectedAttendanceStatus),
       ]);
       showToast(
         'Sinkronisasi Berhasil',
-        'Data laporan penjualan & performa staf POSAN telah diperbarui langsung dari database.'
+        'Data laporan penjualan, performa staf & presensi POSAN telah diperbarui langsung dari database.'
       );
     } catch (err) {
       console.error('Sync error:', err);
@@ -194,6 +259,29 @@ export default function ReportsPage({ initialTab = 'penjualan' }) {
       );
     } catch (err) {
       console.error('Apply staff filters error:', err);
+    } finally {
+      setIsApplying(false);
+    }
+  };
+
+  const handleApplyAttendanceFilters = async (overridePeriod, customStart, customEnd, overrideStaff, overrideRole, overrideStatus) => {
+    const periodToUse = overridePeriod || attendancePeriod;
+    const staffToUse = overrideStaff !== undefined ? overrideStaff : selectedAttendanceStaff;
+    const roleToUse = overrideRole !== undefined ? overrideRole : selectedAttendanceRole;
+    const statusToUse = overrideStatus !== undefined ? overrideStatus : selectedAttendanceStatus;
+
+    setIsApplying(true);
+    try {
+      const updatedData = await fetchAttendanceReport(periodToUse, staffToUse, roleToUse, statusToUse, attendanceSearchKeyword, customStart, customEnd);
+      if (updatedData) {
+        setCurrentAttendanceData(updatedData);
+      }
+      showToast(
+        'Laporan Presensi Diperbarui',
+        `Menampilkan data kehadiran untuk periode ${updatedData.periodLabel || periodToUse}.`
+      );
+    } catch (err) {
+      console.error('Apply attendance filters error:', err);
     } finally {
       setIsApplying(false);
     }
@@ -289,6 +377,55 @@ export default function ReportsPage({ initialTab = 'penjualan' }) {
     }
   };
 
+  // ==========================================
+  // Attendance Export Handlers
+  // ==========================================
+  const handleExportAttendanceExcel = () => {
+    try {
+      exportAttendanceToExcel(currentAttendanceData, {
+        dateRangeText: attendanceDateRangeText,
+        staffName: selectedAttendanceStaff === 'all' ? 'Semua Staf' : selectedAttendanceStaff,
+        roleName: selectedAttendanceRole === 'all' ? 'Semua Peran' : selectedAttendanceRole.toUpperCase(),
+        statusName: selectedAttendanceStatus === 'all' ? 'Semua Status' : selectedAttendanceStatus
+      });
+      showToast('Ekspor Excel Berhasil', `File Spreadsheet presensi staf (${attendanceDateRangeText}) telah diunduh.`);
+    } catch (err) {
+      console.error('Failed to export attendance Excel:', err);
+      showToast('Gagal Mengekspor', 'Terjadi kesalahan saat memproses spreadsheet presensi.');
+    }
+  };
+
+  const handleExportAttendancePDF = () => {
+    try {
+      exportAttendanceToPDF(currentAttendanceData, {
+        dateRangeText: attendanceDateRangeText,
+        staffName: selectedAttendanceStaff === 'all' ? 'Semua Staf' : selectedAttendanceStaff,
+        roleName: selectedAttendanceRole === 'all' ? 'Semua Peran' : selectedAttendanceRole.toUpperCase(),
+        statusName: selectedAttendanceStatus === 'all' ? 'Semua Status' : selectedAttendanceStatus
+      });
+      showToast('Ekspor PDF Berhasil', `Dokumen PDF Laporan Presensi Staf telah diunduh.`);
+    } catch (err) {
+      console.error('Failed to export attendance PDF:', err);
+      showToast('Gagal Mengekspor', 'Terjadi kesalahan saat membuat dokumen PDF.');
+    }
+  };
+
+  const handleExportAttendanceCSV = () => {
+    try {
+      exportAttendanceToCSV(currentAttendanceData, {
+        dateRangeText: attendanceDateRangeText,
+        staffName: selectedAttendanceStaff === 'all' ? 'Semua Staf' : selectedAttendanceStaff,
+        roleName: selectedAttendanceRole === 'all' ? 'Semua Peran' : selectedAttendanceRole.toUpperCase(),
+        statusName: selectedAttendanceStatus === 'all' ? 'Semua Status' : selectedAttendanceStatus
+      });
+      showToast('Ekspor CSV Berhasil', `File CSV Laporan Presensi Staf telah diunduh.`);
+    } catch (err) {
+      console.error('Failed to export attendance CSV:', err);
+      showToast('Gagal Mengekspor', 'Terjadi kesalahan saat mengekspor CSV presensi.');
+    }
+  };
+
+
   return (
     <main className="reports-page-container" role="main">
       {/* Floating Toast Notification */}
@@ -343,6 +480,18 @@ export default function ReportsPage({ initialTab = 'penjualan' }) {
             <Users size={15} />
             <span>Laporan Staf</span>
             <span className="report-subtab-badge">Produktivitas</span>
+          </button>
+
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'absen'}
+            className={`report-subtab-btn ${activeTab === 'absen' ? 'active' : ''}`}
+            onClick={() => setActiveTab('absen')}
+          >
+            <UserCheck size={15} />
+            <span>Presensi Staf</span>
+            <span className="report-subtab-badge" style={{ backgroundColor: '#15803D' }}>Mobile POS</span>
           </button>
         </div>
       </div>
@@ -445,6 +594,53 @@ export default function ReportsPage({ initialTab = 'penjualan' }) {
           />
         </div>
       )}
+
+      {/* =========================================================================
+          TAB 3: LAPORAN PRESENSI & JAM KERJA STAF (MOBILE POS INTEGRATION)
+          ========================================================================= */}
+      {activeTab === 'absen' && (
+        <div className="tab-pane animate-fade-in">
+          {/* Attendance Filter Bar: Hari/Tanggal, Staf, Peran, Status, Search */}
+          <AttendanceReportFilters
+            activePeriod={attendancePeriod}
+            onPeriodChange={setAttendancePeriod}
+            dateRangeText={attendanceDateRangeText}
+            onDateRangeChange={setAttendanceDateRangeText}
+            selectedStaff={selectedAttendanceStaff}
+            onStaffChange={setSelectedAttendanceStaff}
+            selectedRole={selectedAttendanceRole}
+            onRoleChange={setSelectedAttendanceRole}
+            selectedStatus={selectedAttendanceStatus}
+            onStatusChange={setSelectedAttendanceStatus}
+            searchKeyword={attendanceSearchKeyword}
+            onSearchChange={setAttendanceSearchKeyword}
+            onApplyFilters={handleApplyAttendanceFilters}
+            isApplying={isApplying}
+            availableStaffList={currentAttendanceData.availableStaffList}
+          />
+
+          {/* Attendance 5 KPI Overview Cards */}
+          <AttendanceReportKpiCards kpiData={currentAttendanceData.kpi} />
+
+          {/* Attendance Analytics & Real-Time Monitoring */}
+          <AttendanceAnalyticsOverview
+            attendanceRecords={currentAttendanceData.attendanceRecords}
+            kpiData={currentAttendanceData.kpi}
+            periodLabel={currentAttendanceData.periodLabel || attendanceDateRangeText}
+          />
+
+          {/* Main Attendance Report Table & Detail Modal */}
+          <AttendanceReportTable
+            tableData={currentAttendanceData.attendanceRecords}
+            periodLabel={currentAttendanceData.periodLabel || attendanceDateRangeText}
+            searchKeyword={attendanceSearchKeyword}
+            onExportExcel={handleExportAttendanceExcel}
+            onExportPDF={handleExportAttendancePDF}
+            onExportCSV={handleExportAttendanceCSV}
+          />
+        </div>
+      )}
     </main>
   );
 }
+

@@ -11,7 +11,8 @@ import {
   Utensils,
   CreditCard,
   Printer,
-  UserCheck
+  UserCheck,
+  Package
 } from 'lucide-react';
 import posanLogo from '../../assets/posan-logo.jpg';
 import { useAuth } from '../../context/AuthContext.jsx';
@@ -28,6 +29,7 @@ const iconMap = {
   CreditCard: CreditCard,
   Printer: Printer,
   UserCheck: UserCheck,
+  Package: Package,
 };
 
 export default function Sidebar({ activeNav = 'dashboard', onSelectNav }) {
@@ -74,6 +76,12 @@ export default function Sidebar({ activeNav = 'dashboard', onSelectNav }) {
         icon: 'Layers',
       },
       {
+        id: 'inventori',
+        name: 'Inventori Bahan',
+        subtitle: 'Bahan Baku & Stock Opname',
+        icon: 'Package',
+      },
+      {
         id: 'transaksi',
         name: 'Transaksi',
         subtitle: 'Riwayat & Detail',
@@ -82,7 +90,7 @@ export default function Sidebar({ activeNav = 'dashboard', onSelectNav }) {
       {
         id: 'laporan',
         name: 'Laporan',
-        subtitle: 'Penjualan & Kinerja Staf',
+        subtitle: 'Penjualan, Staf & Absensi',
         icon: 'BarChart3',
       },
       {
@@ -102,6 +110,9 @@ export default function Sidebar({ activeNav = 'dashboard', onSelectNav }) {
     return items;
   };
 
+
+  const logoSrc = posanLogo?.src || posanLogo || '/posan-logo.jpg';
+
   const navItems = getNavItems();
 
   return (
@@ -117,7 +128,15 @@ export default function Sidebar({ activeNav = 'dashboard', onSelectNav }) {
           }}
         >
           <div className="brand-logo-img-box">
-            <img src={posanLogo} alt="POSAN Logo" className="brand-logo-img" />
+            <img
+              src={logoSrc}
+              alt="POSAN Logo"
+              className="brand-logo-img"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = '/posan-logo.jpg';
+              }}
+            />
           </div>
           <div className="brand-info">
             <div className="brand-title">POSAN</div>
@@ -140,7 +159,13 @@ export default function Sidebar({ activeNav = 'dashboard', onSelectNav }) {
         <ul className="sidebar-nav-list">
           {navItems.map((item) => {
             const IconComponent = iconMap[item.icon] || LayoutGrid;
-            const isActive = activeNav === item.id;
+            const isActive =
+              activeNav === item.id ||
+              (item.id === 'laporan' &&
+                (activeNav === 'absen' ||
+                  activeNav === 'absensi' ||
+                  activeNav === 'laporan-staf' ||
+                  activeNav === 'attendance'));
 
             return (
               <li key={item.id}>

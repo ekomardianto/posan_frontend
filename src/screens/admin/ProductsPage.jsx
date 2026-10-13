@@ -8,12 +8,14 @@ import {
   toggleProductStatus
 } from '../../services/productService';
 import { fetchCategories } from '../../services/categoryService';
+import { fetchAllRecipes } from '../../services/inventoryService';
 import ProductStats from '../../components/products/ProductStats';
 import ProductFilters from '../../components/products/ProductFilters';
 import ProductTable from '../../components/products/ProductTable';
 import ProductDrawer from '../../components/products/ProductDrawer';
 import ProductDeleteModal from '../../components/products/ProductDeleteModal';
 import ProductImportModal from '../../components/products/ProductImportModal';
+import ProductRecipeModal from '../../components/products/ProductRecipeModal';
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -30,6 +32,7 @@ export default function ProductsPage() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [deletingProduct, setDeletingProduct] = useState(null);
+  const [recipeProduct, setRecipeProduct] = useState(null);
   const [toastMessage, setToastMessage] = useState(null);
 
   const showToast = (title, message, type = 'success') => {
@@ -45,12 +48,22 @@ export default function ProductsPage() {
     else setIsLoading(true);
 
     try {
-      const [prodData, catData] = await Promise.all([
+      const [prodData, catData, recipeMap] = await Promise.all([
         fetchProducts(),
-        fetchCategories()
+        fetchCategories(),
+        fetchAllRecipes(),
       ]);
 
-      setProducts(prodData || []);
+      const enrichedProducts = (prodData || []).map((p) => {
+        const key = p.rawId || p.id || p.name;
+        const matchingRecipe = (recipeMap && (recipeMap[key] || recipeMap[p.name])) || [];
+        return {
+          ...p,
+          recipe: matchingRecipe,
+        };
+      });
+
+      setProducts(enrichedProducts);
       if (catData && catData.length > 0) {
         const catFilterList = [
           { id: 'all', name: 'Semua Kategori' },
@@ -62,7 +75,7 @@ export default function ProductsPage() {
       }
 
       if (showSyncToast) {
-        showToast('Sinkronisasi Sukses', 'Katalog produk dan kategori telah disinkronkan dengan database.');
+        showToast('Sinkronisasi Sukses', 'Katalog produk dan resep telah disinkronkan dengan database.');
       }
     } catch (err) {
       console.error('Error loading products:', err);
@@ -72,6 +85,7 @@ export default function ProductsPage() {
       setIsSyncing(false);
     }
   };
+
 
   useEffect(() => {
     loadData();
@@ -281,6 +295,7 @@ export default function ProductsPage() {
         onEditProduct={handleOpenEditDrawer}
         onToggleStatus={handleToggleStatus}
         onDeleteProduct={(product) => setDeletingProduct(product)}
+        onManageRecipe={(product) => setRecipeProduct(product)}
       />
 
       {/* 5. Add / Edit Slide-Over Drawer */}
@@ -315,6 +330,20 @@ export default function ProductsPage() {
         }}
         categories={categories}
       />
+
+      {/* 8. Manage Recipe (BOM) Modal */}
+      {recipeProduct && (
+        <ProductRecipeModal
+          isOpen={Boolean(recipeProduct)}
+          onClose={() => setRecipeProduct(null)}
+          product={recipeProduct}
+          onRecipeSaved={() => {
+            loadData(false);
+            showToast('Resep Disimpan', `Komposisi resep menu "${recipeProduct?.name}" berhasil diperbarui.`);
+          }}
+        />
+      )}
     </main>
   );
 }
+

@@ -12,7 +12,6 @@ import {
   AlertCircle,
   Save,
   RotateCcw,
-  Camera,
   Check,
   Lock,
   Smartphone,
@@ -37,19 +36,11 @@ const formatJoinedDate = (isoString) => {
 const DAYS_LIST = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 const TIMEZONES = ['WIB', 'WITA', 'WIT'];
 
-const SHIFT_PRESETS = [
-  { id: 'utama', name: 'Shift Utama', start: '08:00', end: '17:00' },
-  { id: 'pagi', name: 'Shift Pagi', start: '07:00', end: '15:00' },
-  { id: 'siang', name: 'Shift Siang', start: '11:00', end: '19:00' },
-  { id: 'sore', name: 'Shift Sore / Malam', start: '15:00', end: '23:00' },
-  { id: 'fullday', name: 'Full Day', start: '08:00', end: '22:00' },
-];
-
 const DAY_PRESETS = [
   { label: 'Setiap Hari (Senin - Minggu)', start: 'Senin', end: 'Minggu' },
+  { label: 'Hari Kerja (Senin - Jumat)', start: 'Senin', end: 'Jumat' },
   { label: 'Senin - Sabtu', start: 'Senin', end: 'Sabtu' },
-  { label: 'Senin - Jumat', start: 'Senin', end: 'Jumat' },
-  { label: 'Weekend (Sabtu - Minggu)', start: 'Sabtu', end: 'Minggu' },
+  { label: 'Akhir Pekan (Sabtu - Minggu)', start: 'Sabtu', end: 'Minggu' },
 ];
 
 const TIME_PRESETS = [
@@ -58,27 +49,6 @@ const TIME_PRESETS = [
   { label: '09:00 - 21:00 (Mall/Ruko)', open: '09:00', close: '21:00' },
   { label: '10:00 - 24:00 (Night Cafe)', open: '10:00', close: '00:00' },
 ];
-
-// Helper: Parse & Format Shift
-const parseShiftString = (shiftStr) => {
-  if (!shiftStr) {
-    return { name: 'Shift Utama', start: '08:00', end: '17:00', tz: 'WIB' };
-  }
-  const match = shiftStr.match(/^(.*?)(?:\s*\((?:(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2}))(?:\s*(WIB|WITA|WIT))?\))?$/i);
-  if (match && match[2] && match[3]) {
-    return {
-      name: match[1]?.trim() || 'Shift Utama',
-      start: match[2].padStart(5, '0'),
-      end: match[3].padStart(5, '0'),
-      tz: match[4] || 'WIB',
-    };
-  }
-  return { name: shiftStr.trim() || 'Shift Utama', start: '08:00', end: '17:00', tz: 'WIB' };
-};
-
-const formatShiftString = ({ name, start, end, tz }) => {
-  return `${name || 'Shift Utama'} (${start || '08:00'} - ${end || '17:00'} ${tz || 'WIB'})`;
-};
 
 // Helper: Parse & Format Operational Hours
 const parseOpHoursString = (opStr) => {
@@ -130,28 +100,8 @@ export default function ProfilePage() {
     avatarUrl: user?.avatarUrl || adminProfile.avatarUrl
   }));
 
-  // Dedicated Picker States
-  const [shiftState, setShiftState] = useState(() => parseShiftString(profile.shift));
+  // Dedicated Operational Hours Picker State
   const [opHoursState, setOpHoursState] = useState(() => parseOpHoursString(profile.operationalHours));
-
-  // Handlers for Shift Picker
-  const handleShiftChange = (key, val) => {
-    setShiftState((prev) => {
-      const next = { ...prev, [key]: val };
-      const formatted = formatShiftString(next);
-      setProfile((p) => ({ ...p, shift: formatted }));
-      return next;
-    });
-  };
-
-  const handleApplyShiftPreset = (preset) => {
-    setShiftState((prev) => {
-      const next = { ...prev, name: preset.name, start: preset.start, end: preset.end };
-      const formatted = formatShiftString(next);
-      setProfile((p) => ({ ...p, shift: formatted }));
-      return next;
-    });
-  };
 
   // Handlers for Operational Hours Picker
   const handleOpHoursChange = (key, val) => {
@@ -222,8 +172,7 @@ export default function ProfilePage() {
       const targetBranchPhone = merchant?.phone || activeUser?.merchant?.phone || '081234567890';
       const targetOpHours = merchant?.operational_hours || activeUser?.merchant?.operational_hours || '08:00 - 22:00 WIB (Senin - Minggu)';
 
-      // Sync picker states
-      setShiftState(parseShiftString(targetShift));
+      // Sync picker state
       setOpHoursState(parseOpHoursString(targetOpHours));
 
       setProfile((prev) => ({
@@ -311,7 +260,7 @@ export default function ProfilePage() {
 
       showToast(
         'Profil Berhasil Diperbarui',
-        'Data profil pengelola outlet, jadwal shift, dan jam operasional telah tersimpan di database.'
+        'Data profil pengelola outlet dan jam operasional telah tersimpan di database.'
       );
     } catch (err) {
       console.error('Save profile error:', err);
@@ -440,25 +389,7 @@ export default function ProfilePage() {
         <div className="profile-left-column">
           {/* User Hero Card */}
           <div className="profile-hero-card animate-fade-in">
-            <div className="profile-hero-bg-cover" />
-
             <div className="profile-hero-content">
-              <div className="profile-avatar-wrapper">
-                <img
-                  src={profile.avatarUrl}
-                  alt={profile.name}
-                  className="profile-hero-avatar"
-                />
-                <button
-                  type="button"
-                  className="profile-avatar-edit-btn"
-                  title="Ubah Foto Profil"
-                  onClick={() => showToast('Ubah Foto', 'Pilih file gambar baru untuk avatar profil.')}
-                >
-                  <Camera size={14} />
-                </button>
-              </div>
-
               <h2 className="profile-hero-name">{profile.name}</h2>
               <span className="profile-hero-role">{profile.role}</span>
 
@@ -489,8 +420,8 @@ export default function ProfilePage() {
                   <span className="quick-stat-val">{profile.joinedDate}</span>
                 </div>
                 <div className="quick-stat-item">
-                  <span className="quick-stat-label">SHIFT AKTIF</span>
-                  <span className="quick-stat-val">{profile.shift}</span>
+                  <span className="quick-stat-label">TIPE AKSES</span>
+                  <span className="quick-stat-val">Admin Backoffice</span>
                 </div>
                 <div className="quick-stat-item">
                   <span className="quick-stat-label">OTORISASI PIN</span>
@@ -656,89 +587,7 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              <div className="form-group-field full-col">
-                <div className="picker-section-card">
-                  <div className="picker-section-header">
-                    <span className="picker-section-title">
-                      <Clock size={15} />
-                      <span>Jadwal Shift Bertugas</span>
-                    </span>
-                    <span className="picker-preview-badge">
-                      <Sparkles size={12} />
-                      <span>{profile.shift}</span>
-                    </span>
-                  </div>
 
-                  {/* Quick Shift Presets */}
-                  <div className="picker-preset-row">
-                    <span className="picker-preset-label">Pilihan Cepat:</span>
-                    {SHIFT_PRESETS.map((preset) => {
-                      const isActive = shiftState.name === preset.name && shiftState.start === preset.start && shiftState.end === preset.end;
-                      return (
-                        <button
-                          key={preset.id}
-                          type="button"
-                          className={`picker-preset-chip ${isActive ? 'active' : ''}`}
-                          onClick={() => handleApplyShiftPreset(preset)}
-                        >
-                          {preset.name} ({preset.start} - {preset.end})
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* Detailed Controls */}
-                  <div className="picker-controls-grid">
-                    <div className="picker-control-item">
-                      <label className="picker-control-label">Nama Shift</label>
-                      <select
-                        className="picker-select"
-                        value={shiftState.name}
-                        onChange={(e) => handleShiftChange('name', e.target.value)}
-                      >
-                        <option value="Shift Utama">Shift Utama</option>
-                        <option value="Shift Pagi">Shift Pagi</option>
-                        <option value="Shift Siang">Shift Siang</option>
-                        <option value="Shift Sore / Malam">Shift Sore / Malam</option>
-                        <option value="Full Day">Full Day</option>
-                      </select>
-                    </div>
-
-                    <div className="picker-control-item">
-                      <label className="picker-control-label">Jam Mulai</label>
-                      <input
-                        type="time"
-                        className="picker-time-input"
-                        value={shiftState.start}
-                        onChange={(e) => handleShiftChange('start', e.target.value)}
-                      />
-                    </div>
-
-                    <div className="picker-control-item">
-                      <label className="picker-control-label">Jam Selesai</label>
-                      <input
-                        type="time"
-                        className="picker-time-input"
-                        value={shiftState.end}
-                        onChange={(e) => handleShiftChange('end', e.target.value)}
-                      />
-                    </div>
-
-                    <div className="picker-control-item">
-                      <label className="picker-control-label">Zona Waktu</label>
-                      <select
-                        className="picker-select"
-                        value={shiftState.tz}
-                        onChange={(e) => handleShiftChange('tz', e.target.value)}
-                      >
-                        {TIMEZONES.map((tz) => (
-                          <option key={tz} value={tz}>{tz}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
               <div className="form-actions-row">
                 <button type="submit" className="btn-save-section" disabled={isSaving}>

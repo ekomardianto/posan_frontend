@@ -11,10 +11,12 @@ import {
   AlertCircle,
   CheckCircle2,
   Image as ImageIcon,
-  Loader2
+  Loader2,
+  UtensilsCrossed
 } from 'lucide-react';
 import { defaultProductCategories as defaultCategories } from '../../constants/appConstants';
 import { uploadProductImage } from '../../services/productService';
+import { getRecipeForProduct, fetchIngredients, calculateRecipeFinancials } from '../../services/inventoryService';
 
 export default function ProductDrawer({
   isOpen,
@@ -42,6 +44,7 @@ export default function ProductDrawer({
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [recipeInfo, setRecipeInfo] = useState(null);
 
   const fileInputRef = useRef(null);
 
@@ -56,6 +59,19 @@ export default function ProductDrawer({
         status: initialProduct.status || 'Aktif'
       });
       setUrlInput(initialProduct.imageUrl || '');
+
+      // Load product recipe and inventory to calculate financial preview
+      Promise.all([
+        getRecipeForProduct(initialProduct.rawId || initialProduct.id || initialProduct.name),
+        fetchIngredients(),
+      ]).then(([recipeItems, allIngs]) => {
+        if (recipeItems && recipeItems.length > 0) {
+          const fin = calculateRecipeFinancials(recipeItems, allIngs, initialProduct.price || 0);
+          setRecipeInfo({ items: recipeItems, financials: fin });
+        } else {
+          setRecipeInfo(null);
+        }
+      }).catch(() => setRecipeInfo(null));
     } else {
       setFormData({
         name: '',
@@ -66,6 +82,7 @@ export default function ProductDrawer({
         status: 'Aktif'
       });
       setUrlInput('');
+      setRecipeInfo(null);
     }
     setErrors({});
     setUploadError(null);
@@ -473,7 +490,63 @@ export default function ProductDrawer({
             </div>
           </div>
 
-          {/* 6. Info Alert Box */}
+          {/* 6. Resep & Bahan Baku (BOM) Preview Card */}
+          <div className="p-3.5 bg-[#FAF7F2] border border-[#E8E0D5] rounded-xl flex flex-col gap-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-stone-800 font-bold text-xs uppercase tracking-wide">
+                <UtensilsCrossed size={15} className="text-[#8C5E3C]" />
+                <span>Resep &amp; Komposisi Bahan (BOM)</span>
+              </div>
+              {recipeInfo ? (
+                <span className="text-[11px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full">
+                  {recipeInfo.items.length} Bahan Terdaftar
+                </span>
+              ) : (
+                <span className="text-[11px] font-semibold text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full">
+                  Belum Ada Resep
+                </span>
+              )}
+            </div>
+
+            {recipeInfo ? (
+              <div className="flex flex-col gap-2">
+                <div className="grid grid-cols-3 gap-2 bg-white p-2.5 rounded-lg border border-stone-200 text-center">
+                  <div>
+                    <span className="text-[10px] text-gray-500 uppercase block font-semibold">HPP / Porsi</span>
+                    <span className="text-xs font-black text-[#8C5E3C]">
+                      Rp {recipeInfo.financials.totalHPP.toLocaleString('id-ID')}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-500 uppercase block font-semibold">Margin Laba</span>
+                    <span className="text-xs font-black text-emerald-700">
+                      {recipeInfo.financials.marginPercent}%
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-gray-500 uppercase block font-semibold">Stok Porsi</span>
+                    <span className="text-xs font-black text-blue-700">
+                      ~{recipeInfo.financials.portionsAvailable} Cup
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5">
+                  {recipeInfo.financials.items.map((it, idx) => (
+                    <span key={idx} className="text-[11px] bg-white border border-stone-200 px-2 py-0.5 rounded text-stone-700 font-medium">
+                      {it.ingredientName}: <strong>{it.quantity} {it.unit}</strong>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <p className="text-[11px] text-stone-600 m-0 leading-relaxed">
+                Produk ini belum memiliki resep bahan baku. Atur komposisi takaran bahan melalui tombol <strong>&quot;Atur Resep (BOM)&quot;</strong> di tabel katalog produk untuk menghitung HPP otomatis.
+              </p>
+            )}
+          </div>
+
+          {/* 7. Info Alert Box */}
           <div className="artisan-info-box">
             <Info size={16} color="#C2672B" style={{ flexShrink: 0, marginTop: 2 }} />
             <div>

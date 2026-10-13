@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { MoreVertical, Edit2, Power, Trash2, ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
+import { MoreVertical, Edit2, Power, Trash2, ChevronLeft, ChevronRight, Image as ImageIcon, UtensilsCrossed } from 'lucide-react';
 
 export default function ProductTable({
   products = [],
   isLoading = false,
   onEditProduct,
   onToggleStatus,
-  onDeleteProduct
+  onDeleteProduct,
+  onManageRecipe,
 }) {
   const [activeActionId, setActiveActionId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,6 +49,7 @@ export default function ProductTable({
               <th scope="col" style={{ minWidth: '260px' }}>PRODUK</th>
               <th scope="col">KATEGORI</th>
               <th scope="col">HARGA</th>
+              <th scope="col">RESEP (BOM)</th>
               <th scope="col">STATUS</th>
               <th scope="col">TERAKHIR DIPERBARUI</th>
               <th scope="col" style={{ textAlign: 'right' }}>AKSI</th>
@@ -57,7 +59,7 @@ export default function ProductTable({
             {isLoading ? (
               Array.from({ length: 5 }, (_, rowIndex) => (
                 <tr key={`product-skeleton-${rowIndex}`} aria-hidden="true">
-                  {Array.from({ length: 6 }, (_, cellIndex) => (
+                  {Array.from({ length: 7 }, (_, cellIndex) => (
                     <td key={cellIndex}>
                       <div className="h-3 my-3 rounded bg-stone-200 animate-pulse" style={{ width: `${45 + ((rowIndex + cellIndex) % 4) * 12}%` }} />
                     </td>
@@ -66,13 +68,15 @@ export default function ProductTable({
               ))
             ) : products.length === 0 ? (
               <tr>
-                <td colSpan="6" style={{ textAlign: 'center', padding: '36px', color: 'var(--text-muted)' }}>
+                <td colSpan="7" style={{ textAlign: 'center', padding: '36px', color: 'var(--text-muted)' }}>
                   Tidak ada produk yang sesuai dengan pencarian atau filter.
                 </td>
               </tr>
             ) : (
               currentItems.map((product, index) => {
                 const isNearBottom = index > 0 && index >= currentItems.length - 2;
+                const recipeCount = product.recipe?.length || 0;
+
                 return (
                   <tr key={product.id}>
                     {/* Product Meta */}
@@ -121,6 +125,23 @@ export default function ProductTable({
                       <span className="product-price-cell">{product.formattedPrice}</span>
                     </td>
 
+                    {/* Recipe (BOM) Column */}
+                    <td>
+                      <button
+                        type="button"
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold transition-all ${
+                          recipeCount > 0
+                            ? 'bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100 hover:border-amber-300'
+                            : 'bg-gray-50 text-gray-500 border border-dashed border-gray-300 hover:bg-amber-50 hover:text-amber-800'
+                        }`}
+                        onClick={() => onManageRecipe && onManageRecipe(product)}
+                        title="Klik untuk melihat / mengatur komposisi resep bahan baku"
+                      >
+                        <UtensilsCrossed size={12} className={recipeCount > 0 ? 'text-amber-700' : 'text-gray-400'} />
+                        <span>{recipeCount > 0 ? `${recipeCount} Bahan (Resep)` : '+ Atur Resep'}</span>
+                      </button>
+                    </td>
+
                     {/* Status Badge */}
                     <td>
                       <span className={`product-status-badge ${product.status.toLowerCase()}`}>
@@ -148,6 +169,18 @@ export default function ProductTable({
                           className={`action-menu-dropdown ${isNearBottom ? 'open-up' : ''}`}
                           onClick={(e) => e.stopPropagation()}
                         >
+                          <button
+                            type="button"
+                            className="action-menu-item"
+                            onClick={() => {
+                              setActiveActionId(null);
+                              if (onManageRecipe) onManageRecipe(product);
+                            }}
+                          >
+                            <UtensilsCrossed size={13} color="#C2672B" />
+                            <span>Atur Resep (BOM)</span>
+                          </button>
+
                           <button
                             type="button"
                             className="action-menu-item"
@@ -193,6 +226,7 @@ export default function ProductTable({
           </tbody>
         </table>
       </div>
+
 
       {/* Pagination Footer */}
       {!isLoading && products.length > 0 && (

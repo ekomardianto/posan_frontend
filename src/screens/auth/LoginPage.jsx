@@ -70,7 +70,15 @@ export default function LoginPage() {
           {/* Header Logo */}
           <div className="auth-brand-header">
             <div className="auth-brand-logo-box">
-              <img src={posanLogo} alt="POSAN Logo" className="auth-brand-logo-img" />
+              <img
+                src={posanLogo?.src || posanLogo || '/posan-logo.jpg'}
+                alt="POSAN Logo"
+                className="auth-brand-logo-img"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/posan-logo.jpg';
+                }}
+              />
             </div>
             <div>
               <h1 className="auth-brand-title">POSAN</h1>

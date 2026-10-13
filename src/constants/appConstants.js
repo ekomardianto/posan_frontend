@@ -66,13 +66,13 @@ export const defaultProductCategories = [
 ];
 
 export const defaultStoreInfo = {
-  brandName: 'POSAN',
-  subBrand: 'KOPI KENANGAN SENJA',
-  branch: 'Cabang Sudirman',
-  city: 'Pekanbaru',
-  phone: '0812-3456-7890',
-  fullLocation: 'Cabang Sudirman, Pekanbaru • Telp: 0812-3456-7890',
-  receiptFooterMessage: 'Terima kasih telah berkunjung ke POSAN Café!'
+  brandName: 'POSAN Coffee',
+  subBrand: '',
+  branch: '',
+  city: '',
+  phone: '',
+  fullLocation: '',
+  receiptFooterMessage: 'Terima kasih atas kunjungan Anda!'
 };
 
 export const defaultAdminProfile = {
